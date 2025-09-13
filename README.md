@@ -1,6 +1,6 @@
 # 🎵 Kumbara – Track Your Savings in Style 💰🌈
 
-![Kumbara Logo](.assets/kumbara.jpg)
+![Kumbara Logo](./assets/kumbara.jpg)
 
 **Kumbara** is your ultimate **savings tracker app** that turns saving money into a fun and visual experience! Track your current savings, set goals, and watch your progress grow. 🚀
 
