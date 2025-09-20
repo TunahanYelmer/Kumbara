@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 10,
     padding: 35,
-    margin: 15,
+    margin: 10,
     // Shadow for iOS
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },

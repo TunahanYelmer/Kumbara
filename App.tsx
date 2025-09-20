@@ -1,20 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { FC } from "react";
+import { View, Text } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import User from "./components/User";
+import BalanceCard from "./components/BalanceCard";
 
-export default function App() {
+const App: FC = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View >
+      <Text >
+        Open up App.tsx to start working on your app!
+      </Text>
+      <User />
+      <BalanceCard />
+      <StatusBar  />
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
