@@ -1,7 +1,9 @@
-import React, { FC , useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import React, { FC, useState } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import AddMoneyModal from "./AddMoneyModal";
-import WithdrawMoneyModal from ".//WithdrawMoneyModal";
+import WithdrawMoneyModal from "./WithdrawMoneyModal";
+
+const { width, height } = Dimensions.get("window");
 
 type props = {};
 
@@ -50,7 +52,7 @@ const Transactions: React.FC<props> = () => {
 
       {/* Optional: Show the withdrawn info */}
       {withdrawData && (
-        <Text style={{ marginTop: 10, textAlign: "center" }}>
+        <Text style={{ marginTop: height * 0.01, textAlign: "center" }}>
           Çekilen Miktar: {withdrawData.amount} TL, Sebep: {withdrawData.reason}
         </Text>
       )}
@@ -65,50 +67,51 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    margin: 10
+    margin: width * 0.03,   // ~3% of screen width
   },
   add: {
     color: "#213361",
     flexDirection: "row",
     backgroundColor: "#e6ebfe",
-    padding: 10,
-    borderRadius: 25,
+    padding: width * 0.025, // relative padding
+    borderRadius: width * 0.07,
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    elevation: 3
+    elevation: 3,
   },
   substract: {
     flexDirection: "row",
     backgroundColor: "#e6ebfe",
-    padding: 10,
-    borderRadius: 25,
+    padding: width * 0.025,
+    borderRadius: width * 0.07,
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
-    elevation: 3
+    elevation: 3,
   },
   icon: {
-    width: 30,
-    height: 30,
-    marginRight: 5
+    width: width * 0.08,   // ~8% of screen width
+    height: width * 0.08,
+    marginRight: width * 0.02,
   },
   button: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "transparent",
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 8,
+    paddingVertical: height * 0.01,
+    paddingHorizontal: width * 0.03,
+    borderRadius: width * 0.02,
   },
   buttonText: {
     color: "#213361",
     fontWeight: "500",
-    textAlign: "center"
+    textAlign: "center",
+    fontSize: width * 0.04, // relative font size (~4% of width)
   },
 });

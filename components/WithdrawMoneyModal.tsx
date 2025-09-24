@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   StyleSheet
 } from "react-native";
+import { postTransaction } from "../api/postTransactions";
 
 interface WithdrawMoneyModalProps {
   modalVisible: boolean;
@@ -23,6 +24,7 @@ export default function WithdrawMoneyModal({
   const [step, setStep] = useState<"amount" | "reason">("amount");
   const [amount, setAmount] = useState<string>("");
   const [reason, setReason] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const reasons = ["Food", "Market", "Transport", "Bill"];
 
@@ -35,16 +37,27 @@ export default function WithdrawMoneyModal({
     }
   };
 
-  const handleConfirmReason = () => {
+  const handleConfirmReason = async () => {
     if (!reason) {
       alert("Lütfen bir sebep seçin!");
       return;
     }
-    onConfirm(parseFloat(amount), reason);
-    setStep("amount");
-    setAmount("");
-    setReason(null);
-    setModalVisible(false);
+    setLoading(true);
+    try {
+      await postTransaction("withdraw", parseFloat(amount), reason);
+      onConfirm(parseFloat(amount), reason);
+      setStep("amount");
+      setAmount("");
+      setReason(null);
+      setModalVisible(false);
+    } catch (e) {
+      console.log('====================================');
+      console.log(e);
+      console.log('====================================');
+      alert("İşlem sırasında bir hata oluştu!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -96,6 +109,7 @@ export default function WithdrawMoneyModal({
                     reason === option && styles.selectedOption
                   ]}
                   onPress={() => setReason(option)}
+                  disabled={loading}
                 >
                   <Text
                     style={[
@@ -108,12 +122,17 @@ export default function WithdrawMoneyModal({
                 </TouchableOpacity>
               ))}
               <View style={styles.buttonsRow}>
-                <TouchableOpacity style={styles.modalButton} onPress={handleConfirmReason}>
-                  <Text style={styles.buttonText}>Confirm</Text>
+                <TouchableOpacity
+                  style={styles.modalButton}
+                  onPress={handleConfirmReason}
+                  disabled={loading}
+                >
+                  <Text style={styles.buttonText}>{loading ? "..." : "Confirm"}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.modalButton, { backgroundColor: "#ccc" }]}
                   onPress={handleCancel}
+                  disabled={loading}
                 >
                   <Text style={styles.buttonText}>Cancel</Text>
                 </TouchableOpacity>

@@ -5,8 +5,10 @@ import {
   Modal,
   TextInput,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  Alert,
 } from "react-native";
+import { postBalance } from "../api/postBalance"; // adjust import path
 
 interface AddMoneyModalProps {
   modalVisible: boolean;
@@ -16,15 +18,24 @@ interface AddMoneyModalProps {
 export default function AddMoneyModal({ modalVisible, setModalVisible }: AddMoneyModalProps) {
   const [amount, setAmount] = useState<string>("");
 
-  const handleAddMoney = () => {
+  const handleAddMoney = async () => {
     const numericAmount = parseFloat(amount);
     if (!isNaN(numericAmount) && numericAmount > 0) {
-      console.log("Amount added:", numericAmount);
-      // TODO: update balance or call API
-      setModalVisible(false);
-      setAmount(""); // reset input
+      try {
+        await postBalance(numericAmount);
+        console.log("✅ Amount sent to backend:", numericAmount);
+
+        // Close modal & reset input
+        setModalVisible(false);
+        setAmount("");
+
+        Alert.alert("Başarılı ✅", `${numericAmount} eklendi.`);
+      } catch (error) {
+        console.error("❌ Error posting balance:", error);
+        Alert.alert("Hata ❌", "Sunucuya bağlanılamadı.");
+      }
     } else {
-      alert("Lütfen geçerli bir miktar giriniz!");
+      Alert.alert("Hata ❌", "Lütfen geçerli bir miktar giriniz!");
     }
   };
 

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import React from "react";
 
 type Props = {
@@ -6,6 +6,9 @@ type Props = {
   amount: number;
 };
 
+const { width, height } = Dimensions.get("window");
+
+// Background colors
 const iconBgColors: Record<Props["paymentType"], string> = {
   food: "#FFF3E0",
   market: "#F3E0FF",
@@ -14,12 +17,13 @@ const iconBgColors: Record<Props["paymentType"], string> = {
   income: "#E8F5E9"
 };
 
+// Icon sizes (relative instead of fixed 30px)
 const iconStyles: Record<Props["paymentType"], any> = {
-  food: { width: 30, height: 30 },
-  market: { width: 30, height: 30 },
-  transport: { width: 30, height: 30 },
-  bill: { width: 30, height: 30 },
-  income: { width: 30, height: 30 }
+  food: { width: width * 0.08, height: width * 0.08 },
+  market: { width: width * 0.08, height: width * 0.08 },
+  transport: { width: width * 0.08, height: width * 0.08 },
+  bill: { width: width * 0.08, height: width * 0.08 },
+  income: { width: width * 0.08, height: width * 0.08 }
 };
 
 const iconSources: Record<Props["paymentType"], any> = {
@@ -43,7 +47,6 @@ const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
     );
   }
 
-  // Show + for income, - for others, and add ₺ symbol
   const isIncome = paymentType === "income";
   const sign = isIncome ? "+" : "-";
   const formattedAmount = `${sign}${Math.abs(amount)} ₺`;
@@ -51,10 +54,10 @@ const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
   return (
     <View style={styles.items}>
       <View style={[styles.iconBg, { backgroundColor: bgColor }]}>
-        <Image source={iconSource} style={iconStyle} />
+        <Image source={iconSource} style={iconStyle} resizeMode="contain" />
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={{ fontWeight: "600", fontSize: 16, color: "#213361" }}>
+        <Text style={styles.title}>
           {paymentType.charAt(0).toUpperCase() + paymentType.slice(1)}
         </Text>
       </View>
@@ -70,26 +73,32 @@ export default TransactionList;
 const styles = StyleSheet.create({
   items: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    marginVertical: height * 0.01
   },
   iconBg: {
-    padding: 24,
-    width: 18,
-    height: 18,
-    borderRadius: 20,
+    padding: width * 0.05,
+    width: width * 0.15,
+    height: width * 0.15,
+    borderRadius: width * 0.07,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 10
+    marginRight: width * 0.03
+  },
+  title: {
+    fontWeight: "600",
+    fontSize: width * 0.04, // ~16px on 400px screen
+    color: "#213361"
   },
   amount: {
-    padding: 10,
-    borderRadius: 8,
-    minWidth: 60,
+    padding: width * 0.025,
+    borderRadius: width * 0.02,
+    minWidth: width * 0.15,
     alignItems: "center"
   },
   amountText: {
     fontWeight: "600",
-    fontSize: 16,
+    fontSize: width * 0.04,
     color: "#213361"
   }
 });

@@ -3,11 +3,14 @@ import {
   Text,
   TouchableOpacity,
   View,
-  FlatList
+  FlatList,
+  Dimensions
 } from "react-native";
 import { useState } from "react";
 
 import TransactionList from "./TransactionList";
+
+const { width, height } = Dimensions.get("window");
 
 const data = [
   { id: "1", paymentType: "food", amount: 100 },
@@ -32,7 +35,7 @@ const TransactionsHistory = () => {
   const filteredArray = data.filter((item) => {
     if (selectedTab === "all") return true;
     if (selectedTab === "income") return item.paymentType === "income";
-    if (selectedTab === "expense") return item.paymentType !== "income"; // ✅ safer
+    if (selectedTab === "expense") return item.paymentType !== "income";
     return false;
   });
 
@@ -47,7 +50,7 @@ const TransactionsHistory = () => {
       <View style={styles.tabs}>
         <TouchableOpacity
           onPress={() => handleSelectedTab("all")}
-          style={styles.all}
+          style={styles.tabButton}
         >
           <Text
             style={[
@@ -60,7 +63,7 @@ const TransactionsHistory = () => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handleSelectedTab("income")}
-          style={styles.income}
+          style={styles.tabButton}
         >
           <Text
             style={[
@@ -73,7 +76,7 @@ const TransactionsHistory = () => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handleSelectedTab("expense")}
-          style={styles.expense}
+          style={styles.tabButton}
         >
           <Text
             style={[
@@ -88,7 +91,7 @@ const TransactionsHistory = () => {
 
       {/* FlatList */}
       <FlatList
-        data={filteredArray.slice(0, 4)} // ✅ Limit to 5 items
+        data={filteredArray.slice(0, 4)} // ✅ Limit to 4 items
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TransactionList
@@ -98,7 +101,11 @@ const TransactionsHistory = () => {
         )}
         ItemSeparatorComponent={() => (
           <View
-            style={{ height: 1, backgroundColor: "#e0e0e0", marginVertical: 4 }}
+            style={{
+              height: 1,
+              backgroundColor: "#e0e0e0",
+              marginVertical: height * 0.005
+            }}
           />
         )}
       />
@@ -111,33 +118,25 @@ export default TransactionsHistory;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
-    padding: 15,
-    margin: 10,
-    borderRadius: 10
+    padding: width * 0.04,
+    margin: width * 0.025,
+    borderRadius: width * 0.025
   },
   tabs: {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    marginVertical: 10
+    marginVertical: height * 0.015
   },
-  all: {
+  tabButton: {
     backgroundColor: "#ffffff",
-    padding: 5,
-    borderRadius: 20
-  },
-  income: {
-    backgroundColor: "#ffffff",
-    padding: 5,
-    borderRadius: 20
-  },
-  expense: {
-    backgroundColor: "#ffffff",
-    padding: 5,
-    borderRadius: 20
+    paddingVertical: height * 0.008,
+    paddingHorizontal: width * 0.04,
+    borderRadius: width * 0.05,
+    marginRight: width * 0.02
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: width * 0.04, // ~16px
     color: "#9399b1",
     fontWeight: "500",
     textAlign: "center"

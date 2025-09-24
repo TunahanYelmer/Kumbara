@@ -1,42 +1,68 @@
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import { getBalance } from "../api/getBalance"; // adjust path if needed
+
+const { width } = Dimensions.get("window");
 
 const BalanceCard = () => {
+  const [balance, setBalance] = useState<number | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchBalance = async () => {
+      try {
+        const result = await getBalance();
+        setBalance(result);
+      } catch (error) {
+        console.error("❌ Error fetching balance:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBalance();
+  }, []);
+
   return (
     <LinearGradient
-      colors={[ "#090979", "#00d4ff"]}
+      colors={["#090979", "#00d4ff"]}
       start={{ x: 0.5, y: 0.1 }}
       end={{ x: 1, y: 0.4 }}
       style={styles.card}
     >
       <Text style={styles.title}>Birikimlerim</Text>
-      <Text style={styles.amount}>$1,250.00</Text>
+      {loading ? (
+        <ActivityIndicator color="#fff" />
+      ) : (
+        <Text style={styles.amount}>
+          ${balance?.toFixed(2) ?? "0.00"}
+        </Text>
+      )}
     </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 10,
-    padding: 35,
-    margin: 10,
-    // Shadow for iOS
+    width: width * 0.9,
+    borderRadius: width * 0.03,
+    padding: width * 0.07,
+    margin: width * 0.03,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    // Shadow for Android
     elevation: 3,
   },
   title: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: width * 0.04,
     fontWeight: "600",
-    marginBottom: 5,
+    marginBottom: width * 0.01,
   },
   amount: {
     color: "#fff",
-    fontSize: 20,
+    fontSize: width * 0.06,
     fontWeight: "bold",
   },
 });
