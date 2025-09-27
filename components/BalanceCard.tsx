@@ -1,19 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  ActivityIndicator
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { getBalance } from "../api/getBalance"; // adjust path if needed
+import { useDataLayerValue } from "../context/StateProvider";
+import { State, Action } from "../context/reducer";
 
 const { width } = Dimensions.get("window");
 
 const BalanceCard = () => {
-  const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [{ Balance }, dispatch] = useDataLayerValue();
+
+  const handleBalanceUpdate = (newBalance: number) => {
+    dispatch({
+      type: "SET_BALANCE",
+      Balance: newBalance
+    } as Action);
+  };
 
   useEffect(() => {
     const fetchBalance = async () => {
       try {
         const result = await getBalance();
-        setBalance(result);
+        handleBalanceUpdate(result);
+
+        console.log("ℹ️ Fetched balance:", result);
       } catch (error) {
         console.error("❌ Error fetching balance:", error);
       } finally {
@@ -22,7 +39,7 @@ const BalanceCard = () => {
     };
 
     fetchBalance();
-  }, []);
+  }, [Balance]);
 
   return (
     <LinearGradient
@@ -35,9 +52,7 @@ const BalanceCard = () => {
       {loading ? (
         <ActivityIndicator color="#fff" />
       ) : (
-        <Text style={styles.amount}>
-          ${balance?.toFixed(2) ?? "0.00"}
-        </Text>
+        <Text style={styles.amount}>${Balance?.toFixed(2) ?? "0.00"}</Text>
       )}
     </LinearGradient>
   );
@@ -52,19 +67,19 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    elevation: 3,
+    elevation: 3
   },
   title: {
     color: "#fff",
     fontSize: width * 0.04,
     fontWeight: "600",
-    marginBottom: width * 0.01,
+    marginBottom: width * 0.01
   },
   amount: {
     color: "#fff",
     fontSize: width * 0.06,
-    fontWeight: "bold",
-  },
+    fontWeight: "bold"
+  }
 });
 
 export default BalanceCard;
