@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
-import React from "react";
 
 type Props = {
   paymentType: "food" | "market" | "transport" | "bill" | "income";
@@ -35,21 +34,51 @@ const iconSources: Record<Props["paymentType"], any> = {
 };
 
 const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
-  const iconSource = iconSources[paymentType];
-  const iconStyle = iconStyles[paymentType];
-  const bgColor = iconBgColors[paymentType];
+  // Debug log to see what's being passed
+  console.log("🔍 TransactionList received:", { paymentType, amount });
+
+  // Normalize paymentType to lowercase and handle undefined
+  const normalizedType = (paymentType || "bill").toLowerCase() as Props["paymentType"];
+  
+  // Check if the normalized type is valid
+  const validTypes: Props["paymentType"][] = ["food", "market", "transport", "bill", "income"];
+  const finalType = validTypes.includes(normalizedType) ? normalizedType : "bill";
+
+  console.log("✅ Using type:", finalType);
+
+  const iconSource = iconSources[finalType];
+  const iconStyle = iconStyles[finalType];
+  const bgColor = iconBgColors[finalType];
 
   if (!iconSource) {
+    console.error("❌ No icon source found for:", finalType);
     return (
-      <View>
-        <Text>Unknown Transaction</Text>
+      <View style={styles.items}>
+        <View style={[styles.iconBg, { backgroundColor: "#E0E0E0" }]}>
+          <Text>?</Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.title}>Unknown Transaction</Text>
+        </View>
+        <View style={styles.amount}>
+          <Text style={styles.amountText}>{amount} ₺</Text>
+        </View>
       </View>
     );
   }
 
-  const isIncome = paymentType === "income";
+  const isIncome = finalType === "income";
   const sign = isIncome ? "+" : "-";
   const formattedAmount = `${sign}${Math.abs(amount)} ₺`;
+
+  // Display names for better UX
+  const displayNames: Record<Props["paymentType"], string> = {
+    food: "Yemek",
+    market: "Market",
+    transport: "Ulaşım",
+    bill: "Fatura",
+    income: "Gelir"
+  };
 
   return (
     <View style={styles.items}>
@@ -57,12 +86,15 @@ const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
         <Image source={iconSource} style={iconStyle} resizeMode="contain" />
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={styles.title}>
-          {paymentType.charAt(0).toUpperCase() + paymentType.slice(1)}
-        </Text>
+        <Text style={styles.title}>{displayNames[finalType]}</Text>
       </View>
       <View style={styles.amount}>
-        <Text style={styles.amountText}>{formattedAmount}</Text>
+        <Text style={[
+          styles.amountText,
+          { color: isIncome ? "#4CAF50" : "#213361" }
+        ]}>
+          {formattedAmount}
+        </Text>
       </View>
     </View>
   );
@@ -87,7 +119,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "600",
-    fontSize: width * 0.04, // ~16px on 400px screen
+    fontSize: width * 0.04,
     color: "#213361"
   },
   amount: {

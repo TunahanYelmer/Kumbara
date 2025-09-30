@@ -4,111 +4,170 @@ import {
   TouchableOpacity,
   View,
   FlatList,
-  Dimensions
+  Dimensions,
+  ActivityIndicator,
 } from "react-native";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { Transactions, Action } from "../context/reducer";
+import { useDataLayerValue } from "../context/StateProvider";
+import { getTransactions } from "../api/getTransactions";
 import TransactionList from "./TransactionList";
 
 const { width, height } = Dimensions.get("window");
-
-const data = [
-  { id: "1", paymentType: "food", amount: 100 },
-  { id: "2", paymentType: "market", amount: 250 },
-  { id: "3", paymentType: "bill", amount: 75 },
-  { id: "4", paymentType: "transport", amount: 50 },
-  { id: "5", paymentType: "food", amount: 100 },
-  { id: "6", paymentType: "market", amount: 250 },
-  { id: "7", paymentType: "bill", amount: 75 },
-  { id: "8", paymentType: "transport", amount: 50 },
-  { id: "9", paymentType: "food", amount: 100 },
-  { id: "10", paymentType: "market", amount: 250 },
-  { id: "11", paymentType: "bill", amount: 75 },
-  { id: "12", paymentType: "transport", amount: 50 }
-];
 
 const TransactionsHistory = () => {
   const [selectedTab, setSelectedTab] = useState<"all" | "income" | "expense">(
     "all"
   );
+  const [isLoading, setIsLoading] = useState(true);
+  const [{ Transactions }, dispatch] = useDataLayerValue();
 
-  const filteredArray = data.filter((item) => {
+  // Fetch transactions from API
+  useEffect(() => {
+    handleRetrievingTransactions();
+  }, []);
+
+  const handleRetrievingTransactions = async () => {
+    try {
+      setIsLoading(true);
+      const result = await getTransactions();
+
+      // Validate result
+      if (!result || !Array.isArray(result)) {
+        console.warn("⚠️ Invalid API response:", result);
+        dispatch({
+          type: "SET_TRANSACTIONS",
+          Transactions: [],
+        } as Action);
+        return;
+      }
+
+      // Map API response to your TS interface
+      const transactions: Transactions[] = result.map((item: any) => ({
+        id: item.id ?? item.transaction_id,
+        type: item.type,
+        amount: item.amount,
+        category: item.category,
+        date: item.created_at,
+      }));
+      
+      console.log("ℹ️ Fetched transactions:", transactions);
+
+      dispatch({
+        type: "SET_TRANSACTIONS",
+        Transactions: transactions,
+      } as Action);
+    } catch (error) {
+      console.error("❌ Error fetching transactions:", error);
+      alert("Error fetching transactions");
+      // Set empty array on error
+      dispatch({
+        type: "SET_TRANSACTIONS",
+        Transactions: [],
+      } as Action);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Safety check for Transactions
+  const safeTransactions = Array.isArray(Transactions) ? Transactions : [];
+
+  // Filter transactions by selected tab
+  const filteredTransactions = safeTransactions.filter((item) => {
+    if (!item) return false; // Extra safety check
     if (selectedTab === "all") return true;
-    if (selectedTab === "income") return item.paymentType === "income";
-    if (selectedTab === "expense") return item.paymentType !== "income";
+    if (selectedTab === "income") return item.type === "deposit";
+    if (selectedTab === "expense") return item.type === "withdraw";
     return false;
   });
 
+  // Log for debugging
+  console.log("📊 Total transactions:", safeTransactions.length);
+  console.log("📊 Filtered transactions:", filteredTransactions.length);
+  console.log("📊 Selected tab:", selectedTab);
+
   const handleSelectedTab = (tab: "all" | "income" | "expense") => {
-    console.log("Selected Tab:", tab);
     setSelectedTab(tab);
   };
+
+  const renderItem = ({ item }: { item: Transactions }) => {
+    if (!item) {
+      console.warn("⚠️ Undefined item in renderItem");
+      return null;
+    }
+
+    return (
+      <TransactionList 
+        paymentType={item.category ?? "bill"} 
+        amount={item.amount} 
+      />
+    );
+  };
+
+  const renderSeparator = () => (
+    <View
+      style={{
+        height: 1,
+        backgroundColor: "#e0e0e0",
+        marginVertical: height * 0.005,
+      }}
+    />
+  );
+
+  const renderEmpty = () => (
+    <View style={styles.emptyContainer}>
+      <Text style={styles.emptyText}>
+        {selectedTab === "all" 
+          ? "Henüz işlem yok" 
+          : selectedTab === "income" 
+          ? "Gelir işlemi yok" 
+          : "Gider işlemi yok"}
+      </Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
       {/* Tabs */}
       <View style={styles.tabs}>
-        <TouchableOpacity
-          onPress={() => handleSelectedTab("all")}
-          style={styles.tabButton}
-        >
-          <Text
-            style={[
-              styles.buttonText,
-              selectedTab === "all" && { color: "#243da3" }
-            ]}
+        {["all", "income", "expense"].map((tab) => (
+          <TouchableOpacity
+            key={tab}
+            onPress={() => handleSelectedTab(tab as "all" | "income" | "expense")}
+            style={styles.tabButton}
           >
-            Tümü
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleSelectedTab("income")}
-          style={styles.tabButton}
-        >
-          <Text
-            style={[
-              styles.buttonText,
-              selectedTab === "income" && { color: "#243da3" }
-            ]}
-          >
-            Gelir
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleSelectedTab("expense")}
-          style={styles.tabButton}
-        >
-          <Text
-            style={[
-              styles.buttonText,
-              selectedTab === "expense" && { color: "#243da3" }
-            ]}
-          >
-            Gider
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={[
+                styles.buttonText,
+                selectedTab === tab && styles.activeTabText,
+              ]}
+            >
+              {tab === "all" ? "Tümü" : tab === "income" ? "Gelir" : "Gider"}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
-      {/* FlatList */}
-      <FlatList
-        data={filteredArray.slice(0, 4)} // ✅ Limit to 4 items
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TransactionList
-            paymentType={item.paymentType as any}
-            amount={item.amount}
-          />
-        )}
-        ItemSeparatorComponent={() => (
-          <View
-            style={{
-              height: 1,
-              backgroundColor: "#e0e0e0",
-              marginVertical: height * 0.005
-            }}
-          />
-        )}
-      />
+      {/* Loading State */}
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#243da3" />
+          <Text style={styles.loadingText}>Yükleniyor...</Text>
+        </View>
+      ) : (
+        /* FlatList */
+        <FlatList
+          data={filteredTransactions.slice(0, 4)}
+          keyExtractor={(item, index) => 
+            item?.id ? `${item.id}-${index}` : `transaction-${index}`
+          }
+          renderItem={renderItem}
+          ItemSeparatorComponent={renderSeparator}
+          ListEmptyComponent={renderEmpty}
+          scrollEnabled={false}
+        />
+      )}
     </View>
   );
 };
@@ -120,25 +179,46 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: width * 0.04,
     margin: width * 0.025,
-    borderRadius: width * 0.025
+    borderRadius: width * 0.025,
   },
   tabs: {
     flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginVertical: height * 0.015
+    marginVertical: height * 0.015,
   },
   tabButton: {
     backgroundColor: "#ffffff",
     paddingVertical: height * 0.008,
     paddingHorizontal: width * 0.04,
     borderRadius: width * 0.05,
-    marginRight: width * 0.02
+    marginRight: width * 0.02,
   },
   buttonText: {
-    fontSize: width * 0.04, // ~16px
+    fontSize: width * 0.04,
     color: "#9399b1",
-    fontWeight: "500",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
+  activeTabText: {
+    color: "#243da3",
+    fontWeight: "700",
+  },
+  loadingContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: height * 0.05,
+  },
+  loadingText: {
+    marginTop: height * 0.01,
+    fontSize: width * 0.035,
+    color: "#9399b1",
+  },
+  emptyContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: height * 0.05,
+  },
+  emptyText: {
+    fontSize: width * 0.04,
+    color: "#9399b1",
+    textAlign: "center",
+  },
 });
