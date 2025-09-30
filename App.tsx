@@ -1,10 +1,13 @@
 // App.tsx
 import React from "react";
+import { Switch, TouchableOpacity } from 'react-native';
 import { Image, Text, StyleSheet, StatusBar as RNStatusBar, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import type { RootTabParamList } from "./types";
+import { StateProvider } from "./context/StateProvider";
+
 
 // Your components
 import User from "./components/User";
@@ -34,13 +37,60 @@ function HomeScreen() {
 function SettingsScreen() {
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "bottom"]}>
-      <Text style={styles.settingsText}>Settings Screen</Text>
+      <Text style={styles.settingsTitle}>Ayarlar</Text>
+      
+      {/* Currency Settings */}
+      <View style={styles.settingGroup}>
+        <Text style={styles.groupTitle}>Para Birimi</Text>
+        <View style={styles.settingItem}>
+          <Text>Para Birimi Seç</Text>
+          <Text style={styles.settingValue}>₺ TRY</Text>
+        </View>
+      </View>
+
+      {/* Notification Settings */}
+      <View style={styles.settingGroup}>
+        <Text style={styles.groupTitle}>Bildirimler</Text>
+        <View style={styles.settingItem}>
+          <Text>Günlük Hatırlatıcı</Text>
+          <Switch />
+        </View>
+        <View style={styles.settingItem}>
+          <Text>Hedef Bildirimleri</Text>
+          <Switch />
+        </View>
+      </View>
+
+      {/* Display Settings */}
+      <View style={styles.settingGroup}>
+        <Text style={styles.groupTitle}>Görünüm</Text>
+        <View style={styles.settingItem}>
+          <Text>Karanlık Mod</Text>
+          <Switch />
+        </View>
+      </View>
+
+      {/* Security Settings */}
+      <View style={styles.settingGroup}>
+        <Text style={styles.groupTitle}>Güvenlik</Text>
+        <View style={styles.settingItem}>
+          <Text>Pin ile Kilitle</Text>
+          <Switch />
+        </View>
+        <View style={styles.settingItem}>
+          <Text>Biyometrik Kilit</Text>
+          <Switch />
+        </View>
+      </View>
+
     </SafeAreaView>
   );
 }
 
+
 export default function App() {
   return (
+    <StateProvider>
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         <Tab.Navigator
@@ -93,6 +143,7 @@ export default function App() {
         </Tab.Navigator>
       </NavigationContainer>
     </GestureHandlerRootView>
+    </StateProvider>
   );
 }
 
@@ -107,5 +158,35 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     marginTop: 50
+  }
+  ,
+ settingsTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    padding: 16,
+    textAlign: "center"
+  },
+  settingGroup: {
+    backgroundColor: "#fff",
+    marginVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8
+  },
+  groupTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    paddingVertical: 12,
+    color: "#243da3"
+  },
+  settingItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 12,
+    borderTopWidth: 1,
+    borderTopColor: "#f0f0f0"
+  },
+  settingValue: {
+    color: "#666"
   }
 });
