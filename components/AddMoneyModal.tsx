@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { State, Action, Transactions } from "../context/reducer";
+import { useDataLayerValue } from "../context/StateProvider";
 import {
   View,
   Text,
@@ -6,38 +8,79 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
+  Alert
 } from "react-native";
-import { postBalance } from "../api/postBalance"; // adjust import path
+import { postBalance } from "../api/postBalance";
+import { getBalance } from "../api/getBalance";
+import { postTransaction } from "../api/postTransactions";
 
 interface AddMoneyModalProps {
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
 }
 
-export default function AddMoneyModal({ modalVisible, setModalVisible }: AddMoneyModalProps) {
+export default function AddMoneyModal({
+  modalVisible,
+  setModalVisible
+}: AddMoneyModalProps) {
   const [amount, setAmount] = useState<string>("");
+
+  const [{ Balance , Transactions}, dispatch] = useDataLayerValue();
+
+  const handleBalanceUpdate = (newBalance: number) => {
+    dispatch({
+      type: "SET_BALANCE",
+      Balance: newBalance
+    } as Action);
+  };
+
+  const handleTransactionsUpdate = async (numericAmount: number) => {
+    try {
+      const newTransaction: Transactions = {
+        id: Date.now(), // temporary ID until backend gives one
+        type: "deposit",
+        amount: numericAmount,
+        category: "income",
+        date: new Date().toISOString()
+      };
+
+      await postTransaction("deposit", numericAmount, "income");
+
+      dispatch({
+        type: "SET_TRANSACTIONS",
+        Transactions: [newTransaction , ...Transactions]
+      } as Action);
+    } catch (error) {
+      console.error("❌ Error updating transactions:", error);
+    }
+  };
 
   const handleAddMoney = async () => {
     const numericAmount = parseFloat(amount);
     if (!isNaN(numericAmount) && numericAmount > 0) {
       try {
-        await postBalance(numericAmount);
-        console.log("✅ Amount sent to backend:", numericAmount);
+        const currentBalance = await getBalance();
+        await postBalance(currentBalance + numericAmount);
 
-        // Close modal & reset input
-        setModalVisible(false);
-        setAmount("");
+        handleBalanceUpdate(currentBalance + numericAmount);
+        await handleTransactionsUpdate(numericAmount);
 
         Alert.alert("Başarılı ✅", `${numericAmount} eklendi.`);
       } catch (error) {
         console.error("❌ Error posting balance:", error);
         Alert.alert("Hata ❌", "Sunucuya bağlanılamadı.");
+      } finally {
+        setAmount("");
       }
-    } else {
-      Alert.alert("Hata ❌", "Lütfen geçerli bir miktar giriniz!");
     }
   };
+
+  // 🔹 Auto add money when modal closes
+  useEffect(() => {
+    if (!modalVisible && amount) {
+      handleAddMoney();
+    }
+  }, [modalVisible]);
 
   return (
     <Modal
@@ -57,7 +100,13 @@ export default function AddMoneyModal({ modalVisible, setModalVisible }: AddMone
             onChangeText={setAmount}
           />
           <View style={styles.buttonsRow}>
-            <TouchableOpacity style={styles.modalButton} onPress={handleAddMoney}>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => {
+                handleAddMoney();
+                setModalVisible(false);
+              }}
+            >
               <Text style={styles.buttonText}>Add</Text>
             </TouchableOpacity>
             <TouchableOpacity
