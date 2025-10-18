@@ -8,6 +8,10 @@ import {
   TouchableOpacity,
   StyleSheet
 } from "react-native";
+import {getTransactions} from "../api/getTransactions";
+import { State, Action } from "../context/reducer";
+import { Transactions } from "../context/reducer";
+import { useDataLayerValue } from "../context/StateProvider";
 import { postTransaction } from "../api/postTransactions";
 
 interface WithdrawMoneyModalProps {
@@ -26,13 +30,41 @@ export default function WithdrawMoneyModal({
   const [reason, setReason] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+
+  const [{ Balance }, dispatch] = useDataLayerValue();
+  const handleWithdrawBalanceUpdate = (newBalance: number) => {
+    dispatch({
+      type: "SET_BALANCE",
+      Balance: newBalance
+    } as Action);
+  }
+  const handleTransactionsUpdate = async  () => {
+    const result= await getTransactions();
+    const transactions: Transactions[] = result.map((item: any) => ({
+
+      id: item.transaction_id,
+      type: item.type,
+      amount: item.amount,
+      category: item.category,
+      date: item.created_at,
+    }));
+
+    dispatch({
+      type: "SET_TRANSACTIONS",
+      Transactions: transactions
+    } as Action);
+  }
   const reasons = ["Food", "Market", "Transport", "Bill"];
 
   const handleNextAmount = () => {
     const numericAmount = parseFloat(amount);
     if (!isNaN(numericAmount) && numericAmount > 0) {
       setStep("reason");
-    } else {
+    }
+    else if (numericAmount > Balance) {
+      alert("Yetersiz bakiye!");
+    } 
+    else {
       alert("Lütfen geçerli bir miktar giriniz!");
     }
   };
@@ -50,7 +82,13 @@ export default function WithdrawMoneyModal({
       setAmount("");
       setReason(null);
       setModalVisible(false);
-    } catch (e) {
+      handleWithdrawBalanceUpdate(Balance - parseFloat(amount));
+      await handleTransactionsUpdate();
+    } 
+   
+      
+
+    catch (e) {
       console.log('====================================');
       console.log(e);
       console.log('====================================');

@@ -51,11 +51,6 @@ const Transactions: React.FC<props> = () => {
       </View>
 
       {/* Optional: Show the withdrawn info */}
-      {withdrawData && (
-        <Text style={{ marginTop: height * 0.01, textAlign: "center" }}>
-          Çekilen Miktar: {withdrawData.amount} TL, Sebep: {withdrawData.reason}
-        </Text>
-      )}
     </View>
   );
 };

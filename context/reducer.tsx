@@ -1,8 +1,8 @@
-interface Transactions {
+export interface Transactions {
   id: number;
   type: "deposit" | "withdraw";
   amount: number;
-  category?: string;
+  category?: "food" | "market" | "transport" | "bill" | "income";
   date: string;
 }
 
@@ -25,22 +25,17 @@ export const initialState: State = {
 };
 
 const reducer = (state: State = initialState, action: Action): State => {
-  console.log(action);
   switch (action.type) {
     case "SET_BALANCE":
       return {
         ...state,
-        Balance: action.Balance ??   state.Balance
+        Balance: action.Balance ?? state.Balance
       };
     case "SET_TRANSACTIONS":
       return {
         ...state,
-        Transactions:
-          
-            action.Transactions  ??
-             state.Transactions
+        Transactions: action.Transactions ?? state.Transactions
       };
-
     // Add more cases for other actions if needed
     default:
       return state;
