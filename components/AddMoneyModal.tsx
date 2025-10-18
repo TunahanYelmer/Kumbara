@@ -8,7 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert
+  Alert,
 } from "react-native";
 import { postBalance } from "../api/postBalance";
 import { getBalance } from "../api/getBalance";
@@ -21,34 +21,34 @@ interface AddMoneyModalProps {
 
 export default function AddMoneyModal({
   modalVisible,
-  setModalVisible
+  setModalVisible,
 }: AddMoneyModalProps) {
   const [amount, setAmount] = useState<string>("");
 
-  const [{ Balance , Transactions}, dispatch] = useDataLayerValue();
+  const [{ Balance, Transactions }, dispatch] = useDataLayerValue();
 
   const handleBalanceUpdate = (newBalance: number) => {
     dispatch({
       type: "SET_BALANCE",
-      Balance: newBalance
+      Balance: newBalance,
     } as Action);
   };
 
   const handleTransactionsUpdate = async (numericAmount: number) => {
     try {
       const newTransaction: Transactions = {
-        id: Date.now(), // temporary ID until backend gives one
+        id: Date.now(),
         type: "deposit",
         amount: numericAmount,
         category: "income",
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
       };
 
       await postTransaction("deposit", numericAmount, "income");
 
       dispatch({
         type: "SET_TRANSACTIONS",
-        Transactions: [newTransaction , ...Transactions]
+        Transactions: [newTransaction, ...Transactions],
       } as Action);
     } catch (error) {
       console.error("❌ Error updating transactions:", error);
@@ -75,7 +75,6 @@ export default function AddMoneyModal({
     }
   };
 
-  // 🔹 Auto add money when modal closes
   useEffect(() => {
     if (!modalVisible && amount) {
       handleAddMoney();
@@ -88,11 +87,13 @@ export default function AddMoneyModal({
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}
+      testID="add-money-modal"
     >
-      <View style={styles.modalOverlay}>
+      <View testID={"modal-overlay"} style={styles.modalOverlay}>
         <View style={styles.modal}>
           <Text style={styles.modalTitle}>Miktar Giriniz</Text>
           <TextInput
+            testID="amount-input"
             style={styles.input}
             placeholder="Örn: 100"
             keyboardType="numeric"
@@ -101,6 +102,7 @@ export default function AddMoneyModal({
           />
           <View style={styles.buttonsRow}>
             <TouchableOpacity
+              testID="add-button"
               style={styles.modalButton}
               onPress={() => {
                 handleAddMoney();
@@ -110,6 +112,7 @@ export default function AddMoneyModal({
               <Text style={styles.buttonText}>Add</Text>
             </TouchableOpacity>
             <TouchableOpacity
+              testID="cancel-button"
               style={[styles.modalButton, { backgroundColor: "#ccc" }]}
               onPress={() => setModalVisible(false)}
             >
@@ -127,19 +130,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   modal: {
     width: "80%",
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 12,
-    alignItems: "center"
+    alignItems: "center",
   },
   modalTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 15
+    marginBottom: 15,
   },
   input: {
     width: "100%",
@@ -148,12 +151,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     marginBottom: 20,
-    textAlign: "center"
+    textAlign: "center",
   },
   buttonsRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "100%"
+    width: "100%",
   },
   modalButton: {
     flex: 1,
@@ -161,10 +164,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
     alignItems: "center",
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   buttonText: {
     color: "#fff",
-    fontWeight: "bold"
-  }
+    fontWeight: "bold",
+  },
 });
