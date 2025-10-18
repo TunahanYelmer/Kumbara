@@ -29,7 +29,6 @@ const BalanceCard = () => {
       try {
         const result = await getBalance();
         handleBalanceUpdate(result);
-
         console.log("ℹ️ Fetched balance:", result);
       } catch (error) {
         console.error("❌ Error fetching balance:", error);
@@ -39,7 +38,7 @@ const BalanceCard = () => {
     };
 
     fetchBalance();
-  }, [Balance]);
+  }, []);
 
   return (
     <LinearGradient
@@ -47,12 +46,17 @@ const BalanceCard = () => {
       start={{ x: 0.5, y: 0.1 }}
       end={{ x: 1, y: 0.4 }}
       style={styles.card}
+      testID="balance-card"
     >
-      <Text style={styles.title}>Birikimlerim</Text>
+      <Text style={styles.title} testID="balance-title">
+        Birikimlerim
+      </Text>
       {loading ? (
-        <ActivityIndicator color="#fff" />
+        <ActivityIndicator testID="loading-indicator" color="#fff" />
       ) : (
-        <Text style={styles.amount}>${Balance?.toFixed(2) ?? "0.00"}</Text>
+        <Text testID="balance-amount" style={styles.amount}>
+          ${Balance != null ? Balance.toFixed(2) : "0.00"}
+        </Text>
       )}
     </LinearGradient>
   );
