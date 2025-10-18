@@ -5,7 +5,7 @@ import {
   View,
   FlatList,
   Dimensions,
-  ActivityIndicator,
+  ActivityIndicator
 } from "react-native";
 import { useState, useEffect } from "react";
 import { Transactions, Action } from "../context/reducer";
@@ -15,7 +15,7 @@ import TransactionList from "./TransactionList";
 
 const { width, height } = Dimensions.get("window");
 
-const TransactionsHistory = () => {
+export const TransactionsHistory = () => {
   const [selectedTab, setSelectedTab] = useState<"all" | "income" | "expense">(
     "all"
   );
@@ -37,25 +37,25 @@ const TransactionsHistory = () => {
         console.warn("⚠️ Invalid API response:", result);
         dispatch({
           type: "SET_TRANSACTIONS",
-          Transactions: [],
+          Transactions: []
         } as Action);
         return;
       }
 
       // Map API response to your TS interface
-      const transactions: Transactions[] = result.map((item: any) => ({
-        id: item.id ?? item.transaction_id,
-        type: item.type,
-        amount: item.amount,
-        category: item.category,
-        date: item.created_at,
-      }));
-      
-      console.log("ℹ️ Fetched transactions:", transactions);
+      const transactions: Transactions[] = result.map((item: any) => {
+        return {
+          id: item.transaction_id ?? item.id,
+          type: item.type,
+          amount: item.amount,
+          category: item.category || null,
+          date: item.created_at
+        };
+      });
 
       dispatch({
         type: "SET_TRANSACTIONS",
-        Transactions: transactions,
+        Transactions: transactions
       } as Action);
     } catch (error) {
       console.error("❌ Error fetching transactions:", error);
@@ -63,7 +63,7 @@ const TransactionsHistory = () => {
       // Set empty array on error
       dispatch({
         type: "SET_TRANSACTIONS",
-        Transactions: [],
+        Transactions: []
       } as Action);
     } finally {
       setIsLoading(false);
@@ -75,17 +75,20 @@ const TransactionsHistory = () => {
 
   // Filter transactions by selected tab
   const filteredTransactions = safeTransactions.filter((item) => {
-    if (!item) return false; // Extra safety check
+    if (!item) {
+      console.log("❌ Null/undefined item");
+      return false;
+    }
+
+    const itemType = (item.type || "").toLowerCase();
+
     if (selectedTab === "all") return true;
-    if (selectedTab === "income") return item.type === "deposit";
-    if (selectedTab === "expense") return item.type === "withdraw";
+    if (selectedTab === "income")
+      return itemType === "deposit" || itemType === "income";
+    if (selectedTab === "expense")
+      return itemType === "withdraw" || itemType === "expense";
     return false;
   });
-
-  // Log for debugging
-  console.log("📊 Total transactions:", safeTransactions.length);
-  console.log("📊 Filtered transactions:", filteredTransactions.length);
-  console.log("📊 Selected tab:", selectedTab);
 
   const handleSelectedTab = (tab: "all" | "income" | "expense") => {
     setSelectedTab(tab);
@@ -97,12 +100,24 @@ const TransactionsHistory = () => {
       return null;
     }
 
-    return (
-      <TransactionList 
-        paymentType={item.category ?? "bill"} 
-        amount={item.amount} 
-      />
-    );
+    // Determine payment type based on transaction type and category
+    let paymentType: "food" | "market" | "transport" | "bill" | "income";
+
+    const itemType = (item.type || "").toLowerCase();
+
+    if (itemType === "deposit" || itemType === "income") {
+      paymentType = "income";
+    } else {
+      // For withdrawals, use the category or default to "bill"
+      paymentType = (item.category || "bill") as
+        | "food"
+        | "market"
+        | "transport"
+        | "bill"
+        | "income";
+    }
+
+    return <TransactionList paymentType={paymentType} amount={item.amount} />;
   };
 
   const renderSeparator = () => (
@@ -110,37 +125,40 @@ const TransactionsHistory = () => {
       style={{
         height: 1,
         backgroundColor: "#e0e0e0",
-        marginVertical: height * 0.005,
+        marginVertical: height * 0.005
       }}
     />
   );
 
   const renderEmpty = () => (
-    <View style={styles.emptyContainer}>
+    <View style={styles.emptyContainer} testID="empty-state">
       <Text style={styles.emptyText}>
-        {selectedTab === "all" 
-          ? "Henüz işlem yok" 
-          : selectedTab === "income" 
-          ? "Gelir işlemi yok" 
+        {selectedTab === "all"
+          ? "Henüz işlem yok"
+          : selectedTab === "income"
+          ? "Gelir işlemi yok"
           : "Gider işlemi yok"}
       </Text>
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="transaction-history">
       {/* Tabs */}
       <View style={styles.tabs}>
         {["all", "income", "expense"].map((tab) => (
           <TouchableOpacity
             key={tab}
-            onPress={() => handleSelectedTab(tab as "all" | "income" | "expense")}
+            testID={`${tab}-tab`}
+            onPress={() =>
+              handleSelectedTab(tab as "all" | "income" | "expense")
+            }
             style={styles.tabButton}
           >
             <Text
               style={[
                 styles.buttonText,
-                selectedTab === tab && styles.activeTabText,
+                selectedTab === tab && styles.activeTabText
               ]}
             >
               {tab === "all" ? "Tümü" : tab === "income" ? "Gelir" : "Gider"}
@@ -151,22 +169,28 @@ const TransactionsHistory = () => {
 
       {/* Loading State */}
       {isLoading ? (
-        <View style={styles.loadingContainer}>
+        <View style={styles.loadingContainer} testID="loading-indicator">
           <ActivityIndicator size="large" color="#243da3" />
           <Text style={styles.loadingText}>Yükleniyor...</Text>
         </View>
       ) : (
-        /* FlatList */
-        <FlatList
-          data={filteredTransactions.slice(0, 4)}
-          keyExtractor={(item, index) => 
-            item?.id ? `${item.id}-${index}` : `transaction-${index}`
-          }
-          renderItem={renderItem}
-          ItemSeparatorComponent={renderSeparator}
-          ListEmptyComponent={renderEmpty}
-          scrollEnabled={false}
-        />
+        <>
+          {/* FlatList */}
+          <FlatList
+            testID="transaction-list"
+            data={filteredTransactions.slice(0, 6)}
+            keyExtractor={(item, index) => {
+              const key = item?.id
+                ? `${item.id}-${index}`
+                : `transaction-${index}`;
+              return key;
+            }}
+            renderItem={renderItem}
+            ItemSeparatorComponent={renderSeparator}
+            ListEmptyComponent={renderEmpty}
+            scrollEnabled={true}
+          />
+        </>
       )}
     </View>
   );
@@ -179,46 +203,46 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: width * 0.04,
     margin: width * 0.025,
-    borderRadius: width * 0.025,
+    borderRadius: width * 0.025
   },
   tabs: {
     flexDirection: "row",
-    marginVertical: height * 0.015,
+    marginVertical: height * 0.015
   },
   tabButton: {
     backgroundColor: "#ffffff",
     paddingVertical: height * 0.008,
     paddingHorizontal: width * 0.04,
     borderRadius: width * 0.05,
-    marginRight: width * 0.02,
+    marginRight: width * 0.02
   },
   buttonText: {
     fontSize: width * 0.04,
     color: "#9399b1",
-    textAlign: "center",
+    textAlign: "center"
   },
   activeTabText: {
     color: "#243da3",
-    fontWeight: "700",
+    fontWeight: "700"
   },
   loadingContainer: {
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: height * 0.05,
+    paddingVertical: height * 0.05
   },
   loadingText: {
     marginTop: height * 0.01,
     fontSize: width * 0.035,
-    color: "#9399b1",
+    color: "#9399b1"
   },
   emptyContainer: {
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: height * 0.05,
+    paddingVertical: height * 0.05
   },
   emptyText: {
     fontSize: width * 0.04,
     color: "#9399b1",
-    textAlign: "center",
-  },
+    textAlign: "center"
+  }
 });
