@@ -5,7 +5,7 @@ export async function postTransaction(
   amount: number,
   category?: string
 ): Promise<void> {
-  await axios.post("http://192.168.1.109:8080/transactions", {
+  await axios.post("http://192.168.1.108:8080/transactions", {
     type,
     amount,
     category: category || null,
