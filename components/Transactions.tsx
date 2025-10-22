@@ -1,42 +1,57 @@
-import React, { FC, useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import AddMoneyModal from "./AddMoneyModal";
 import WithdrawMoneyModal from "./WithdrawMoneyModal";
 
 const { width, height } = Dimensions.get("window");
 
-type props = {};
-
-const Transactions: React.FC<props> = () => {
-  const [addModalVisible, setAddModalVisible] = useState(false);  
+const Transactions: React.FC = () => {
+  const [addModalVisible, setAddModalVisible] = useState(false);
   const [withdrawModalVisible, setWithdrawModalVisible] = useState(false);
-  const [withdrawData, setWithdrawData] = useState<{ amount: number; reason: string } | null>(null);
+  const [withdrawData, setWithdrawData] = useState<{
+    amount: number;
+    reason: string;
+  } | null>(null);
 
-  const handleAddMoney = () => {
-    setAddModalVisible(true);
-  };
-
-  const handleWithdrawMoney = () => {
-    setWithdrawModalVisible(true);
-  };
+  const handleAddMoney = () => setAddModalVisible(true);
+  const handleWithdrawMoney = () => setWithdrawModalVisible(true);
 
   return (
-    <View style={styles.container}>
-      {/* Add Money Card */}
+    <View style={styles.container} testID="transactions-container">
+      {/* Add Money Button */}
       <View style={styles.add}>
-        <TouchableOpacity style={styles.button} onPress={handleAddMoney}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleAddMoney}
+          testID="add-money-button"
+        >
           <AddMoneyModal
             modalVisible={addModalVisible}
             setModalVisible={setAddModalVisible}
           />
-          <Image source={require("../assets/add.png")} style={styles.icon} />
+          <Image
+            source={require("../assets/add.png")}
+            style={styles.icon}
+            testID="add-icon"
+          />
           <Text style={styles.buttonText}>Para Ekle</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Withdraw Money Card */}
+      {/* Withdraw Money Button */}
       <View style={styles.substract}>
-        <TouchableOpacity style={styles.button} onPress={handleWithdrawMoney}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleWithdrawMoney}
+          testID="withdraw-money-button"
+        >
           <WithdrawMoneyModal
             modalVisible={withdrawModalVisible}
             setModalVisible={setWithdrawModalVisible}
@@ -45,12 +60,20 @@ const Transactions: React.FC<props> = () => {
               console.log("Withdrawn:", amount, "Reason:", reason);
             }}
           />
-          <Image source={require("../assets/withdraw.png")} style={styles.icon} />
+          <Image
+            source={require("../assets/withdraw.png")}
+            style={styles.icon}
+            testID="withdraw-icon"
+          />
           <Text style={styles.buttonText}>Para Çıkar</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Optional: Show the withdrawn info */}
+      {withdrawData && (
+        <Text testID="withdraw-info">
+          Çekilen: {withdrawData.amount} ₺, Sebep: {withdrawData.reason}
+        </Text>
+      )}
     </View>
   );
 };
@@ -62,13 +85,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    margin: width * 0.03,   // ~3% of screen width
+    margin: width * 0.03,
   },
   add: {
-    color: "#213361",
     flexDirection: "row",
     backgroundColor: "#e6ebfe",
-    padding: width * 0.025, // relative padding
+    padding: width * 0.025,
     borderRadius: width * 0.07,
     alignItems: "center",
     justifyContent: "center",
@@ -90,7 +112,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   icon: {
-    width: width * 0.08,   // ~8% of screen width
+    width: width * 0.08,
     height: width * 0.08,
     marginRight: width * 0.02,
   },
@@ -107,6 +129,6 @@ const styles = StyleSheet.create({
     color: "#213361",
     fontWeight: "500",
     textAlign: "center",
-    fontSize: width * 0.04, // relative font size (~4% of width)
+    fontSize: width * 0.04,
   },
 });
