@@ -1,4 +1,3 @@
-// WithdrawMoneyModal.tsx
 import React, { useState } from "react";
 import {
   View,
@@ -6,13 +5,13 @@ import {
   Modal,
   TextInput,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  Alert,
 } from "react-native";
-import {getTransactions} from "../api/getTransactions";
-import { State, Action } from "../context/reducer";
-import { Transactions } from "../context/reducer";
-import { useDataLayerValue } from "../context/StateProvider";
+import { getTransactions } from "../api/getTransactions";
 import { postTransaction } from "../api/postTransactions";
+import { useDataLayerValue } from "../context/StateProvider";
+import { Transactions, Action } from "../context/reducer";
 
 interface WithdrawMoneyModalProps {
   modalVisible: boolean;
@@ -23,76 +22,64 @@ interface WithdrawMoneyModalProps {
 export default function WithdrawMoneyModal({
   modalVisible,
   setModalVisible,
-  onConfirm
+  onConfirm,
 }: WithdrawMoneyModalProps) {
   const [step, setStep] = useState<"amount" | "reason">("amount");
-  const [amount, setAmount] = useState<string>("");
+  const [amount, setAmount] = useState("");
   const [reason, setReason] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-
   const [{ Balance }, dispatch] = useDataLayerValue();
-  const handleWithdrawBalanceUpdate = (newBalance: number) => {
-    dispatch({
-      type: "SET_BALANCE",
-      Balance: newBalance
-    } as Action);
-  }
-  const handleTransactionsUpdate = async  () => {
-    const result= await getTransactions();
-    const transactions: Transactions[] = result.map((item: any) => ({
 
+  const handleWithdrawBalanceUpdate = (newBalance: number) => {
+    dispatch({ type: "SET_BALANCE", Balance: newBalance } as Action);
+  };
+
+  const handleTransactionsUpdate = async () => {
+    const result = await getTransactions();
+    const transactions: Transactions[] = result.map((item: any) => ({
       id: item.transaction_id,
       type: item.type,
       amount: item.amount,
       category: item.category,
       date: item.created_at,
     }));
-
     dispatch({
       type: "SET_TRANSACTIONS",
-      Transactions: transactions
+      Transactions: transactions,
     } as Action);
-  }
-  const reasons = ["Food", "Market", "Transport", "Bill"];
+  };
 
   const handleNextAmount = () => {
     const numericAmount = parseFloat(amount);
-    if (!isNaN(numericAmount) && numericAmount > 0) {
-      setStep("reason");
+    if (isNaN(numericAmount) || numericAmount <= 0) {
+      Alert.alert("Lütfen geçerli bir miktar giriniz!");
+      return;
     }
-    else if (numericAmount > Balance) {
-      alert("Yetersiz bakiye!");
-    } 
-    else {
-      alert("Lütfen geçerli bir miktar giriniz!");
+    if (numericAmount > Balance) {
+      Alert.alert("Yetersiz bakiye!");
+      return;
     }
+    setStep("reason");
   };
 
   const handleConfirmReason = async () => {
     if (!reason) {
-      alert("Lütfen bir sebep seçin!");
+      Alert.alert("Lütfen bir sebep seçin!");
       return;
     }
     setLoading(true);
     try {
       await postTransaction("withdraw", parseFloat(amount), reason);
       onConfirm(parseFloat(amount), reason);
+      handleWithdrawBalanceUpdate(Balance - parseFloat(amount));
+      await handleTransactionsUpdate();
+      setModalVisible(false);
       setStep("amount");
       setAmount("");
       setReason(null);
-      setModalVisible(false);
-      handleWithdrawBalanceUpdate(Balance - parseFloat(amount));
-      await handleTransactionsUpdate();
-    } 
-   
-      
-
-    catch (e) {
-      console.log('====================================');
-      console.log(e);
-      console.log('====================================');
-      alert("İşlem sırasında bir hata oluştu!");
+    } catch (error) {
+      Alert.alert("İşlem sırasında bir hata oluştu!");
     } finally {
       setLoading(false);
     }
@@ -105,19 +92,17 @@ export default function WithdrawMoneyModal({
     setModalVisible(false);
   };
 
+  const reasons = ["Food", "Market", "Transport", "Bill"];
+
   return (
-    <Modal
-      animationType="fade"
-      transparent
-      visible={modalVisible}
-      onRequestClose={handleCancel}
-    >
-      <View style={styles.modalOverlay}>
+    <Modal visible={modalVisible} transparent animationType="fade">
+      <View style={styles.modalOverlay} testID="modalOverlay">
         <View style={styles.modal}>
           {step === "amount" ? (
             <>
               <Text style={styles.modalTitle}>Miktar Giriniz</Text>
               <TextInput
+                testID="amountInput"
                 style={styles.input}
                 placeholder="Örn: 100"
                 keyboardType="numeric"
@@ -125,10 +110,15 @@ export default function WithdrawMoneyModal({
                 onChangeText={setAmount}
               />
               <View style={styles.buttonsRow}>
-                <TouchableOpacity style={styles.modalButton} onPress={handleNextAmount}>
+                <TouchableOpacity
+                  testID="nextButton"
+                  style={styles.modalButton}
+                  onPress={handleNextAmount}
+                >
                   <Text style={styles.buttonText}>Next</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                  testID="cancelButton"
                   style={[styles.modalButton, { backgroundColor: "#ccc" }]}
                   onPress={handleCancel}
                 >
@@ -142,9 +132,10 @@ export default function WithdrawMoneyModal({
               {reasons.map((option) => (
                 <TouchableOpacity
                   key={option}
+                  testID={`reason-${option}`}
                   style={[
                     styles.optionButton,
-                    reason === option && styles.selectedOption
+                    reason === option && styles.selectedOption,
                   ]}
                   onPress={() => setReason(option)}
                   disabled={loading}
@@ -152,7 +143,7 @@ export default function WithdrawMoneyModal({
                   <Text
                     style={[
                       styles.optionText,
-                      reason === option && styles.selectedOptionText
+                      reason === option && styles.selectedOptionText,
                     ]}
                   >
                     {option}
@@ -161,13 +152,17 @@ export default function WithdrawMoneyModal({
               ))}
               <View style={styles.buttonsRow}>
                 <TouchableOpacity
+                  testID="confirmButton"
                   style={styles.modalButton}
                   onPress={handleConfirmReason}
                   disabled={loading}
                 >
-                  <Text style={styles.buttonText}>{loading ? "..." : "Confirm"}</Text>
+                  <Text style={styles.buttonText}>
+                    {loading ? "..." : "Confirm"}
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                  testID="cancelButtonReason"
                   style={[styles.modalButton, { backgroundColor: "#ccc" }]}
                   onPress={handleCancel}
                   disabled={loading}
@@ -184,70 +179,15 @@ export default function WithdrawMoneyModal({
 }
 
 const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  modal: {
-    width: "80%",
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 12,
-    alignItems: "center"
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 15
-  },
-  input: {
-    width: "100%",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 20,
-    textAlign: "center"
-  },
-  buttonsRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-    marginTop: 15
-  },
-  modalButton: {
-    flex: 1,
-    backgroundColor: "#243da3",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-    marginHorizontal: 5
-  },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "bold"
-  },
-  optionButton: {
-    width: "100%",
-    padding: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    marginBottom: 10,
-    alignItems: "center"
-  },
-  selectedOption: {
-    backgroundColor: "#243da3",
-    borderColor: "#243da3"
-  },
-  optionText: {
-    color: "#000",
-    fontWeight: "500"
-  },
-  selectedOptionText: {
-    color: "#fff",
-    fontWeight: "bold"
-  }
+  modalOverlay: { flex: 1, justifyContent: "center", alignItems: "center" },
+  modal: { backgroundColor: "#fff", width: "80%", padding: 20, borderRadius: 10 },
+  modalTitle: { fontWeight: "bold", fontSize: 18, marginBottom: 10 },
+  input: { borderWidth: 1, borderColor: "#ccc", padding: 8, width: "100%" },
+  buttonsRow: { flexDirection: "row", justifyContent: "space-between", marginTop: 15 },
+  modalButton: { flex: 1, marginHorizontal: 5, padding: 10, backgroundColor: "#243da3", borderRadius: 8 },
+  buttonText: { color: "#fff", textAlign: "center" },
+  optionButton: { padding: 10, marginVertical: 5, borderWidth: 1, borderColor: "#ccc", borderRadius: 6 },
+  selectedOption: { backgroundColor: "#243da3" },
+  optionText: { color: "#000" },
+  selectedOptionText: { color: "#fff" },
 });
