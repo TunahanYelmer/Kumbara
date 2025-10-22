@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react-native";
+import { render, screen } from "../utils/testUtils";
 import TransactionList from "../TransactionList";
 
 describe("TransactionList Component", () => {

@@ -1,134 +1,64 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
-import AddMoneyModal from "../AddMoneyModal";
-import WithdrawMoneyModal from "../WithdrawMoneyModal";
+import React from "react";
+import { render, fireEvent, screen } from "../utils/testUtils";
+import { Text } from "react-native";
+import Transactions from "../Transactions";
 
-const { width, height } = Dimensions.get("window");
+// --- Mock Modals ---
+jest.mock("../AddMoneyModal", () => {
+  return ({ modalVisible }: { modalVisible: boolean }) => {
+    return modalVisible ? <Text testID="add-modal">Add Modal Open</Text> : null;
+  };
+});
 
-const Transactions: React.FC = () => {
-  const [addModalVisible, setAddModalVisible] = useState(false);
-  const [withdrawModalVisible, setWithdrawModalVisible] = useState(false);
-  const [withdrawData, setWithdrawData] = useState<{
-    amount: number;
-    reason: string;
-  } | null>(null);
+jest.mock("../WithdrawMoneyModal", () => {
+  return ({
+    modalVisible,
+    onConfirm,
+  }: {
+    modalVisible: boolean;
+    onConfirm: (amount: number, reason: string) => void;
+  }) => {
+    return modalVisible ? (
+      <Text
+        testID="withdraw-modal"
+        onPress={() => onConfirm(50, "Test reason")}
+      >
+        Withdraw Modal Open
+      </Text>
+    ) : null;
+  };
+});
 
-  const handleAddMoney = () => setAddModalVisible(true);
-  const handleWithdrawMoney = () => setWithdrawModalVisible(true);
+describe("💰 Transactions Component", () => {
+  it("renders both Add and Withdraw buttons", () => {
+    render(<Transactions />);
+    expect(screen.getByTestId("add-money-button")).toBeTruthy();
+    expect(screen.getByTestId("withdraw-money-button")).toBeTruthy();
+    expect(screen.getByText("Para Ekle")).toBeTruthy();
+    expect(screen.getByText("Para Çıkar")).toBeTruthy();
+  });
 
-  return (
-    <View style={styles.container} testID="transactions-container">
-      {/* Add Money Button */}
-      <View style={styles.add}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleAddMoney}
-          testID="add-money-button"
-        >
-          <AddMoneyModal
-            modalVisible={addModalVisible}
-            setModalVisible={setAddModalVisible}
-          />
-          <Image
-            source={require("../assets/add.png")}
-            style={styles.icon}
-            testID="add-icon"
-          />
-          <Text style={styles.buttonText}>Para Ekle</Text>
-        </TouchableOpacity>
-      </View>
+  it("opens AddMoneyModal when 'Para Ekle' button is pressed", () => {
+    render(<Transactions />);
+    fireEvent.press(screen.getByTestId("add-money-button"));
+    expect(screen.getByTestId("add-modal")).toBeTruthy();
+  });
 
-      {/* Withdraw Money Button */}
-      <View style={styles.substract}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleWithdrawMoney}
-          testID="withdraw-money-button"
-        >
-          <WithdrawMoneyModal
-            modalVisible={withdrawModalVisible}
-            setModalVisible={setWithdrawModalVisible}
-            onConfirm={(amount, reason) => {
-              setWithdrawData({ amount, reason });
-              console.log("Withdrawn:", amount, "Reason:", reason);
-            }}
-          />
-          <Image
-            source={require("../assets/withdraw.png")}
-            style={styles.icon}
-            testID="withdraw-icon"
-          />
-          <Text style={styles.buttonText}>Para Çıkar</Text>
-        </TouchableOpacity>
-      </View>
+  it("opens WithdrawMoneyModal when 'Para Çıkar' button is pressed", () => {
+    render(<Transactions />);
+    fireEvent.press(screen.getByTestId("withdraw-money-button"));
+    expect(screen.getByTestId("withdraw-modal")).toBeTruthy();
+  });
 
-      {withdrawData && (
-        <Text testID="withdraw-info">
-          Çekilen: {withdrawData.amount} ₺, Sebep: {withdrawData.reason}
-        </Text>
-      )}
-    </View>
-  );
-};
+  it("updates withdrawData when onConfirm is called from WithdrawMoneyModal", () => {
+    render(<Transactions />);
 
-export default Transactions;
+    fireEvent.press(screen.getByTestId("withdraw-money-button"));
+    fireEvent.press(screen.getByTestId("withdraw-modal"));
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    margin: width * 0.03,
-  },
-  add: {
-    flexDirection: "row",
-    backgroundColor: "#e6ebfe",
-    padding: width * 0.025,
-    borderRadius: width * 0.07,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    elevation: 3,
-  },
-  substract: {
-    flexDirection: "row",
-    backgroundColor: "#e6ebfe",
-    padding: width * 0.025,
-    borderRadius: width * 0.07,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    elevation: 3,
-  },
-  icon: {
-    width: width * 0.08,
-    height: width * 0.08,
-    marginRight: width * 0.02,
-  },
-  button: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "transparent",
-    paddingVertical: height * 0.01,
-    paddingHorizontal: width * 0.03,
-    borderRadius: width * 0.02,
-  },
-  buttonText: {
-    color: "#213361",
-    fontWeight: "500",
-    textAlign: "center",
-    fontSize: width * 0.04,
-  },
+    const withdrawInfo = screen.getByTestId("withdraw-info");
+    expect(withdrawInfo.props.children.join("")).toContain(
+      "Çekilen: 50 ₺, Sebep: Test reason"
+    );
+  });
 });

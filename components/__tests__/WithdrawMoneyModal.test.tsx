@@ -5,9 +5,14 @@ import { useDataLayerValue } from "../../context/StateProvider";
 import { postTransaction } from "../../api/postTransactions";
 import { getTransactions } from "../../api/getTransactions";
 
-jest.mock("../api/postTransactions");
-jest.mock("../api/getTransactions");
-jest.mock("../context/StateProvider");
+jest.mock("../../api/postTransactions");
+jest.mock("../../api/getTransactions");
+jest.mock("../../context/StateProvider", () => ({
+  useDataLayerValue: jest.fn(),
+  StateProvider: ({ children }: any) => <>{children}</>,
+  __esModule: true,
+}));
+
 
 describe("WithdrawMoneyModal", () => {
   const mockDispatch = jest.fn();

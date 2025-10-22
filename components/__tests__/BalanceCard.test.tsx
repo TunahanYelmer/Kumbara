@@ -1,12 +1,21 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react-native";
+import { render, screen, waitFor } from "../utils/testUtils";
 import BalanceCard from "../BalanceCard";
 import * as api from "../../api/getBalance";
 import { useDataLayerValue } from "../../context/StateProvider";
 
 // Mock API and Context
 jest.mock("../../api/getBalance");
-jest.mock("../../context/StateProvider");
+jest.mock("../../context/StateProvider", () => ({
+  useDataLayerValue: jest.fn(),
+  StateProvider: ({ children }: any) => <>{children}</>,
+  __esModule: true,
+}));
+
+
+jest.mock("expo-linear-gradient", () => ({
+  LinearGradient: ({ children }: any) => <>{children}</>,
+}));
 
 const getTextString = (node: any): string => {
   if (typeof node === "string") return node;
