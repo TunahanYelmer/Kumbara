@@ -1,74 +1,48 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import React, { FC, useState } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import AddMoneyModal from "./AddMoneyModal";
 import WithdrawMoneyModal from "./WithdrawMoneyModal";
 
 const { width, height } = Dimensions.get("window");
 
-const Transactions: React.FC = () => {
+const Transactions: FC = () => {
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [withdrawModalVisible, setWithdrawModalVisible] = useState(false);
-  const [withdrawData, setWithdrawData] = useState<{
-    amount: number;
-    reason: string;
-  } | null>(null);
-
-  const handleAddMoney = () => setAddModalVisible(true);
-  const handleWithdrawMoney = () => setWithdrawModalVisible(true);
+  const [withdrawData, setWithdrawData] = useState<{ amount: number; reason: string } | null>(null);
 
   return (
-    <View style={styles.container} testID="transactions-container">
-      {/* Add Money Button */}
+    <View style={styles.container}>
+      {/* Add Money */}
       <View style={styles.add}>
         <TouchableOpacity
-          style={styles.button}
-          onPress={handleAddMoney}
           testID="add-money-button"
+          style={styles.button}
+          onPress={() => setAddModalVisible(true)}
         >
-          <AddMoneyModal
-            modalVisible={addModalVisible}
-            setModalVisible={setAddModalVisible}
-          />
-          <Image
-            source={require("../assets/add.png")}
-            style={styles.icon}
-            testID="add-icon"
-          />
+          <AddMoneyModal modalVisible={addModalVisible} setModalVisible={setAddModalVisible} />
+          <Image source={require("../assets/add.png")} style={styles.icon} />
           <Text style={styles.buttonText}>Para Ekle</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Withdraw Money Button */}
+      {/* Withdraw Money */}
       <View style={styles.substract}>
         <TouchableOpacity
-          style={styles.button}
-          onPress={handleWithdrawMoney}
           testID="withdraw-money-button"
+          style={styles.button}
+          onPress={() => setWithdrawModalVisible(true)}
         >
           <WithdrawMoneyModal
             modalVisible={withdrawModalVisible}
             setModalVisible={setWithdrawModalVisible}
-            onConfirm={(amount, reason) => {
-              setWithdrawData({ amount, reason });
-              console.log("Withdrawn:", amount, "Reason:", reason);
-            }}
+            onConfirm={(amount, reason) => setWithdrawData({ amount, reason })}
           />
-          <Image
-            source={require("../assets/withdraw.png")}
-            style={styles.icon}
-            testID="withdraw-icon"
-          />
+          <Image source={require("../assets/withdraw.png")} style={styles.icon} />
           <Text style={styles.buttonText}>Para Çıkar</Text>
         </TouchableOpacity>
       </View>
 
+      {/* Display withdraw data for test */}
       {withdrawData && (
         <Text testID="withdraw-info">
           Çekilen: {withdrawData.amount} ₺, Sebep: {withdrawData.reason}

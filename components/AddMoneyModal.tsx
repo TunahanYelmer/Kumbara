@@ -22,9 +22,8 @@ interface AddMoneyModalProps {
 export default function AddMoneyModal({
   modalVisible,
   setModalVisible,
-}: AddMoneyModalProps) {
+}: Readonly<AddMoneyModalProps>) {
   const [amount, setAmount] = useState<string>("");
-
   const [{ Balance, Transactions }, dispatch] = useDataLayerValue();
 
   const handleBalanceUpdate = (newBalance: number) => {
@@ -72,14 +71,10 @@ export default function AddMoneyModal({
       } finally {
         setAmount("");
       }
+    } else {
+      Alert.alert("Geçersiz miktar", "Lütfen geçerli bir sayı giriniz.");
     }
   };
-
-  useEffect(() => {
-    if (!modalVisible && amount) {
-      handleAddMoney();
-    }
-  }, [modalVisible]);
 
   return (
     <Modal
@@ -89,7 +84,7 @@ export default function AddMoneyModal({
       onRequestClose={() => setModalVisible(false)}
       testID="add-money-modal"
     >
-      <View testID={"modal-overlay"} style={styles.modalOverlay}>
+      <View testID="modal-overlay" style={styles.modalOverlay}>
         <View style={styles.modal}>
           <Text style={styles.modalTitle}>Miktar Giriniz</Text>
           <TextInput
@@ -109,14 +104,14 @@ export default function AddMoneyModal({
                 setModalVisible(false);
               }}
             >
-              <Text style={styles.buttonText}>Add</Text>
+              <Text style={styles.buttonText}>Ekle</Text>
             </TouchableOpacity>
             <TouchableOpacity
               testID="cancel-button"
               style={[styles.modalButton, { backgroundColor: "#ccc" }]}
               onPress={() => setModalVisible(false)}
             >
-              <Text style={styles.buttonText}>Cancel</Text>
+              <Text style={styles.buttonText}>İptal</Text>
             </TouchableOpacity>
           </View>
         </View>

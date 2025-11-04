@@ -11,7 +11,7 @@ import TransactionHistory from '../../components/TransactionHistory';
 
 
 
-export default function homeScreen() {
+export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "bottom"]}>
       <RNStatusBar barStyle="dark-content" backgroundColor="#fff" />

@@ -1,19 +1,49 @@
-import { Switch, TouchableOpacity } from "react-native";
-import { Text, StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import { Text, StyleSheet, View, Switch, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDataLayerValue } from "../../context/StateProvider";
+import { DarkTheme } from "@react-navigation/native";
+import CurrencyModal from "./CurrencyModal";
 
-const handleThemeToggle = () => {
-  dispatch({
-    type: "SET_DARK_MODE"
-  });
-};
-const handleNotificationToggle = () => {};
-const handlePinToggle = () => {};
-const handleBiometricToggle = () => {};
+export default function SettingsScreen() {
+  const [
+    { Currency, BioEnabled, PinEnabled, GoalReminder, DailyReminder, DarkMode },
+    dispatch
+  ] = useDataLayerValue();
 
-export default function settingsScreen() {
-  const [{ Currency, DarkMode }, dispatch] = useDataLayerValue();
+  const [modalVisible, setModalVisible] = useState(false);
+  const handleCurrencySelections = () => {
+    setModalVisible(!modalVisible);
+    
+  };
+  const handleThemeToggle = () => {
+    dispatch({
+      type: "SET_DARK_MODE"
+    });
+  };
+  const handleDailyNotificationToggle = () => {
+    dispatch({
+      type: "SET_DAILY_REMINDER"
+    });
+  };
+  const handleGoalNotificationToggle = () => {
+    dispatch({
+      type: "SET_GOAL_REMİNDER"
+    });
+  };
+  const handlePinToggle = () => {
+    dispatch({
+      type: "SET_PIN_SECURİTY"
+    });
+  };
+  const handleBiometricToggle = () => {
+    dispatch({
+      type: "SET_BIO_SECURITY"
+    });
+  };
+  const handleModalClose = () => {
+    setModalVisible(false);
+  }
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "bottom"]}>
@@ -22,7 +52,14 @@ export default function settingsScreen() {
       {/* Currency Settings */}
       <View style={styles.settingGroup}>
         <Text style={styles.groupTitle}>Para Birimi</Text>
-        <View style={styles.settingItem}>
+        <CurrencyModal modalVisible={modalVisible} onClose={handleModalClose} />
+        <TouchableOpacity
+          style={styles.settingItem}
+          onPress={() => {
+            console.log(modalVisible);
+            handleCurrencySelections();
+          }}
+        >
           <Text>Para Birimi Seç</Text>
           <Text style={styles.settingValue}>
             <Text style={styles.currencySymbol}>
@@ -32,7 +69,7 @@ export default function settingsScreen() {
               {Currency ? Currency[0].code : "TRY"}
             </Text>
           </Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
       {/* Notification Settings */}
@@ -40,11 +77,17 @@ export default function settingsScreen() {
         <Text style={styles.groupTitle}>Bildirimler</Text>
         <View style={styles.settingItem}>
           <Text>Günlük Hatırlatıcı</Text>
-          <Switch onValueChange={handleNotificationToggle} />
+          <Switch
+            onValueChange={handleDailyNotificationToggle}
+            value={DailyReminder}
+          />
         </View>
         <View style={styles.settingItem}>
           <Text>Hedef Bildirimleri</Text>
-          <Switch onValueChange={handleNotificationToggle} />
+          <Switch
+            onValueChange={handleGoalNotificationToggle}
+            value={GoalReminder}
+          />
         </View>
       </View>
 
@@ -53,7 +96,7 @@ export default function settingsScreen() {
         <Text style={styles.groupTitle}>Görünüm</Text>
         <View style={styles.settingItem}>
           <Text>Karanlık Mod</Text>
-          <Switch onValueChange={handleThemeToggle} />
+          <Switch onValueChange={handleThemeToggle} value={DarkMode} />
         </View>
       </View>
 
@@ -62,11 +105,11 @@ export default function settingsScreen() {
         <Text style={styles.groupTitle}>Güvenlik</Text>
         <View style={styles.settingItem}>
           <Text>Pin ile Kilitle</Text>
-          <Switch onValueChange={handlePinToggle} />
+          <Switch onValueChange={handlePinToggle} value={PinEnabled} />
         </View>
         <View style={styles.settingItem}>
           <Text>Biyometrik Kilit</Text>
-          <Switch onValueChange={handleBiometricToggle} value={true} />
+          <Switch onValueChange={handleBiometricToggle} value={BioEnabled} />
         </View>
       </View>
     </SafeAreaView>
