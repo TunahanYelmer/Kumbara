@@ -8,10 +8,10 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import { getTransactions } from "../api/getTransactions";
-import { postTransaction } from "../api/postTransactions";
-import { useDataLayerValue } from "../context/StateProvider";
-import { Transactions, Action } from "../context/reducer";
+import { getTransactions } from "@api/getTransactions";
+import { postTransaction } from "@api/postTransactions";
+import { useDataLayerValue } from "@context/StateProvider";
+import { Transactions, Action } from "@context/reducer";
 
 interface WithdrawMoneyModalProps {
   modalVisible: boolean;

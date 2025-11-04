@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, screen } from "../utils/testUtils";
+import { render, fireEvent, screen } from "@components/__tests__/utils/testUtils";
 import { Text } from "react-native";
 import Transactions from "../Transactions";
 

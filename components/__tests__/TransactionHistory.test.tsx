@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from '../utils/testUtils';
+import { render, screen, waitFor, fireEvent } from '@components/__tests__/utils/testUtils';
 import TransactionsHistory from '../TransactionHistory';
 import { Transactions } from '../../context/reducer';
 

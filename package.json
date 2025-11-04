@@ -52,11 +52,7 @@
       "^.+\\.tsx?$": [
         "ts-jest",
         {
-          "tsconfig": {
-            "jsx": "react-jsx",
-            "esModuleInterop": true,
-            "allowSyntheticDefaultImports": true
-          }
+          "tsconfig": "tsconfig.json"
         }
       ],
       "^.+\\.jsx?$": [
@@ -69,7 +65,12 @@
       ]
     },
     "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
+      "^@/(.*)$": "<rootDir>/$1",
+      "^@components/(.*)$": "<rootDir>/components/$1",
+      "^@_tabs_/(.*)$": "<rootDir>/_tabs_/$1",
+      "^@api/(.*)$": "<rootDir>/api/$1",
+      "^@context/(.*)$": "<rootDir>/context/$1",
+      "^@assets/(.*)$": "<rootDir>/assets/$1"
     },
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|@react-native)"

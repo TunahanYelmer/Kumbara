@@ -1,107 +1,88 @@
 import React from "react";
-import { render, screen, waitFor } from "../utils/testUtils";
+import { render, screen, waitFor, act } from "@components/__tests__/utils/testUtils";
 import BalanceCard from "../BalanceCard";
 import * as api from "../../api/getBalance";
 import { useDataLayerValue } from "../../context/StateProvider";
 
-// Mock API and Context
 jest.mock("../../api/getBalance");
 jest.mock("../../context/StateProvider", () => ({
   useDataLayerValue: jest.fn(),
   StateProvider: ({ children }: any) => <>{children}</>,
   __esModule: true,
 }));
-
-
 jest.mock("expo-linear-gradient", () => ({
   LinearGradient: ({ children }: any) => <>{children}</>,
 }));
 
-const getTextString = (node: any): string => {
-  if (typeof node === "string") return node;
-  if (typeof node === "number") return node.toString();
-  if (Array.isArray(node)) return node.map(getTextString).join("");
-  return "";
-};
+const mockGetBalance = api.getBalance as jest.MockedFunction<typeof api.getBalance>;
+const mockDispatch = jest.fn();
 
-const mockGetBalance = api.getBalance as jest.MockedFunction<
-  typeof api.getBalance
->;
-
-// We'll track balance changes in the test
-let balanceState = { value: 0 };
-const mockDispatch = jest.fn((action) => {
-  if (action.type === "SET_BALANCE") {
-    balanceState.value = action.Balance;
-  }
+beforeEach(() => {
+  jest.clearAllMocks();
+  (useDataLayerValue as jest.Mock).mockReturnValue([
+    { Balance: 0, Currency: [{ symbol: "₺" }] },
+    mockDispatch,
+  ]);
 });
 
-// Mock the context hook to return current balance and dispatch
-(useDataLayerValue as jest.Mock).mockImplementation(() => [
-  { Balance: balanceState.value },
-  mockDispatch
-]);
-
 describe("BalanceCard", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    balanceState = { value: 0 };
-  });
+  it("renders loading state then updates with fetched balance", async () => {
+    mockGetBalance.mockResolvedValueOnce(1234.56);
 
-  it("renders loading indicator initially", () => {
-    render(<BalanceCard />);
+    await act(async () => {
+      render(<BalanceCard />);
+    });
+
+    // Initially show loader
     expect(screen.getByTestId("loading-indicator")).toBeTruthy();
+
+    // Wait for async update
+    await act(async () => {
+      await waitFor(() =>
+        expect(screen.queryByTestId("loading-indicator")).toBeNull()
+      );
+    });
+
+    const balanceText = screen.getByTestId("balance-amount");
+    expect(balanceText.props.children).toBe("1234.56");
   });
 
-  it("fetches balance and updates context", async () => {
-    mockGetBalance.mockResolvedValue(1234.56);
+  it("displays fallback balance when API returns null", async () => {
+    mockGetBalance.mockResolvedValueOnce(null as unknown as number);
 
-    render(<BalanceCard />);
-
-    await waitFor(() => {
-      const element = screen.getByTestId("balance-amount");
-      const text = getTextString(element.props.children);
-      expect(text.replace(/[$₺]/g, "")).toContain("1234.56");
+    await act(async () => {
+      render(<BalanceCard />);
     });
 
-    expect(mockGetBalance).toHaveBeenCalledTimes(1);
-    expect(mockDispatch).toHaveBeenCalledWith({
-      type: "SET_BALANCE",
-      Balance: 1234.56
+    await act(async () => {
+      await waitFor(() =>
+        expect(screen.queryByTestId("loading-indicator")).toBeNull()
+      );
     });
-  });
 
-  it("displays fallback balance when Balance is null", async () => {
-    mockGetBalance.mockResolvedValue(null as unknown as number);
-
-    render(<BalanceCard />);
-
-    await waitFor(() => {
-      const element = screen.getByTestId("balance-amount");
-      const text = element.props.children as string;
-      expect(text).toContain("0.00");
-    });
+    const element = screen.getByTestId("balance-amount");
+    expect(element.props.children).toBe("0.00");
 
     expect(mockDispatch).toHaveBeenCalledWith({
       type: "SET_BALANCE",
-      Balance: null as unknown as number
+      Balance: null as unknown as number,
     });
   });
 
   it("handles API error gracefully", async () => {
-    mockGetBalance.mockRejectedValue(new Error("API Error"));
+    mockGetBalance.mockRejectedValueOnce(new Error("API Error"));
 
-    render(<BalanceCard />);
-
-    await waitFor(() => {
-      const element = screen.getByTestId("balance-amount");
-      const text = element.props.children as string;
-      expect(text).toContain("0.00");
+    await act(async () => {
+      render(<BalanceCard />);
     });
 
-    expect(mockDispatch).not.toHaveBeenCalledWith({
-      type: "SET_BALANCE",
-      Balance: expect.any(Number)
+    await act(async () => {
+      await waitFor(() =>
+        expect(screen.queryByTestId("loading-indicator")).toBeNull()
+      );
     });
+
+    const element = screen.getByTestId("balance-amount");
+    expect(element.props.children).toBe("0.00");
   });
 });

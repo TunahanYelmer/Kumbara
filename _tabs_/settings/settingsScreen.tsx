@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, Switch, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDataLayerValue } from "../../context/StateProvider";
 import { DarkTheme } from "@react-navigation/native";
-import CurrencyModal from "./CurrencyModal";
+import CurrencyModal from "@_tabs_/settings/CurrencyModal";
 
 export default function SettingsScreen() {
   const [

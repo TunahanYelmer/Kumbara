@@ -8,10 +8,10 @@ import {
   ActivityIndicator
 } from "react-native";
 import { useState, useEffect } from "react";
-import { Transactions, Action } from "../context/reducer";
-import { useDataLayerValue } from "../context/StateProvider";
-import { getTransactions } from "../api/getTransactions";
-import TransactionList from "./TransactionList";
+import { Transactions, Action } from "@context/reducer";
+import { useDataLayerValue } from "@context/StateProvider";
+import { getTransactions } from "@api/getTransactions";
+import TransactionList from "@components/TransactionList";
 
 const { width, height } = Dimensions.get("window");
 

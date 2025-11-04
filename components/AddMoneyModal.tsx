@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { State, Action, Transactions } from "../context/reducer";
-import { useDataLayerValue } from "../context/StateProvider";
+import { State, Action, Transactions } from "@context/reducer";
+import { useDataLayerValue } from "@context/StateProvider";
 import {
   View,
   Text,
@@ -10,9 +10,9 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import { postBalance } from "../api/postBalance";
-import { getBalance } from "../api/getBalance";
-import { postTransaction } from "../api/postTransactions";
+import { postBalance } from "@api/postBalance";
+import { getBalance } from "@api/getBalance";
+import { postTransaction } from "@api/postTransactions";
 
 interface AddMoneyModalProps {
   modalVisible: boolean;

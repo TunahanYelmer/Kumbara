@@ -5,7 +5,30 @@
     "esModuleInterop": true,
     "strict": true,
     "target": "esnext",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "rootDirs": [
+      "./"
+    ],
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@_tabs_/*": [
+        "./_tabs_/*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@api/*": [
+        "./api/*"
+      ],
+      "@context/*": [
+        "./context/*"
+      ],
+      "@assets/*": [
+        "./assets/*"
+      ]
+    }
   },
   "extends": "expo/tsconfig.base"
 }

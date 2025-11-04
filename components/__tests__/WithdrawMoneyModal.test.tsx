@@ -1,9 +1,9 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import WithdrawMoneyModal from "../WithdrawMoneyModal";
-import { useDataLayerValue } from "../../context/StateProvider";
-import { postTransaction } from "../../api/postTransactions";
-import { getTransactions } from "../../api/getTransactions";
+import WithdrawMoneyModal from "@components/WithdrawMoneyModal";
+import { useDataLayerValue } from "@context/StateProvider";
+import { postTransaction } from "@api/postTransactions";
+import { getTransactions } from "@api/getTransactions";
 
 jest.mock("../../api/postTransactions");
 jest.mock("../../api/getTransactions");

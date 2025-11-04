@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, StatusBar as RNStatusBar, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import User from '../../components/User';
-import BalanceCard from '../../components/BalanceCard';
-import Transactions from '../../components/Transactions';
-import TransactionHistory from '../../components/TransactionHistory';
+import User from '@components/User';
+import BalanceCard from '@components/BalanceCard';
+import Transactions from '@components/Transactions';
+import TransactionHistory from '@components/TransactionHistory';
 
 
 

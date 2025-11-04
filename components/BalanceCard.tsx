@@ -7,39 +7,38 @@ import {
   ActivityIndicator
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { getBalance } from "../api/getBalance"; // adjust path if needed
-import { useDataLayerValue } from "../context/StateProvider";
-
+import { getBalance } from "@api/getBalance"; // adjust path if needed
+import { useDataLayerValue } from "@context/StateProvider";
 
 
 const { width } = Dimensions.get("window");
 
 const BalanceCard = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [{ Balance , Currency }, dispatch] = useDataLayerValue();
-
-  const handleBalanceUpdate = (newBalance: number) => {
-    dispatch({
-      type: "SET_BALANCE",
-      Balance: newBalance
-    } );
-  };
+  const [{ Balance, Currency }, dispatch] = useDataLayerValue();
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchBalance = async () => {
       try {
         const result = await getBalance();
-        handleBalanceUpdate(result);
-        console.log("ℹ️ Fetched balance:", result);
-      } catch (error) {
-        console.error("❌ Error fetching balance:", error);
+        if (isMounted) {
+          dispatch({ type: "SET_BALANCE", Balance: result });
+        }
+      } catch (e) {
+        if (isMounted) console.error("❌ Error fetching balance:", e);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
 
     fetchBalance();
-  }, []);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [dispatch]);
 
   return (
     <LinearGradient
@@ -55,9 +54,14 @@ const BalanceCard = () => {
       {loading ? (
         <ActivityIndicator testID="loading-indicator" color="#fff" />
       ) : (
-        <Text testID="balance-amount" style={styles.amount}>
-          {Currency ? Currency[0].symbol :'₺'} {Balance ? Balance.toFixed(2) : "0.00"}
-        </Text> 
+        <View style={styles.amountContainer}>
+          <Text testID="currency-symbol" style={styles.amount}>
+            {Currency ? Currency[0].symbol : "₺"}
+          </Text>
+          <Text testID="balance-amount" style={styles.amount}>
+            {Balance ? Balance.toFixed(2) : "0.00"}
+          </Text>
+        </View>
       )}
     </LinearGradient>
   );
@@ -79,6 +83,10 @@ const styles = StyleSheet.create({
     fontSize: width * 0.04,
     fontWeight: "600",
     marginBottom: width * 0.01
+  },
+  amountContainer: {
+    flexDirection: "row",
+    alignItems: "flex-end"
   },
   amount: {
     color: "#fff",

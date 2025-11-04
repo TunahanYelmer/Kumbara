@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
-import AddMoneyModal from "./AddMoneyModal";
-import WithdrawMoneyModal from "./WithdrawMoneyModal";
+import AddMoneyModal from "@components/AddMoneyModal";
+import WithdrawMoneyModal from "@/components/WithdrawMoneyModal";
 
 const { width, height } = Dimensions.get("window");
 

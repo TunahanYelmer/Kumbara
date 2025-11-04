@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
-import { useDataLayerValue } from "../context/StateProvider";
+import { useDataLayerValue } from "@/context/StateProvider";
 
 
 type Props = {
