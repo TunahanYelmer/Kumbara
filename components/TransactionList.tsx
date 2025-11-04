@@ -1,5 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
+import { useDataLayerValue } from "../context/StateProvider";
+
 
 type Props = {
   paymentType: "food" | "market" | "transport" | "bill" | "income";
@@ -43,6 +45,8 @@ const displayNames: Record<Props["paymentType"], string> = {
 };
 
 const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
+
+  const [{Currency}] = useDataLayerValue();
   const validTypes: Props["paymentType"][] = [
     "food",
     "market",
@@ -56,7 +60,7 @@ const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
   const bgColor = iconBgColors[finalType];
   const isIncome = finalType === "income";
   const sign = isIncome ? "+" : "-";
-  const formattedAmount = `${sign}${Math.abs(amount)} ₺`;
+  const formattedAmount = `${sign}${Math.abs(amount)}`;
 
   return (
     <View
@@ -85,7 +89,7 @@ const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
           ]}
           testID="transaction-amount"
         >
-          {formattedAmount}
+          <Text>{formattedAmount}</Text> <Text>{Currency ? Currency[0].symbol : '₺'}</Text>
         </Text>
       </View>
     </View>
