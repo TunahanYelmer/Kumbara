@@ -9,19 +9,20 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { getBalance } from "../api/getBalance"; // adjust path if needed
 import { useDataLayerValue } from "../context/StateProvider";
-import { State, Action } from "../context/reducer";
+
+
 
 const { width } = Dimensions.get("window");
 
 const BalanceCard = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [{ Balance }, dispatch] = useDataLayerValue();
+  const [{ Balance , Currency }, dispatch] = useDataLayerValue();
 
   const handleBalanceUpdate = (newBalance: number) => {
     dispatch({
       type: "SET_BALANCE",
       Balance: newBalance
-    } as Action);
+    } );
   };
 
   useEffect(() => {
@@ -55,8 +56,8 @@ const BalanceCard = () => {
         <ActivityIndicator testID="loading-indicator" color="#fff" />
       ) : (
         <Text testID="balance-amount" style={styles.amount}>
-          ${Balance != null ? Balance.toFixed(2) : "0.00"}
-        </Text>
+          {Currency ? Currency[0].symbol :'₺'} {Balance ? Balance.toFixed(2) : "0.00"}
+        </Text> 
       )}
     </LinearGradient>
   );
