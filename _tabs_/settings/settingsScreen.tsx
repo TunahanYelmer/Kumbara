@@ -1,38 +1,37 @@
-import { Switch, TouchableOpacity  } from 'react-native';
-import {  Text, StyleSheet , View } from "react-native";
+import { Switch, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useDataLayerValue } from "../../context/StateProvider";
 
 const handleThemeToggle = () => {
-}
-const handleNotificationToggle = () => {
-}
-const handlePinToggle = () => {
-}
-const handleBiometricToggle = () => {
-}
-
-
-
-
+  dispatch({
+    type: "SET_DARK_MODE"
+  });
+};
+const handleNotificationToggle = () => {};
+const handlePinToggle = () => {};
+const handleBiometricToggle = () => {};
 
 export default function settingsScreen() {
-
-
-
-
-
-
+  const [{ Currency, DarkMode }, dispatch] = useDataLayerValue();
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "bottom"]}>
       <Text style={styles.settingsTitle}>Ayarlar</Text>
-      
+
       {/* Currency Settings */}
       <View style={styles.settingGroup}>
         <Text style={styles.groupTitle}>Para Birimi</Text>
         <View style={styles.settingItem}>
           <Text>Para Birimi Seç</Text>
-          <Text style={styles.settingValue}>₺ TRY</Text>
+          <Text style={styles.settingValue}>
+            <Text style={styles.currencySymbol}>
+              {Currency ? Currency[0].symbol : "₺"}
+            </Text>{" "}
+            <Text style={styles.currencyCode}>
+              {Currency ? Currency[0].code : "TRY"}
+            </Text>
+          </Text>
         </View>
       </View>
 
@@ -41,7 +40,7 @@ export default function settingsScreen() {
         <Text style={styles.groupTitle}>Bildirimler</Text>
         <View style={styles.settingItem}>
           <Text>Günlük Hatırlatıcı</Text>
-          <Switch onValueChange={handleNotificationToggle}/>
+          <Switch onValueChange={handleNotificationToggle} />
         </View>
         <View style={styles.settingItem}>
           <Text>Hedef Bildirimleri</Text>
@@ -63,15 +62,13 @@ export default function settingsScreen() {
         <Text style={styles.groupTitle}>Güvenlik</Text>
         <View style={styles.settingItem}>
           <Text>Pin ile Kilitle</Text>
-          <Switch onValueChange={handlePinToggle}/>
+          <Switch onValueChange={handlePinToggle} />
         </View>
         <View style={styles.settingItem}>
           <Text>Biyometrik Kilit</Text>
-          <Switch  onValueChange={handleBiometricToggle}
-          value={true}/>
+          <Switch onValueChange={handleBiometricToggle} value={true} />
         </View>
       </View>
-
     </SafeAreaView>
   );
 }
@@ -80,15 +77,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f5f5f5"
   },
-  container: {
-  },
+  container: {},
   settingsText: {
     fontSize: 20,
     textAlign: "center",
     marginTop: 50
-  }
-  ,
- settingsTitle: {
+  },
+  settingsTitle: {
     fontSize: 24,
     fontWeight: "bold",
     padding: 16,
@@ -116,5 +111,11 @@ const styles = StyleSheet.create({
   },
   settingValue: {
     color: "#666"
+  },
+  currencySymbol: {
+    fontWeight: "bold"
+  },
+  currencyCode: {
+    color: "#999"
   }
 });
