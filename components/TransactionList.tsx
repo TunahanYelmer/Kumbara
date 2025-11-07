@@ -1,23 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
-import { useDataLayerValue } from "@/context/StateProvider";
-
+import { useDataLayerValue } from "@/context/state/StateProvider";
+import { useTheme } from "@/context/theme/ThemeProvider";
 
 type Props = {
-  paymentType: "food" | "market" | "transport" | "bill" | "income";
+  paymentType: "food" | "market" | "transport" | "bill" | "income" | "other";
   amount: number;
 };
 
 const { width, height } = Dimensions.get("window");
-
-// Background colors
-const iconBgColors: Record<Props["paymentType"], string> = {
-  food: "#FFF3E0",
-  market: "#F3E0FF",
-  transport: "#E0F7FA",
-  bill: "#E0F2F1",
-  income: "#E8F5E9",
-};
 
 // Icon sizes
 const iconStyles: Record<Props["paymentType"], any> = {
@@ -26,6 +17,7 @@ const iconStyles: Record<Props["paymentType"], any> = {
   transport: { width: width * 0.08, height: width * 0.08 },
   bill: { width: width * 0.08, height: width * 0.08 },
   income: { width: width * 0.08, height: width * 0.08 },
+  other: { width: width * 0.08, height: width * 0.08 }
 };
 
 const iconSources: Record<Props["paymentType"], any> = {
@@ -34,6 +26,7 @@ const iconSources: Record<Props["paymentType"], any> = {
   transport: require("../assets/transport.png"),
   bill: require("../assets/bill.png"),
   income: require("../assets/income.png"),
+  other: require("../assets/bill.png")
 };
 
 const displayNames: Record<Props["paymentType"], string> = {
@@ -41,19 +34,30 @@ const displayNames: Record<Props["paymentType"], string> = {
   market: "Market",
   transport: "Ulaşım",
   bill: "Fatura",
-  income: "Gelir",
+  other: "Diğer",
+  income: "Gelir"
 };
 
 const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
-
-  const [{Currency}] = useDataLayerValue();
+  const [{ Currency }] = useDataLayerValue();
+  const [theme] = useTheme();
   const validTypes: Props["paymentType"][] = [
     "food",
     "market",
     "transport",
     "bill",
     "income",
+    "other"
   ];
+  // Background colors
+  const iconBgColors: Record<Props["paymentType"], string> = {
+    food: theme.FoodIconBgColor,
+    market: theme.MarketIconBgColor,
+    transport: theme.TransportIconBgColor,
+    bill: theme.BillIconBgColor,
+    income: theme.IncomeIconBgColor,
+    other: theme.BillIconBgColor
+  };
 
   const finalType = validTypes.includes(paymentType) ? paymentType : "bill";
   const iconSource = iconSources[finalType];
@@ -62,13 +66,50 @@ const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
   const sign = isIncome ? "+" : "-";
   const formattedAmount = `${sign}${Math.abs(amount)}`;
 
+  const styles = StyleSheet.create({
+    items: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginVertical: height * 0.01
+    },
+    iconBg: {
+      padding: width * 0.05,
+      width: width * 0.15,
+      height: width * 0.15,
+      borderRadius: width * 0.07,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: width * 0.03
+    },
+    title: {
+      fontWeight: "600",
+      fontSize: width * 0.04,
+      color: theme.TransactionTitleColor
+    },
+    amount: {
+      padding: width * 0.025,
+      borderRadius: width * 0.02,
+      minWidth: width * 0.15,
+      alignItems: "center"
+    },
+    amountText: {
+      fontWeight: "600",
+      fontSize: width * 0.04,
+      color: isIncome
+        ? theme.TransactionTextIncomeColor
+        : theme.TransactionTextExpenseColor
+    }
+  });
   return (
     <View
       style={styles.items}
       testID={`transaction-item-${finalType}`}
       accessibilityLabel={`Transaction ${finalType}`}
     >
-      <View style={[styles.iconBg, { backgroundColor: bgColor }]} testID="icon-bg">
+      <View
+        style={[styles.iconBg, { backgroundColor: bgColor }]}
+        testID="icon-bg"
+      >
         <Image
           source={iconSource}
           style={iconStyles[finalType]}
@@ -85,11 +126,16 @@ const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
         <Text
           style={[
             styles.amountText,
-            { color: isIncome ? "#4CAF50" : "#213361" },
+            {
+              color: isIncome
+                ? theme.TransactionTextIncomeColor
+                : theme.TransactionTextExpenseColor
+            }
           ]}
           testID="transaction-amount"
         >
-          <Text>{formattedAmount}</Text> <Text>{Currency ? Currency[0].symbol : '₺'}</Text>
+          <Text>{formattedAmount}</Text>{" "}
+          <Text>{Currency ? Currency[0].symbol : "₺"}</Text>
         </Text>
       </View>
     </View>
@@ -97,36 +143,3 @@ const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
 };
 
 export default TransactionList;
-
-const styles = StyleSheet.create({
-  items: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: height * 0.01,
-  },
-  iconBg: {
-    padding: width * 0.05,
-    width: width * 0.15,
-    height: width * 0.15,
-    borderRadius: width * 0.07,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: width * 0.03,
-  },
-  title: {
-    fontWeight: "600",
-    fontSize: width * 0.04,
-    color: "#213361",
-  },
-  amount: {
-    padding: width * 0.025,
-    borderRadius: width * 0.02,
-    minWidth: width * 0.15,
-    alignItems: "center",
-  },
-  amountText: {
-    fontWeight: "600",
-    fontSize: width * 0.04,
-    color: "#213361",
-  },
-});
