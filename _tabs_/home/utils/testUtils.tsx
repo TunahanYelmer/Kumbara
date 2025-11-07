@@ -1,7 +1,7 @@
 // test-utils.tsx
 import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react-native";
-import { StateProvider } from "@context/StateProvider"; // ✅ named import
+import { StateProvider } from "@/context/state/StateProvider"; // ✅ named import
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => (
   <StateProvider>{children}</StateProvider>
