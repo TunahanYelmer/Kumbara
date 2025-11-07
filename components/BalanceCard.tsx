@@ -8,14 +8,15 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { getBalance } from "@api/getBalance"; // adjust path if needed
-import { useDataLayerValue } from "@context/StateProvider";
-
+import { useDataLayerValue } from "@/context/state/StateProvider";
+import { useTheme } from "@/context/theme/ThemeProvider";
 
 const { width } = Dimensions.get("window");
 
 const BalanceCard = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [{ Balance, Currency }, dispatch] = useDataLayerValue();
+   const [theme] = useTheme();
 
   useEffect(() => {
     let isMounted = true;
@@ -39,10 +40,36 @@ const BalanceCard = () => {
       isMounted = false;
     };
   }, [dispatch]);
-
+  const styles = StyleSheet.create({
+    card: {
+      width: width * 0.9,
+      borderRadius: width * 0.03,
+      padding: width * 0.07,
+      margin: width * 0.03,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      elevation: 3
+    },
+    title: {
+      color: theme.BalanceCardTitleColor,
+      fontSize: width * 0.04,
+      fontWeight: "600",
+      marginBottom: width * 0.01
+    },
+    amountContainer: {
+      flexDirection: "row",
+      alignItems: "flex-end"
+    },
+    amount: {
+      color: theme.BalanceCardAmountColor,
+      fontSize: width * 0.06,
+      fontWeight: "bold"
+    }
+  });
   return (
     <LinearGradient
-      colors={["#090979", "#00d4ff"]}
+      colors={theme.BalanceCardColor}
       start={{ x: 0.5, y: 0.1 }}
       end={{ x: 1, y: 0.4 }}
       style={styles.card}
@@ -52,7 +79,7 @@ const BalanceCard = () => {
         Birikimlerim
       </Text>
       {loading ? (
-        <ActivityIndicator testID="loading-indicator" color="#fff" />
+        <ActivityIndicator testID="loading-indicator" color={theme.LoadingIndicatorColor} />
       ) : (
         <View style={styles.amountContainer}>
           <Text testID="currency-symbol" style={styles.amount}>
@@ -66,33 +93,5 @@ const BalanceCard = () => {
     </LinearGradient>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    width: width * 0.9,
-    borderRadius: width * 0.03,
-    padding: width * 0.07,
-    margin: width * 0.03,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    elevation: 3
-  },
-  title: {
-    color: "#fff",
-    fontSize: width * 0.04,
-    fontWeight: "600",
-    marginBottom: width * 0.01
-  },
-  amountContainer: {
-    flexDirection: "row",
-    alignItems: "flex-end"
-  },
-  amount: {
-    color: "#fff",
-    fontSize: width * 0.06,
-    fontWeight: "bold"
-  }
-});
 
 export default BalanceCard;
