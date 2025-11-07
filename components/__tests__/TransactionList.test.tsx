@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@components/__tests__/utils/testUtils";
-import TransactionList from "../TransactionList";
+import TransactionList from "../TransactionHistory/TransactionList";
 
 describe("TransactionList Component", () => {
   it("renders correctly for income type", () => {

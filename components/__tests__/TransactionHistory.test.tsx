@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@components/__tests__/utils/testUtils';
-import TransactionsHistory from '../TransactionHistory';
+import TransactionsHistory from '../TransactionHistory/TransactionHistory';
 import { Transactions } from '../../context/state/stateReducer';
 
 (global as any).alert = jest.fn();

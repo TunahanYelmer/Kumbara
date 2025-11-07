@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, waitFor, act } from "@components/__tests__/utils/testUtils";
-import BalanceCard from "../BalanceCard";
+import BalanceCard from "../BalanceCard/BalanceCard";
 import * as api from "../../api/getBalance";
 import { useDataLayerValue } from "../../context/state/StateProvider";
 

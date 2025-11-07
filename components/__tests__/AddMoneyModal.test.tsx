@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@components/__tests__/utils/testUtils";
-import AddMoneyModal from "@components/AddMoneyModal";
+import AddMoneyModal from "@/components/AddMoneyModal/AddMoneyModal";
 
 // ----------------------
 // Mock APIs
