@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, screen } from "@components/__tests__/utils/testUtils";
 import { Text } from "react-native";
-import Transactions from "../Transactions";
+import Transactions from "../Transactions/Transactions";
 
 // --- Mock Modals ---
 jest.mock("../AddMoneyModal", () => {
