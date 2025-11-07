@@ -10,7 +10,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent
 } from "react-native";
-import { useDataLayerValue } from "@context/StateProvider";
+import { useDataLayerValue } from "@/context/state/StateProvider";
 
 interface CurrencyModalProps {
   modalVisible: boolean;
