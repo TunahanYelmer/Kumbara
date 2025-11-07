@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Theme}from "@context/theme/themeReducer" // or wherever your Theme type is
 
-export const createBalanceCardStyles = (theme: Theme) =>
+export const createBalanceCardStyles = (theme: Theme , width : number) =>
 
       StyleSheet.create({
         card: {
