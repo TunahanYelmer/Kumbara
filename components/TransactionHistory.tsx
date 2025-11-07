@@ -8,10 +8,11 @@ import {
   ActivityIndicator
 } from "react-native";
 import { useState, useEffect } from "react";
-import { Transactions, Action } from "@context/reducer";
-import { useDataLayerValue } from "@context/StateProvider";
+import { Transactions, Action } from "@/context/state/stateReducer";
+import { useDataLayerValue } from "@/context/state/StateProvider";
 import { getTransactions } from "@api/getTransactions";
 import TransactionList from "@components/TransactionList";
+import { useTheme } from "@/context/theme/ThemeProvider";
 
 const { width, height } = Dimensions.get("window");
 
@@ -21,6 +22,7 @@ export const TransactionsHistory = () => {
   );
   const [isLoading, setIsLoading] = useState(true);
   const [{ Transactions }, dispatch] = useDataLayerValue();
+    const [theme] = useTheme();
 
   // Fetch transactions from API
   useEffect(() => {
@@ -141,7 +143,54 @@ export const TransactionsHistory = () => {
       </Text>
     </View>
   );
-
+  const styles = StyleSheet.create({
+    container: {
+      backgroundColor: theme.BackgroundColor,
+      padding: width * 0.04,
+      margin: width * 0.025,
+      borderRadius: width * 0.025
+    },
+    tabs: {
+      flexDirection: "row",
+      marginVertical: height * 0.015
+    },
+    tabButton: {
+      backgroundColor: theme.TabButtonBgColor,
+      paddingVertical: height * 0.008,
+      paddingHorizontal: width * 0.04,
+      borderRadius: width * 0.05,
+      marginRight: width * 0.02
+    },
+    tabButtonText: {
+      fontSize: width * 0.04,
+      color: theme.TabButtonInactiveColour,
+      textAlign: "center"
+    },
+    activeTabText: {
+      color: theme.TabActiveColor,
+      fontWeight: "700"
+    },
+    loadingContainer: {
+      alignItems: "center",
+      justifyContent: "center",
+      paddingVertical: height * 0.05
+    },
+    loadingText: {
+      marginTop: height * 0.01,
+      fontSize: width * 0.035,
+      color: theme.TransactionHistoryLoadingColor
+    },
+    emptyContainer: {
+      alignItems: "center",
+      justifyContent: "center",
+      paddingVertical: height * 0.05
+    },
+    emptyText: {
+      fontSize: width * 0.04,
+      color: theme.TransactionHistoryEmptyTextColor,
+      textAlign: "center"
+    }
+  });
   return (
     <View style={styles.container} testID="transaction-history">
       {/* Tabs */}
@@ -157,7 +206,7 @@ export const TransactionsHistory = () => {
           >
             <Text
               style={[
-                styles.buttonText,
+                styles.tabButtonText,
                 selectedTab === tab && styles.activeTabText
               ]}
             >
@@ -170,7 +219,7 @@ export const TransactionsHistory = () => {
       {/* Loading State */}
       {isLoading ? (
         <View style={styles.loadingContainer} testID="loading-indicator">
-          <ActivityIndicator size="large" color="#243da3" />
+          <ActivityIndicator size="large" color={theme.ButtonColor} />
           <Text style={styles.loadingText}>Yükleniyor...</Text>
         </View>
       ) : (
@@ -197,52 +246,3 @@ export const TransactionsHistory = () => {
 };
 
 export default TransactionsHistory;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    padding: width * 0.04,
-    margin: width * 0.025,
-    borderRadius: width * 0.025
-  },
-  tabs: {
-    flexDirection: "row",
-    marginVertical: height * 0.015
-  },
-  tabButton: {
-    backgroundColor: "#ffffff",
-    paddingVertical: height * 0.008,
-    paddingHorizontal: width * 0.04,
-    borderRadius: width * 0.05,
-    marginRight: width * 0.02
-  },
-  buttonText: {
-    fontSize: width * 0.04,
-    color: "#9399b1",
-    textAlign: "center"
-  },
-  activeTabText: {
-    color: "#243da3",
-    fontWeight: "700"
-  },
-  loadingContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: height * 0.05
-  },
-  loadingText: {
-    marginTop: height * 0.01,
-    fontSize: width * 0.035,
-    color: "#9399b1"
-  },
-  emptyContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: height * 0.05
-  },
-  emptyText: {
-    fontSize: width * 0.04,
-    color: "#9399b1",
-    textAlign: "center"
-  }
-});
