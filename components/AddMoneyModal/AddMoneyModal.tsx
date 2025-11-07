@@ -1,43 +1,61 @@
-import React, { useEffect, useState } from "react";
-import { State, Action, Transactions } from "@/context/state/stateReducer";
+import React, { useState } from "react";
+import { View, Text, Modal, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useDataLayerValue } from "@/context/state/StateProvider";
-import {
-  View,
-  Text,
-  Modal,
-  TextInput,
-  TouchableOpacity,
-  Alert
-} from "react-native";
-import { postBalance } from "@api/postBalance";
-import { getBalance } from "@api/getBalance";
-import { postTransaction } from "@api/postTransactions";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { createAddMoneyModalStyles } from "./styles/AddMoneyModal.styles";
+import { getBalance } from "@api/getBalance";
+import { postBalance } from "@api/postBalance";
+import { postTransaction } from "@api/postTransactions";
+import { Action, Transactions } from "@/context/state/stateReducer";
 
 interface AddMoneyModalProps {
-  modalVisible: boolean;
-  setModalVisible: (visible: boolean) => void;
+  modalVisible: boolean; // Controls whether the modal is shown
+  setModalVisible: (visible: boolean) => void; // Function to close or open modal
 }
 
 export default function AddMoneyModal({
   modalVisible,
   setModalVisible
 }: Readonly<AddMoneyModalProps>) {
-  const [amount, setAmount] = useState<string>("");
-  const [{Transactions }, dispatch] = useDataLayerValue();
+  // Local state for the input value
+  const [amount, setAmount] = useState("");
+
+  // Access global state and dispatch from context
+  const [{ Transactions: transactions }, dispatch] = useDataLayerValue();
+
+  // Get the current app theme and generate styles accordingly
   const [theme] = useTheme();
   const styles = createAddMoneyModalStyles(theme);
 
-  const handleBalanceUpdate = (newBalance: number) => {
-    dispatch({
-      type: "SET_BALANCE",
-      Balance: newBalance
-    } as Action);
-  };
+  /**
+   * Handles adding money:
+   * 1. Validates input
+   * 2. Updates balance via API
+   * 3. Adds a new transaction record
+   * 4. Updates global state
+   * 5. Displays success or error feedback
+   */
+  const handleAddMoney = async () => {
+    const numericAmount = parseFloat(amount);
 
-  const handleTransactionsUpdate = async (numericAmount: number) => {
+    // Input validation
+    if (isNaN(numericAmount) || numericAmount <= 0) {
+      Alert.alert("Geçersiz miktar", "Lütfen geçerli bir sayı giriniz.");
+      return;
+    }
+
     try {
+      // Fetch the current balance from the server
+      const currentBalance = await getBalance();
+      const updatedBalance = currentBalance + numericAmount;
+
+      // Update the balance on the server
+      await postBalance(updatedBalance);
+
+      // Update global state with the new balance
+      dispatch({ type: "SET_BALANCE", Balance: updatedBalance } as Action);
+
+      // Create a new transaction record for history
       const newTransaction: Transactions = {
         id: Date.now(),
         type: "deposit",
@@ -46,52 +64,42 @@ export default function AddMoneyModal({
         date: new Date().toISOString()
       };
 
+      // Save transaction on the server
       await postTransaction("deposit", numericAmount, "income");
 
+      // Update transaction list in global state
       dispatch({
         type: "SET_TRANSACTIONS",
-        Transactions: [newTransaction, ...Transactions]
+        Transactions: [newTransaction, ...transactions]
       } as Action);
+
+      // Notify user of success
+      Alert.alert("Başarılı ✅", `${numericAmount} TL eklendi.`);
     } catch (error) {
-      console.error("❌ Error updating transactions:", error);
+      // Log and notify on failure
+      console.error("❌ Error posting balance or transactions:", error);
+      Alert.alert("Hata ❌", "Sunucuya bağlanılamadı.");
+    } finally {
+      // Always clear input and close modal
+      setAmount("");
+      setModalVisible(false);
     }
   };
-
-  const handleAddMoney = async () => {
-    const numericAmount = parseFloat(amount);
-    if (!isNaN(numericAmount) && numericAmount > 0) {
-      try {
-        const currentBalance = await getBalance();
-        await postBalance(currentBalance + numericAmount);
-
-        handleBalanceUpdate(currentBalance + numericAmount);
-        await handleTransactionsUpdate(numericAmount);
-
-        Alert.alert("Başarılı ✅", `${numericAmount} eklendi.`);
-      } catch (error) {
-        console.error("❌ Error posting balance:", error);
-        Alert.alert("Hata ❌", "Sunucuya bağlanılamadı.");
-      } finally {
-        setAmount("");
-      }
-    } else {
-      Alert.alert("Geçersiz miktar", "Lütfen geçerli bir sayı giriniz.");
-    }
-  };
-
-  
 
   return (
     <Modal
       animationType="fade"
       visible={modalVisible}
-      transparent={true}
+      transparent
       onRequestClose={() => setModalVisible(false)}
       testID="add-money-modal"
     >
       <View testID="modal-overlay" style={styles.modalOverlay}>
         <View style={styles.modal}>
+          {/* Modal Header */}
           <Text style={styles.modalTitle}>Miktar Giriniz</Text>
+
+          {/* Numeric input for deposit amount */}
           <TextInput
             testID="amount-input"
             style={styles.input}
@@ -100,23 +108,22 @@ export default function AddMoneyModal({
             value={amount}
             onChangeText={setAmount}
           />
+
+          {/* Action Buttons */}
           <View style={styles.buttonsRow}>
+            {/* Confirm Button */}
             <TouchableOpacity
               testID="add-button"
               style={styles.modalButton}
-              onPress={() => {
-                handleAddMoney();
-                setModalVisible(false);
-              }}
+              onPress={handleAddMoney}
             >
               <Text style={styles.buttonText}>Ekle</Text>
             </TouchableOpacity>
+
+            {/* Cancel Button */}
             <TouchableOpacity
               testID="cancel-button"
-              style={[
-                styles.modalButton,
-                { backgroundColor: theme.ButtonColor }
-              ]}
+              style={[styles.modalButton, { backgroundColor: theme.ButtonColor }]}
               onPress={() => setModalVisible(false)}
             >
               <Text style={styles.buttonText}>İptal</Text>

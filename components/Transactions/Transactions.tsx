@@ -39,7 +39,7 @@ const Transactions: FC = () => {
             modalVisible={addModalVisible}
             setModalVisible={setAddModalVisible}
           />
-          <Image source={require("../assets/add.png")} style={styles.icon} />
+          <Image source={require("@assets/add.png")} style={styles.icon} />
           <Text style={styles.buttonText}>Para Ekle</Text>
         </TouchableOpacity>
       </View>
@@ -57,7 +57,7 @@ const Transactions: FC = () => {
             onConfirm={(amount, reason) => setWithdrawData({ amount, reason })}
           />
           <Image
-            source={require("../assets/withdraw.png")}
+            source={require("@assets/withdraw.png")}
             style={styles.icon}
           />
           <Text style={styles.buttonText}>Para Çıkar</Text>

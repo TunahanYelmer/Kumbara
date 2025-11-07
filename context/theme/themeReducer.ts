@@ -22,6 +22,7 @@ export interface Theme {
   TransactionTextIncomeColor: string;
   TransactionTextExpenseColor: string;
   TransactionTitleColor: string;
+  SeparatorColor: string;
   WitdrawModalSelectedBg: string;
   WitdrawModalOptionText: string;
   HiglightColor: string;
@@ -86,7 +87,8 @@ export const initialTheme: Theme = {
   TransactionTextIncomeColor: "#536082", // vivid green for income
   TransactionTextExpenseColor: "#536082", // vivid red for expense
   TransactionTitleColor: "#77809a",
-  TransactionButtonBgColor: "#FFFFFF", // soft blue for buttons
+  TransactionButtonBgColor: "#FFFFFF",
+  SeparatorColor:"#677399" ,// soft blue for buttons
   
   // Action Buttons
   AddButtonTextColor: "#677399",
@@ -162,6 +164,7 @@ export const darkTheme: Theme = {
   TransactionTextExpenseColor: "#F87171", // coral red
   TransactionTitleColor: "#E0E7FF",
   TransactionButtonBgColor: "#1E293B",
+  SeparatorColor:"#334155",
   
   // Action Buttons
   AddButtonTextColor: "#60A5FA",

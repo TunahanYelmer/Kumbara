@@ -8,6 +8,8 @@ import {
   ActivityIndicator
 } from "react-native";
 import { useState, useEffect } from "react";
+
+type TabType = "all" | "income" | "expense";
 import { Transactions, Action } from "@/context/state/stateReducer";
 import { useDataLayerValue } from "@/context/state/StateProvider";
 import { getTransactions } from "@api/getTransactions";
@@ -17,10 +19,10 @@ import { createTransactionHistoryStyles } from "./styles/TranscationHistory.styl
 
 const { width, height } = Dimensions.get("window");
 
-export const TransactionsHistory = () => {
-  const [selectedTab, setSelectedTab] = useState<"all" | "income" | "expense">(
-    "all"
-  );
+
+const TransactionsHistory = () => {
+  const [selectedTab, setSelectedTab] = useState<TabType>("all");
+  
   const [isLoading, setIsLoading] = useState(true);
   const [{ Transactions }, dispatch] = useDataLayerValue();
     const [theme] = useTheme();
@@ -94,7 +96,7 @@ export const TransactionsHistory = () => {
     return false;
   });
 
-  const handleSelectedTab = (tab: "all" | "income" | "expense") => {
+  const handleSelectedTab = (tab: TabType) => {
     setSelectedTab(tab);
   };
 
@@ -113,12 +115,7 @@ export const TransactionsHistory = () => {
       paymentType = "income";
     } else {
       // For withdrawals, use the category or default to "bill"
-      paymentType = (item.category || "bill") as
-        | "food"
-        | "market"
-        | "transport"
-        | "bill"
-        | "income";
+      paymentType = (item.category || "bill");
     }
 
     return <TransactionList paymentType={paymentType} amount={item.amount} />;

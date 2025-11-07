@@ -9,9 +9,13 @@ type Props = {
   amount: number;
 };
 
+// Screen dimensions for responsive UI scaling
 const { width, height } = Dimensions.get("window");
 
-// Icon sizes
+/**
+ * Icon sizes based on screen width.
+ * Using consistent sizing ensures proportional icons across devices.
+ */
 const iconStyles: Record<Props["paymentType"], any> = {
   food: { width: width * 0.08, height: width * 0.08 },
   market: { width: width * 0.08, height: width * 0.08 },
@@ -21,15 +25,23 @@ const iconStyles: Record<Props["paymentType"], any> = {
   other: { width: width * 0.08, height: width * 0.08 }
 };
 
+/**
+ * Local image assets for transaction icons.
+ * Each payment type corresponds to an icon in the assets folder.
+ */
 const iconSources: Record<Props["paymentType"], any> = {
-  food: require("../assets/food.png"),
-  market: require("../assets/market.png"),
-  transport: require("../assets/transport.png"),
-  bill: require("../assets/bill.png"),
-  income: require("../assets/income.png"),
-  other: require("../assets/bill.png")
+  food: require("@assets/food.png"),
+  market: require("@assets/market.png"),
+  transport: require("@assets/transport.png"),
+  bill: require("@assets/bill.png"),
+  income: require("@assets/income.png"),
+  other: require("@assets/bill.png") // Reuses bill icon for "other"
 };
 
+/**
+ * Display names for each transaction category.
+ * Used for user-friendly labels.
+ */
 const displayNames: Record<Props["paymentType"], string> = {
   food: "Yemek",
   market: "Market",
@@ -39,6 +51,7 @@ const displayNames: Record<Props["paymentType"], string> = {
   income: "Gelir"
 };
 
+// Valid payment type list for input safety
 const validTypes: Props["paymentType"][] = [
   "food",
   "market",
@@ -48,9 +61,26 @@ const validTypes: Props["paymentType"][] = [
   "other"
 ];
 
+/**
+ * TransactionList Component
+ * -------------------------
+ * Displays a single transaction item with:
+ * - Icon and background color based on payment type
+ * - Category name
+ * - Formatted amount (positive or negative)
+ * - Currency symbol
+ */
 const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
+  // Access global state for currency info
   const [{ Currency }] = useDataLayerValue();
+
+  // Get current theme (light/dark) and styles
   const [theme] = useTheme();
+
+  /**
+   * Background colors for transaction icons.
+   * Defined in theme for color consistency.
+   */
   const iconBgColors: Record<Props["paymentType"], string> = {
     food: theme.FoodIconBgColor,
     market: theme.MarketIconBgColor,
@@ -60,15 +90,24 @@ const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
     other: theme.BillIconBgColor
   };
 
+  // Ensure we use a valid payment type (fallback to "bill" if invalid)
   const finalType = validTypes.includes(paymentType) ? paymentType : "bill";
+
+  // Select icon and background color based on the transaction type
   const iconSource = iconSources[finalType];
   const bgColor = iconBgColors[finalType];
-  const isIncome = finalType === "income";
-  const sign = isIncome ? "+" : "-";
-  const formattedAmount = `${sign}${Math.abs(amount)}`;
-  const styles = createTransactionListStyles(theme, width, height, isIncome);
 
-  // Background colors
+  // Determine if the transaction is income or expense
+  const isIncome = finalType === "income";
+
+  // Add "+" for income, "-" for expense
+  const sign = isIncome ? "+" : "-";
+
+  // Format amount (always positive in text)
+  const formattedAmount = `${sign}${Math.abs(amount)}`;
+
+  // Generate styles based on theme and transaction type
+  const styles = createTransactionListStyles(theme, width, height, isIncome);
 
   return (
     <View
@@ -76,6 +115,7 @@ const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
       testID={`transaction-item-${finalType}`}
       accessibilityLabel={`Transaction ${finalType}`}
     >
+      {/* Icon Section */}
       <View
         style={[styles.iconBg, { backgroundColor: bgColor }]}
         testID="icon-bg"
@@ -87,11 +127,15 @@ const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
           testID="transaction-icon"
         />
       </View>
+
+      {/* Category Name Section */}
       <View style={{ flex: 1 }}>
         <Text style={styles.title} testID="transaction-title">
           {displayNames[finalType]}
         </Text>
       </View>
+
+      {/* Amount Section */}
       <View style={styles.amount}>
         <Text
           style={[
