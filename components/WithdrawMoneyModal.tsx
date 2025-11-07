@@ -6,30 +6,36 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
+  Alert
 } from "react-native";
 import { getTransactions } from "@api/getTransactions";
 import { postTransaction } from "@api/postTransactions";
-import { useDataLayerValue } from "@context/StateProvider";
-import { Transactions, Action } from "@context/reducer";
+import { useDataLayerValue } from "@/context/state/StateProvider";
+import { Transactions, Action } from "@/context/state/stateReducer";
+import { useTheme } from "@/context/theme/ThemeProvider";
 
 interface WithdrawMoneyModalProps {
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
   onConfirm: (amount: number, reason: string) => void;
 }
+type Props = {
+  paymentType: "food" | "market" | "transport" | "bill" | "income" | "other";
+  amount: number;
+};
 
 export default function WithdrawMoneyModal({
   modalVisible,
   setModalVisible,
-  onConfirm,
-}: WithdrawMoneyModalProps) {
+  onConfirm
+}: Readonly<WithdrawMoneyModalProps>) {
   const [step, setStep] = useState<"amount" | "reason">("amount");
   const [amount, setAmount] = useState("");
   const [reason, setReason] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const [{ Balance }, dispatch] = useDataLayerValue();
+  const [theme] = useTheme();
 
   const handleWithdrawBalanceUpdate = (newBalance: number) => {
     dispatch({ type: "SET_BALANCE", Balance: newBalance } as Action);
@@ -42,11 +48,11 @@ export default function WithdrawMoneyModal({
       type: item.type,
       amount: item.amount,
       category: item.category,
-      date: item.created_at,
+      date: item.created_at
     }));
     dispatch({
       type: "SET_TRANSACTIONS",
-      Transactions: transactions,
+      Transactions: transactions
     } as Action);
   };
 
@@ -78,10 +84,9 @@ export default function WithdrawMoneyModal({
       setStep("amount");
       setAmount("");
       setReason(null);
+      setLoading(false);
     } catch (error) {
       Alert.alert("İşlem sırasında bir hata oluştu!");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -91,11 +96,62 @@ export default function WithdrawMoneyModal({
     setReason(null);
     setModalVisible(false);
   };
+  const reasons = ["food", "market", "transport", "bill", "income", "other"];
+  const reasonsMap: Map<string, string> = new Map([
+    ["food", "Yemek"],
+    ["market", "Market"],
+    ["transport", "Ulaşım"],
+    ["bill", "Fatura"],
+    ["income", "Gelir"],
+    ["other", "Diğer"]
+  ]);
 
-  const reasons = ["Food", "Market", "Transport", "Bill"];
-
+  const styles = StyleSheet.create({
+    modalOverlay: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: theme.ModalOverlayBgColor
+    },
+    modal: {
+      backgroundColor: theme.ModalBGColor,
+      width: "80%",
+      padding: 20,
+      borderRadius: 10
+    },
+    modalTitle: { fontWeight: "bold", fontSize: 18, marginBottom: 10 },
+    input: {
+      borderWidth: 1,
+      borderColor: theme.ButtonBorderColor,
+      padding: 8,
+      width: "100%"
+    },
+    buttonsRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginTop: 15
+    },
+    modalButton: {
+      flex: 1,
+      marginHorizontal: 5,
+      padding: 10,
+      backgroundColor: theme.ButtonColor,
+      borderRadius: 8
+    },
+    buttonText: { color: "#fff", textAlign: "center" },
+    optionButton: {
+      padding: 10,
+      marginVertical: 5,
+      borderWidth: 1,
+      borderColor: "#ccc",
+      borderRadius: 6
+    },
+    selectedOption: { backgroundColor: theme.WitdrawModalSelectedBg },
+    optionText: { color: theme.WitdrawModalOptionText },
+    selectedOptionText: { color: "#fff" }
+  });
   return (
-    <Modal visible={modalVisible} transparent animationType="fade">
+    <Modal visible={modalVisible} transparent={true}  animationType="fade">
       <View style={styles.modalOverlay} testID="modalOverlay">
         <View style={styles.modal}>
           {step === "amount" ? (
@@ -119,7 +175,10 @@ export default function WithdrawMoneyModal({
                 </TouchableOpacity>
                 <TouchableOpacity
                   testID="cancelButton"
-                  style={[styles.modalButton, { backgroundColor: "#ccc" }]}
+                  style={[
+                    styles.modalButton,
+                    { backgroundColor: theme.ButtonColor }
+                  ]}
                   onPress={handleCancel}
                 >
                   <Text style={styles.buttonText}>Cancel</Text>
@@ -135,7 +194,7 @@ export default function WithdrawMoneyModal({
                   testID={`reason-${option}`}
                   style={[
                     styles.optionButton,
-                    reason === option && styles.selectedOption,
+                    reason === option && styles.selectedOption
                   ]}
                   onPress={() => setReason(option)}
                   disabled={loading}
@@ -143,10 +202,10 @@ export default function WithdrawMoneyModal({
                   <Text
                     style={[
                       styles.optionText,
-                      reason === option && styles.selectedOptionText,
+                      reason === option && styles.selectedOptionText
                     ]}
                   >
-                    {option}
+                    {reasonsMap.get(option)}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -163,7 +222,10 @@ export default function WithdrawMoneyModal({
                 </TouchableOpacity>
                 <TouchableOpacity
                   testID="cancelButtonReason"
-                  style={[styles.modalButton, { backgroundColor: "#ccc" }]}
+                  style={[
+                    styles.modalButton,
+                    { backgroundColor: theme.ButtonColor }
+                  ]}
                   onPress={handleCancel}
                   disabled={loading}
                 >
@@ -177,17 +239,3 @@ export default function WithdrawMoneyModal({
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  modalOverlay: { flex: 1, justifyContent: "center", alignItems: "center" },
-  modal: { backgroundColor: "#fff", width: "80%", padding: 20, borderRadius: 10 },
-  modalTitle: { fontWeight: "bold", fontSize: 18, marginBottom: 10 },
-  input: { borderWidth: 1, borderColor: "#ccc", padding: 8, width: "100%" },
-  buttonsRow: { flexDirection: "row", justifyContent: "space-between", marginTop: 15 },
-  modalButton: { flex: 1, marginHorizontal: 5, padding: 10, backgroundColor: "#243da3", borderRadius: 8 },
-  buttonText: { color: "#fff", textAlign: "center" },
-  optionButton: { padding: 10, marginVertical: 5, borderWidth: 1, borderColor: "#ccc", borderRadius: 6 },
-  selectedOption: { backgroundColor: "#243da3" },
-  optionText: { color: "#000" },
-  selectedOptionText: { color: "#fff" },
-});
