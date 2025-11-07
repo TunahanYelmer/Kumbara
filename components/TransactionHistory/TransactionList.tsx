@@ -35,7 +35,7 @@ const iconSources: Record<Props["paymentType"], any> = {
   transport: require("@assets/transport.png"),
   bill: require("@assets/bill.png"),
   income: require("@assets/income.png"),
-  other: require("@assets/bill.png") // Reuses bill icon for "other"
+  other: require("@assets/other.png") // Reuses bill icon for "other"
 };
 
 /**
