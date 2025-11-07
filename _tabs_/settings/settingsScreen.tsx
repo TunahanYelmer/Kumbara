@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { Text, StyleSheet, View, Switch, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDataLayerValue } from "../../context/StateProvider";
-import { DarkTheme } from "@react-navigation/native";
+import { useDataLayerValue } from "../../context/state/StateProvider";
+import {useTheme} from "@/context/theme/ThemeProvider";
 import CurrencyModal from "@_tabs_/settings/CurrencyModal";
 
 export default function SettingsScreen() {
   const [
-    { Currency, BioEnabled, PinEnabled, GoalReminder, DailyReminder, DarkMode },
+    { Currency, BioEnabled, PinEnabled, GoalReminder, DailyReminder},
     dispatch
   ] = useDataLayerValue();
+  const [ theme , setTheme  ] = useTheme();
 
   const [modalVisible, setModalVisible] = useState(false);
   const handleCurrencySelections = () => {
@@ -17,9 +18,9 @@ export default function SettingsScreen() {
     
   };
   const handleThemeToggle = () => {
-    dispatch({
-      type: "SET_DARK_MODE"
-    });
+    setTheme(
+      { type:"SET_DARK_MODE" }
+    );
   };
   const handleDailyNotificationToggle = () => {
     dispatch({
@@ -44,6 +45,53 @@ export default function SettingsScreen() {
   const handleModalClose = () => {
     setModalVisible(false);
   }
+  const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: theme.SettingsScreenBackgroundColor
+  },
+  container: {},
+  settingsText: {
+    fontSize: 20,
+    textAlign: "center",
+    marginTop: 50
+  },
+  settingsTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    padding: 16,
+    textAlign: "center"
+  },
+  settingGroup: {
+    backgroundColor: theme.SettingsGroupBackgroundColor,
+    marginVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8
+  },
+  groupTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    paddingVertical: 12,
+    color: theme.SettingsGroupTitleColor
+  },
+  settingItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 12,
+    borderTopWidth: 1,
+    borderTopColor: theme.SettingsItemBorderColor
+  },
+  settingValue: {
+    color: theme.SettingsItemValueColor,
+  },
+  currencySymbol: {
+    fontWeight: "bold"
+  },
+  currencyCode: {
+    color: theme.SettingsCurrencyCodeColor
+  }
+});
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "bottom"]}>
@@ -96,7 +144,7 @@ export default function SettingsScreen() {
         <Text style={styles.groupTitle}>Görünüm</Text>
         <View style={styles.settingItem}>
           <Text>Karanlık Mod</Text>
-          <Switch onValueChange={handleThemeToggle} value={DarkMode} />
+          <Switch onValueChange={handleThemeToggle} value={theme.DarkMode} />
         </View>
       </View>
 
@@ -115,50 +163,4 @@ export default function SettingsScreen() {
     </SafeAreaView>
   );
 }
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#f5f5f5"
-  },
-  container: {},
-  settingsText: {
-    fontSize: 20,
-    textAlign: "center",
-    marginTop: 50
-  },
-  settingsTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    padding: 16,
-    textAlign: "center"
-  },
-  settingGroup: {
-    backgroundColor: "#fff",
-    marginVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8
-  },
-  groupTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    paddingVertical: 12,
-    color: "#243da3"
-  },
-  settingItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 12,
-    borderTopWidth: 1,
-    borderTopColor: "#f0f0f0"
-  },
-  settingValue: {
-    color: "#666"
-  },
-  currencySymbol: {
-    fontWeight: "bold"
-  },
-  currencyCode: {
-    color: "#999"
-  }
-});
+
