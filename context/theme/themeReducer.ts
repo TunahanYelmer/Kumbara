@@ -1,224 +1,253 @@
-export interface Theme {
+/**
+
+* Theme Interface
+* ---
+* Defines the complete structure of a theme object used across the app.
+* Includes both color tokens and mode-specific design variables.
+  */
+  export interface Theme {
   DarkMode: boolean;
 
-  LoadingIndicatorColor: string;
-  BackgroundColor: string;
-  TextColor: string;
-  BalanceCardColor: [string, string, ...string[]]; // at least 2 colors
-  BalanceCardTitleColor: string;
-  BalanceCardAmountColor: string;
-  ButtonBorderColor: string;
-  
-  ButtonColor: string;
-  ButtonTextColor: string;
-  TabColour: string;
-  TabButtonBgColor: string;
-  TabActiveColor: string;
-  TabActiveTextColor: string;
-  TabIconColour: string;
-  TabButtonInactiveColour: string;
-  TransactionHistoryLoadingColor: string;
-  TransactionHistoryEmptyTextColor: string;
-  TransactionTextIncomeColor: string;
-  TransactionTextExpenseColor: string;
-  TransactionTitleColor: string;
-  SeparatorColor: string;
-  WitdrawModalSelectedBg: string;
-  WitdrawModalOptionText: string;
-  HiglightColor: string;
-  TransactionButtonBgColor: string;
-  AddButtonTextColor: string;
-  AddButtonBgColor: string,
-  SubstractButtonBgColor: string,
-  SubstractButtonTextColor: string;
-  Balance: string;
-  FoodIconBgColor: string;
-  MarketIconBgColor: string;
-  TransportIconBgColor: string;
-  BillIconBgColor: string;
-  IncomeIconBgColor: string;
-  // Home Screen
-  HomeScreenBgColor: string;
-  HomeScreenGroupBackgroundColor: string;
-  HomeScreenGroupTitleColor: string;
-  HomeScreenItemBorderColor: string;
-  // Settings Screen
-  SettingsScreenBackgroundColor: string;
-  SettingsGroupBackgroundColor: string;
-  SettingsGroupTitleColor: string;
-  SettingsItemBorderColor: string;
-  SettingsItemValueColor: string;
-  SettingsCurrencyCodeColor: string;
+// Global Colors
+LoadingIndicatorColor: string;
+BackgroundColor: string;
+TextColor: string;
+ButtonBorderColor: string;
+ButtonColor: string;
+ButtonTextColor: string;
 
-  // Modals
-  ModalOverlayBgColor: string;
-  ModalBGColor: string;
+// Balance Card
+BalanceCardColor: [string, string, ...string[]]; // Gradient (min 2 colors)
+BalanceCardTitleColor: string;
+BalanceCardAmountColor: string;
 
+// Tabs
+TabColour: string;
+TabButtonBgColor: string;
+TabActiveColor: string;
+TabActiveTextColor: string;
+TabIconColour: string;
+TabButtonInactiveColour: string;
+
+// Transaction / History
+TransactionHistoryLoadingColor: string;
+TransactionHistoryEmptyTextColor: string;
+TransactionTextIncomeColor: string;
+TransactionTextExpenseColor: string;
+TransactionTitleColor: string;
+TransactionButtonBgColor: string;
+SeparatorColor: string;
+
+// Withdraw Modal
+WitdrawModalSelectedBg: string;
+WitdrawModalOptionText: string;
+
+// Highlights
+HiglightColor: string;
+Balance: string;
+
+// Action Buttons
+AddButtonTextColor: string;
+AddButtonBgColor: string;
+SubstractButtonBgColor: string;
+SubstractButtonTextColor: string;
+
+// Category Icon Backgrounds
+FoodIconBgColor: string;
+MarketIconBgColor: string;
+TransportIconBgColor: string;
+BillIconBgColor: string;
+IncomeIconBgColor: string;
+
+// Home Screen
+HomeScreenBgColor: string;
+HomeScreenGroupBackgroundColor: string;
+HomeScreenGroupTitleColor: string;
+HomeScreenItemBorderColor: string;
+
+// Settings Screen
+SettingsScreenBackgroundColor: string;
+SettingsGroupBackgroundColor: string;
+SettingsGroupTitleColor: string;
+SettingsItemBorderColor: string;
+SettingsItemValueColor: string;
+SettingsCurrencyCodeColor: string;
+
+// Modals
+ModalOverlayBgColor: string;
+ModalBGColor: string;
 }
 
-export const initialTheme: Theme = {
-  // Light Mode - modern, clean, vivid palette
+/* ──────────────────────────────
+
+* LIGHT THEME CONFIGURATION
+* ────────────────────────────── */
+  export const initialTheme: Theme = {
   DarkMode: false,
-  BackgroundColor: "#FFFFFF", // soft light gray
-  LoadingIndicatorColor: "#2563EB", // vibrant blue
-  TextColor: "#1F2937", // dark slate gray, readable
-  
-  // Buttons & Borders
-  ButtonBorderColor: "#E5E7EB", // soft gray
-  ButtonColor: "#3B82F6", // bold blue
-  ButtonTextColor: "#FFFFFF", // readable white
-  
-  // Balance Card
-  BalanceCardColor: ["#3856d9", "#253cb0"], // deep to vivid blue gradient
-  BalanceCardTitleColor: "#d5dbf5", // off-white
-  BalanceCardAmountColor: "#d5dbf5",
-  
-  // Tabs & Action Buttons
-  TabButtonBgColor: "#F3F4F6", // soft background for buttons
-  TabColour: "#F3F4F6",
-  TabActiveColor: "#0f2ba8",
-  TabActiveTextColor: "#0f2ba8",
-  TabIconColour: "#0f2ba8",
-  TabButtonInactiveColour: "#c4c9d6",
-  
-  // Transaction / History
-  TransactionHistoryLoadingColor: "#2563EB",
-  TransactionHistoryEmptyTextColor: "#9CA3AF",
-  TransactionTextIncomeColor: "#536082", // vivid green for income
-  TransactionTextExpenseColor: "#536082", // vivid red for expense
-  TransactionTitleColor: "#77809a",
-  TransactionButtonBgColor: "#FFFFFF",
-  SeparatorColor:"#677399" ,// soft blue for buttons
-  
-  // Action Buttons
-  AddButtonTextColor: "#677399",
-  AddButtonBgColor: "#e7eafe",
-  SubstractButtonBgColor: "#e7eafe",
-  SubstractButtonTextColor: "#677399",
+  BackgroundColor: "#FFFFFF",
+  LoadingIndicatorColor: "#2563EB",
+  TextColor: "#1F2937",
 
-  
-  // Withdraw Modal
-  WitdrawModalSelectedBg: "#3B82F6",
-  WitdrawModalOptionText: "#1F2937",
-  
-  // Highlights
-  HiglightColor: "#DBEAFE",
-  Balance: "#2563EB",
-  
-  // Category Icons
-  FoodIconBgColor: "#fff4ad", // yellow pastel
-  MarketIconBgColor: "#ffb682", // light blue
-  TransportIconBgColor: "#ff7aa7", // sky blue
-  BillIconBgColor: "#dcb8ff", // pink/red
-  IncomeIconBgColor: "#d9f0a1", // light green
-  
-  // Home Screen
-  HomeScreenBgColor: "#fefeff",
-  HomeScreenGroupBackgroundColor: "#FFFFFF",
-  HomeScreenGroupTitleColor: "#1F2937",
-  HomeScreenItemBorderColor: "#E5E7EB",
-  
-  // Settings Screen
-  SettingsScreenBackgroundColor: "#fefeff",
-  SettingsGroupBackgroundColor: "#FFFFFF",
-  SettingsGroupTitleColor: "#6d7795",
-  SettingsItemBorderColor: "#E5E7EB",
-  SettingsItemValueColor: "#6B7280",
-  SettingsCurrencyCodeColor: "#6d7795",
+// Buttons
+ButtonBorderColor: "#E5E7EB",
+ButtonColor: "#3B82F6",
+ButtonTextColor: "#FFFFFF",
 
-  //ModalS
-  ModalBGColor: "#FFFFFF",
-  ModalOverlayBgColor: "rgba(0,0,0,0.5)" // light gray transparent
-, // semi-transparent black
+// Balance Card
+BalanceCardColor: ["#3856d9", "#253cb0"],
+BalanceCardTitleColor: "#d5dbf5",
+BalanceCardAmountColor: "#d5dbf5",
+
+// Tabs
+TabButtonBgColor: "#F3F4F6",
+TabColour: "#F3F4F6",
+TabActiveColor: "#0f2ba8",
+TabActiveTextColor: "#0f2ba8",
+TabIconColour: "#0f2ba8",
+TabButtonInactiveColour: "#c4c9d6",
+
+// Transactions / History
+TransactionHistoryLoadingColor: "#2563EB",
+TransactionHistoryEmptyTextColor: "#9CA3AF",
+TransactionTextIncomeColor: "#536082",
+TransactionTextExpenseColor: "#536082",
+TransactionTitleColor: "#77809a",
+TransactionButtonBgColor: "#FFFFFF",
+SeparatorColor: "#677399",
+
+// Action Buttons
+AddButtonTextColor: "#677399",
+AddButtonBgColor: "#e7eafe",
+SubstractButtonBgColor: "#e7eafe",
+SubstractButtonTextColor: "#677399",
+
+// Withdraw Modal
+WitdrawModalSelectedBg: "#3B82F6",
+WitdrawModalOptionText: "#1F2937",
+
+// Highlights
+HiglightColor: "#DBEAFE",
+Balance: "#2563EB",
+
+// Category Icons
+FoodIconBgColor: "#fff4ad",
+MarketIconBgColor: "#ffb682",
+TransportIconBgColor: "#ff7aa7",
+BillIconBgColor: "#dcb8ff",
+IncomeIconBgColor: "#d9f0a1",
+
+// Home Screen
+HomeScreenBgColor: "#fefeff",
+HomeScreenGroupBackgroundColor: "#FFFFFF",
+HomeScreenGroupTitleColor: "#1F2937",
+HomeScreenItemBorderColor: "#E5E7EB",
+
+// Settings Screen
+SettingsScreenBackgroundColor: "#fefeff",
+SettingsGroupBackgroundColor: "#FFFFFF",
+SettingsGroupTitleColor: "#6d7795",
+SettingsItemBorderColor: "#E5E7EB",
+SettingsItemValueColor: "#6B7280",
+SettingsCurrencyCodeColor: "#6d7795",
+
+// Modals
+ModalBGColor: "#FFFFFF",
+ModalOverlayBgColor: "rgba(0,0,0,0.5)"
 };
 
-export const darkTheme: Theme = {
-  // Dark Mode - deep dark, vibrant blue accents
+/* ──────────────────────────────
+
+* DARK THEME CONFIGURATION
+* ────────────────────────────── */
+  export const darkTheme: Theme = {
   DarkMode: true,
-  BackgroundColor: "#0F172A", // very dark navy
-  LoadingIndicatorColor: "#60A5FA", // soft blue
-  TextColor: "#E0E7FF", // soft white
-  
-  // Buttons & Borders
-  ButtonBorderColor: "#1E293B",
-  ButtonColor: "#2563EB", // bright blue
-  ButtonTextColor: "#FFFFFF",
-  
-  // Balance Card
-  BalanceCardColor: ["#1E3A8A", "#3B82F6"], // deep to vivid gradient
-  BalanceCardTitleColor: "#E0E7FF",
-  BalanceCardAmountColor: "#FACC15", // gold accent
-  
-  // Tabs & Action Buttons
-  TabButtonBgColor: "#1E293B",
-  TabColour: "#1E293B",
-  TabActiveColor: "#3B82F6",
-  TabActiveTextColor: "#FFFFFF",
-  TabIconColour: "#F87171", // coral red
-  TabButtonInactiveColour: "#64748B",
-  
-  // Transaction / History
-  TransactionHistoryLoadingColor: "#60A5FA",
-  TransactionHistoryEmptyTextColor: "#94A3B8",
-  TransactionTextIncomeColor: "#22C55E", // vivid green
-  TransactionTextExpenseColor: "#F87171", // coral red
-  TransactionTitleColor: "#E0E7FF",
-  TransactionButtonBgColor: "#1E293B",
-  SeparatorColor:"#334155",
-  
-  // Action Buttons
-  AddButtonTextColor: "#60A5FA",
-   AddButtonBgColor: "#DBEAFE",
-  SubstractButtonBgColor: "#E0E7FF",
-  SubstractButtonTextColor: "#F87171",
-  
-  // Withdraw Modal
-  WitdrawModalSelectedBg: "#2563EB",
-  WitdrawModalOptionText: "#E0E7FF",
-  
-  // Highlights
-  HiglightColor: "#1E293B",
-  Balance: "#FACC15",
-  
-  // Category Icons
-  FoodIconBgColor: "#ffbe0b", // amber
-  MarketIconBgColor: "#fb5607", // purple
-  TransportIconBgColor: "#ff006e", // sky blue
-  BillIconBgColor: "#8338ec", // red
-  IncomeIconBgColor: "#8ac926", // green
-  
-  // Home Screen
-  HomeScreenBgColor: "#0F172A",
-  HomeScreenGroupBackgroundColor: "#1E293B",
-  HomeScreenGroupTitleColor: "#E0E7FF",
-  HomeScreenItemBorderColor: "#1E293B",
-  
-  // Settings Screen
-  SettingsScreenBackgroundColor: "#0F172A",
-  SettingsGroupBackgroundColor: "#1E293B",
-  SettingsGroupTitleColor: "#E0E7FF",
-  SettingsItemBorderColor: "#1E293B",
-  SettingsItemValueColor: "#94A3B8",
-  SettingsCurrencyCodeColor: "#60A5FA",
+  BackgroundColor: "#0F172A",
+  LoadingIndicatorColor: "#60A5FA",
+  TextColor: "#E0E7FF",
 
-  //ModalS
-  ModalBGColor: "#1E293B",
-  ModalOverlayBgColor: "rgba(0,0,0,0.5)",
+// Buttons
+ButtonBorderColor: "#1E293B",
+ButtonColor: "#2563EB",
+ButtonTextColor: "#FFFFFF",
 
+// Balance Card
+BalanceCardColor: ["#5cce43", "#99FF00"],
+BalanceCardTitleColor: "#E0E7FF",
+BalanceCardAmountColor: "#FACC15",
 
+// Tabs
+TabButtonBgColor: "#1E293B",
+TabColour: "#1E293B",
+TabActiveColor: "#5cce43",
+TabActiveTextColor: "#FFFFFF",
+TabIconColour: "#5cce43",
+TabButtonInactiveColour: "#64748B",
+
+// Transactions / History
+TransactionHistoryLoadingColor: "#60A5FA",
+TransactionHistoryEmptyTextColor: "#94A3B8",
+TransactionTextIncomeColor: "#ffffff",
+TransactionTextExpenseColor: "#ffffff",
+TransactionTitleColor: "#E0E7FF",
+TransactionButtonBgColor: "#1E293B",
+SeparatorColor: "#334155",
+
+// Action Buttons
+AddButtonTextColor: "#FFFFFF",
+AddButtonBgColor: "#5cce43",
+SubstractButtonBgColor: "#5cce43",
+SubstractButtonTextColor: "#FFFFFF",
+
+// Withdraw Modal
+WitdrawModalSelectedBg: "#2563EB",
+WitdrawModalOptionText: "#E0E7FF",
+
+// Highlights
+HiglightColor: "#1E293B",
+Balance: "#FFffff",
+
+// Category Icons
+FoodIconBgColor: "#ffbe0b",
+MarketIconBgColor: "#fb5607",
+TransportIconBgColor: "#ff006e",
+BillIconBgColor: "#8338ec",
+IncomeIconBgColor: "#8ac926",
+
+// Home Screen
+HomeScreenBgColor: "#0F172A",
+HomeScreenGroupBackgroundColor: "#1E293B",
+HomeScreenGroupTitleColor: "#E0E7FF",
+HomeScreenItemBorderColor: "#1E293B",
+
+// Settings Screen
+SettingsScreenBackgroundColor: "#0F172A",
+SettingsGroupBackgroundColor: "#1E293B",
+SettingsGroupTitleColor: "#E0E7FF",
+SettingsItemBorderColor: "#1E293B",
+SettingsItemValueColor: "#94A3B8",
+SettingsCurrencyCodeColor: "#60A5FA",
+
+// Modals
+ModalBGColor: "#1E293B",
+ModalOverlayBgColor: "rgba(0,0,0,0.5)"
 };
 
-export type Action = { type: "SET_DARK_MODE"; payload?: boolean };
+/* ──────────────────────────────
+
+* THEME REDUCER
+* Handles toggling between light and dark themes.
+* ────────────────────────────── */
+  export type Action = { type: "SET_DARK_MODE"; payload?: boolean };
 
 const themeReducer = (theme: Theme, action: Action): Theme => {
-  switch (action.type) {
-    case "SET_DARK_MODE":
-      const isDark = !theme.DarkMode;
-      return isDark ? darkTheme : initialTheme;
+if  (action.type === "SET_DARK_MODE") {
+ 
+const isDark = !theme.DarkMode;
+return isDark ? darkTheme : initialTheme;
+}
 
-    default:
-      return theme;
-  }
+return theme;
+
 };
 
 export default themeReducer;

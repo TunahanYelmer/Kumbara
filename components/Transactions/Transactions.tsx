@@ -3,9 +3,8 @@ import {
   View,
   Text,
   Image,
-  StyleSheet,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import AddMoneyModal from "@/components/AddMoneyModal/AddMoneyModal";
 import WithdrawMoneyModal from "@/components/WithDrawMoneyModal/WithdrawMoneyModal";
@@ -21,14 +20,21 @@ const Transactions: FC = () => {
     amount: number;
     reason: string;
   } | null>(null);
-    const [theme] = useTheme();
 
-  const styles = createTransactionsStyles(theme , width , height);
+  const [theme] = useTheme();
+  const styles = createTransactionsStyles(theme, width, height);
 
- 
+  // Use correct require() syntax for React Native images
+  const AddButtonIcon = theme.DarkMode
+    ? require("@assets/add-white.png")
+    : require("@assets/add.png");
+  const WithdrawButtonIcon = theme.DarkMode
+    ? require("@assets/withdraw-white.png")
+    : require("@assets/withdraw.png");
+
   return (
     <View style={styles.container}>
-      {/* Add Money */}
+      {/* ----------------- Add Money Section ----------------- */}
       <View style={styles.add}>
         <TouchableOpacity
           testID="add-money-button"
@@ -39,12 +45,12 @@ const Transactions: FC = () => {
             modalVisible={addModalVisible}
             setModalVisible={setAddModalVisible}
           />
-          <Image source={require("@assets/add.png")} style={styles.icon} />
-          <Text style={styles.buttonText}>Para Ekle</Text>
+          <Image source={AddButtonIcon} style={styles.icon} />
+          <Text style={styles.AddbuttonText}>Para Ekle</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Withdraw Money */}
+      {/* ----------------- Withdraw Money Section ----------------- */}
       <View style={styles.substract}>
         <TouchableOpacity
           testID="withdraw-money-button"
@@ -56,11 +62,8 @@ const Transactions: FC = () => {
             setModalVisible={setWithdrawModalVisible}
             onConfirm={(amount, reason) => setWithdrawData({ amount, reason })}
           />
-          <Image
-            source={require("@assets/withdraw.png")}
-            style={styles.icon}
-          />
-          <Text style={styles.buttonText}>Para Çıkar</Text>
+          <Image source={WithdrawButtonIcon} style={styles.icon} />
+          <Text style={styles.SubstructButtonText}>Para Çıkar</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -68,5 +71,3 @@ const Transactions: FC = () => {
 };
 
 export default Transactions;
-
-

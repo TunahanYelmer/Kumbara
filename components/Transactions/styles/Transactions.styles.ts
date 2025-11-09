@@ -48,12 +48,17 @@ export const createTransactionsStyles = (theme: Theme , width : number , height 
       paddingHorizontal: width * 0.03,
       borderRadius: width * 0.02
     },
-    buttonText: {
-      color: theme.SubstractButtonTextColor,
+    AddbuttonText: {
+      color: theme.AddButtonTextColor,
       fontWeight: "500",
       textAlign: "center",
       fontSize: width * 0.04
-    }
+    },
+    SubstructButtonText: {
+      color: theme.SubstractButtonTextColor,
+      fontWeight: "500",
+      textAlign: "center",
+      fontSize: width * 0.04}
   });
 
  
