@@ -69,9 +69,9 @@ export default function SettingsScreen() {
           <Text style={styles.settingValue}>
             <Text style={styles.currencySymbol}>
               {Currency ? Currency[0].symbol : "₺"}
-            </Text>{" "}
+            </Text>
             <Text style={styles.currencyCode}>
-              {Currency ? Currency[0].code : "TRY"}
+              {" " + (Currency ? Currency[0].code : "TRY")}
             </Text>
           </Text>
         </TouchableOpacity>

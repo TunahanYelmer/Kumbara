@@ -12,14 +12,20 @@ export const createWidthrawMoneyModalStyles = (theme: Theme) =>
          },
          modal: {
            backgroundColor: theme.ModalBGColor,
+          
            width: "80%",
            padding: 20,
            borderRadius: 10
          },
-         modalTitle: { fontWeight: "bold", fontSize: 18, marginBottom: 10 },
+         modalTitle: { fontWeight: "bold", fontSize: 18, marginBottom: 10, 
+          color:theme.ModalTitleColor, justifyContent:"center",
+           alignItems:"center",
+         },
          input: {
+          
            borderWidth: 1,
-           borderColor: theme.ButtonBorderColor,
+           borderColor: theme.WithdrawModalInputBorderColor,
+           borderRadius:8,
            padding: 8,
            width: "100%"
          },
@@ -32,10 +38,10 @@ export const createWidthrawMoneyModalStyles = (theme: Theme) =>
            flex: 1,
            marginHorizontal: 5,
            padding: 10,
-           backgroundColor: theme.ButtonColor,
+           backgroundColor: theme.ModalButtonBGColor,
            borderRadius: 8
          },
-         buttonText: { color: "#fff", textAlign: "center" },
+         buttonText: { color: theme.ModalButtonTextColor, textAlign: "center" },
          optionButton: {
            padding: 10,
            marginVertical: 5,

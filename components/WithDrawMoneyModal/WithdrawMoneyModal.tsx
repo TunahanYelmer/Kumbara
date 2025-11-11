@@ -132,10 +132,7 @@ export default function WithdrawMoneyModal({
                 </TouchableOpacity>
                 <TouchableOpacity
                   testID="cancelButton"
-                  style={[
-                    styles.modalButton,
-                    { backgroundColor: theme.ButtonColor }
-                  ]}
+                  style={[styles.modalButton]}
                   onPress={handleCancel}
                 >
                   <Text style={styles.buttonText}>Cancel</Text>
@@ -179,10 +176,7 @@ export default function WithdrawMoneyModal({
                 </TouchableOpacity>
                 <TouchableOpacity
                   testID="cancelButtonReason"
-                  style={[
-                    styles.modalButton,
-                    { backgroundColor: theme.ButtonColor }
-                  ]}
+                  style={[styles.modalButton]}
                   onPress={handleCancel}
                   disabled={loading}
                 >

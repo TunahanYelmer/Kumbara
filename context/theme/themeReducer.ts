@@ -41,6 +41,7 @@ SeparatorColor: string;
 // Withdraw Modal
 WitdrawModalSelectedBg: string;
 WitdrawModalOptionText: string;
+WithdrawModalInputBorderColor:string;
 
 // Highlights
 HiglightColor: string;
@@ -76,6 +77,9 @@ SettingsCurrencyCodeColor: string;
 // Modals
 ModalOverlayBgColor: string;
 ModalBGColor: string;
+ModalTitleColor:string
+ModalButtonTextColor:string
+ModalButtonBGColor:string
 }
 
 /* ──────────────────────────────
@@ -124,6 +128,7 @@ SubstractButtonTextColor: "#677399",
 // Withdraw Modal
 WitdrawModalSelectedBg: "#3B82F6",
 WitdrawModalOptionText: "#1F2937",
+WithdrawModalInputBorderColor:"#E5E7EB",
 
 // Highlights
 HiglightColor: "#DBEAFE",
@@ -143,16 +148,19 @@ HomeScreenGroupTitleColor: "#1F2937",
 HomeScreenItemBorderColor: "#E5E7EB",
 
 // Settings Screen
-SettingsScreenBackgroundColor: "#fefeff",
+SettingsScreenBackgroundColor: "#e0f0ff",
 SettingsGroupBackgroundColor: "#FFFFFF",
-SettingsGroupTitleColor: "#6d7795",
+SettingsGroupTitleColor: "#0f2ba8",
 SettingsItemBorderColor: "#E5E7EB",
-SettingsItemValueColor: "#6B7280",
+SettingsItemValueColor: "#000000",
 SettingsCurrencyCodeColor: "#6d7795",
 
 // Modals
 ModalBGColor: "#FFFFFF",
-ModalOverlayBgColor: "rgba(0,0,0,0.5)"
+ModalOverlayBgColor: "rgba(0,0,0,0.5)",
+ModalTitleColor:"#6d7795",
+ModalButtonTextColor:"#6d7795",
+ModalButtonBGColor:"#5cce43"
 };
 
 /* ──────────────────────────────
@@ -201,6 +209,7 @@ SubstractButtonTextColor: "#FFFFFF",
 // Withdraw Modal
 WitdrawModalSelectedBg: "#2563EB",
 WitdrawModalOptionText: "#E0E7FF",
+WithdrawModalInputBorderColor:"#5cce43",
 
 // Highlights
 HiglightColor: "#1E293B",
@@ -229,7 +238,10 @@ SettingsCurrencyCodeColor: "#5cce43",
 
 // Modals
 ModalBGColor: "#1E293B",
-ModalOverlayBgColor: "rgba(0,0,0,0.5)"
+ModalOverlayBgColor: "rgba(0,0,0,0.5)",
+ModalTitleColor:"#FFFFFF",
+ModalButtonTextColor:"#FFFFFF",
+ModalButtonBGColor:"#5cce43"
 };
 
 /* ──────────────────────────────

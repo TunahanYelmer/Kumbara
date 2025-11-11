@@ -18,14 +18,16 @@ export const createAddMoneyModalStyles = (theme: Theme) =>
           alignItems: "center"
         },
         modalTitle: {
+          color:theme.ModalTitleColor,
           fontSize: 18,
           fontWeight: "bold",
           marginBottom: 15
         },
         input: {
+          color:theme.ModalTitleColor,
           width: "100%",
           borderWidth: 1,
-          borderColor: theme.ButtonBorderColor,
+          borderColor: theme.WithdrawModalInputBorderColor,
           borderRadius: 8,
           padding: 10,
           marginBottom: 20,
@@ -38,7 +40,7 @@ export const createAddMoneyModalStyles = (theme: Theme) =>
         },
         modalButton: {
           flex: 1,
-          backgroundColor: theme.ButtonColor,
+          backgroundColor: theme.ModalButtonBGColor,
           padding: 10,
           borderRadius: 8,
           alignItems: "center",

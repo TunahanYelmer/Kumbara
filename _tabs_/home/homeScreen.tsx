@@ -57,7 +57,6 @@ export default function HomeScreen() {
       <View style={styles.container}>
         <User />
         <View style={{    alignItems: "center" }}>
-          {" "}
           <BalanceCard />
         </View>
 
