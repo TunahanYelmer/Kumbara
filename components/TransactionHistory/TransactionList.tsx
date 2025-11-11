@@ -159,7 +159,7 @@ testID="icon-bg"
       ]}
       testID="transaction-amount"
     >
-      <Text>{formattedAmount}</Text>{" "}
+      <Text>{formattedAmount}</Text>
       <Text>{Currency ? Currency[0].symbol : "₺"}</Text>
     </Text>
   </View>

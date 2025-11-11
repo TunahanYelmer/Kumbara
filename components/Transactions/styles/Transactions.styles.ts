@@ -13,7 +13,8 @@ export const createTransactionsStyles = (theme: Theme , width : number , height 
     add: {
       flexDirection: "row",
       backgroundColor: theme.AddButtonBgColor,
-      padding: width * 0.025,
+      padding: width * 0.02,
+      marginLeft : width * 0.03,
       borderRadius: width * 0.07,
       alignItems: "center",
       justifyContent: "center",
@@ -25,7 +26,8 @@ export const createTransactionsStyles = (theme: Theme , width : number , height 
     substract: {
       flexDirection: "row",
       backgroundColor: theme.SubstractButtonBgColor,
-      padding: width * 0.025,
+      padding: width * 0.02,
+      marginRight : width * 0.03,
       borderRadius: width * 0.07,
       alignItems: "center",
       justifyContent: "center",

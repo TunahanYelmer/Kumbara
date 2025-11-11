@@ -224,8 +224,8 @@ SettingsScreenBackgroundColor: "#0F172A",
 SettingsGroupBackgroundColor: "#1E293B",
 SettingsGroupTitleColor: "#E0E7FF",
 SettingsItemBorderColor: "#1E293B",
-SettingsItemValueColor: "#94A3B8",
-SettingsCurrencyCodeColor: "#60A5FA",
+SettingsItemValueColor: "#ffffff",
+SettingsCurrencyCodeColor: "#5cce43",
 
 // Modals
 ModalBGColor: "#1E293B",

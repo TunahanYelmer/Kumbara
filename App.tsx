@@ -83,7 +83,7 @@ const AppNavigator = () => {
 function AppContent() {
   return (
     <StateProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
+      <GestureHandlerRootView style={{ flex: 1 , }}>
         <NavigationContainer>
           <AppNavigator />
         </NavigationContainer>
@@ -95,7 +95,7 @@ function AppContent() {
 export default function App() {
   return (
     <ThemeProvider>
-      <AppContent />
+      <AppContent  />
     </ThemeProvider>
   );
 }
