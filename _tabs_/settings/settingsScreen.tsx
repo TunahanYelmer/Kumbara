@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useDataLayerValue } from "../../context/state/StateProvider";
 import {useTheme} from "@/context/theme/ThemeProvider";
 import CurrencyModal from "@_tabs_/settings/CurrencyModal";
+import { createSettinsSecreenStyles } from "./styles/SettingsScreen.styles";
 
 export default function SettingsScreen() {
   const [
@@ -11,6 +12,7 @@ export default function SettingsScreen() {
     dispatch
   ] = useDataLayerValue();
   const [ theme , setTheme  ] = useTheme();
+  const styles = createSettinsSecreenStyles(theme);
 
   const [modalVisible, setModalVisible] = useState(false);
   const handleCurrencySelections = () => {
@@ -45,53 +47,8 @@ export default function SettingsScreen() {
   const handleModalClose = () => {
     setModalVisible(false);
   }
-  const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: theme.SettingsScreenBackgroundColor
-  },
-  container: {},
-  settingsText: {
-    fontSize: 20,
-    textAlign: "center",
-    marginTop: 50
-  },
-  settingsTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    padding: 16,
-    textAlign: "center"
-  },
-  settingGroup: {
-    backgroundColor: theme.SettingsGroupBackgroundColor,
-    marginVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8
-  },
-  groupTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    paddingVertical: 12,
-    color: theme.SettingsGroupTitleColor
-  },
-  settingItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 12,
-    borderTopWidth: 1,
-    borderTopColor: theme.SettingsItemBorderColor
-  },
-  settingValue: {
-    color: theme.SettingsItemValueColor,
-  },
-  currencySymbol: {
-    fontWeight: "bold"
-  },
-  currencyCode: {
-    color: theme.SettingsCurrencyCodeColor
-  }
-});
+ 
+
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "bottom"]}>
@@ -108,7 +65,7 @@ export default function SettingsScreen() {
             handleCurrencySelections();
           }}
         >
-          <Text>Para Birimi Seç</Text>
+          <Text style={styles.settingValue}>Para Birimi Seç</Text>
           <Text style={styles.settingValue}>
             <Text style={styles.currencySymbol}>
               {Currency ? Currency[0].symbol : "₺"}
@@ -124,14 +81,14 @@ export default function SettingsScreen() {
       <View style={styles.settingGroup}>
         <Text style={styles.groupTitle}>Bildirimler</Text>
         <View style={styles.settingItem}>
-          <Text>Günlük Hatırlatıcı</Text>
+          <Text  style={styles.settingValue}>Günlük Hatırlatıcı</Text>
           <Switch
             onValueChange={handleDailyNotificationToggle}
             value={DailyReminder}
           />
         </View>
         <View style={styles.settingItem}>
-          <Text>Hedef Bildirimleri</Text>
+          <Text style={styles.settingValue}>Hedef Bildirimleri</Text>
           <Switch
             onValueChange={handleGoalNotificationToggle}
             value={GoalReminder}
@@ -143,7 +100,7 @@ export default function SettingsScreen() {
       <View style={styles.settingGroup}>
         <Text style={styles.groupTitle}>Görünüm</Text>
         <View style={styles.settingItem}>
-          <Text>Karanlık Mod</Text>
+          <Text style={styles.settingValue}>Karanlık Mod</Text>
           <Switch onValueChange={handleThemeToggle} value={theme.DarkMode} />
         </View>
       </View>
@@ -152,11 +109,11 @@ export default function SettingsScreen() {
       <View style={styles.settingGroup}>
         <Text style={styles.groupTitle}>Güvenlik</Text>
         <View style={styles.settingItem}>
-          <Text>Pin ile Kilitle</Text>
+          <Text style={styles.settingValue}>Pin ile Kilitle</Text>
           <Switch onValueChange={handlePinToggle} value={PinEnabled} />
         </View>
         <View style={styles.settingItem}>
-          <Text>Biyometrik Kilit</Text>
+          <Text style={styles.settingValue}>Biyometrik Kilit</Text>
           <Switch onValueChange={handleBiometricToggle} value={BioEnabled} />
         </View>
       </View>
