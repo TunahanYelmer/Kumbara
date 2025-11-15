@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import { View, Text, Image, Dimensions } from "react-native";
 import { createUserStyles } from "./styles/User.styles";
 
 const { width } = Dimensions.get("window");

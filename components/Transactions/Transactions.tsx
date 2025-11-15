@@ -1,11 +1,5 @@
 import React, { FC, useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
 import AddMoneyModal from "@/components/AddMoneyModal/AddMoneyModal";
 import WithdrawMoneyModal from "@/components/WithDrawMoneyModal/WithdrawMoneyModal";
 import { useTheme } from "@/context/theme/ThemeProvider";

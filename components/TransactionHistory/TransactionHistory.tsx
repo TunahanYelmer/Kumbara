@@ -19,14 +19,13 @@ import { createTransactionHistoryStyles } from "./styles/TranscationHistory.styl
 
 const { width, height } = Dimensions.get("window");
 
-
 const TransactionsHistory = () => {
   const [selectedTab, setSelectedTab] = useState<TabType>("all");
-  
+
   const [isLoading, setIsLoading] = useState(true);
   const [{ Transactions }, dispatch] = useDataLayerValue();
-    const [theme] = useTheme();
-  const styles = createTransactionHistoryStyles(theme , width , height);
+  const [theme] = useTheme();
+  const styles = createTransactionHistoryStyles(theme, width, height);
 
   // Fetch transactions from API
   useEffect(() => {
@@ -115,7 +114,7 @@ const TransactionsHistory = () => {
       paymentType = "income";
     } else {
       // For withdrawals, use the category or default to "bill"
-      paymentType = (item.category || "bill");
+      paymentType = item.category || "bill";
     }
 
     return <TransactionList paymentType={paymentType} amount={item.amount} />;
@@ -142,7 +141,7 @@ const TransactionsHistory = () => {
       </Text>
     </View>
   );
- 
+
   return (
     <View style={styles.container} testID="transaction-history">
       {/* Tabs */}
