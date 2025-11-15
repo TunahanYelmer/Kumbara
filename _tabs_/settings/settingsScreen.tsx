@@ -2,27 +2,24 @@ import React, { useState } from "react";
 import { Text, StyleSheet, View, Switch, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDataLayerValue } from "../../context/state/StateProvider";
-import {useTheme} from "@/context/theme/ThemeProvider";
+import { useTheme } from "@/context/theme/ThemeProvider";
 import CurrencyModal from "@_tabs_/settings/CurrencyModal";
 import { createSettinsSecreenStyles } from "./styles/SettingsScreen.styles";
 
 export default function SettingsScreen() {
   const [
-    { Currency, BioEnabled, PinEnabled, GoalReminder, DailyReminder},
+    { Currency, BioEnabled, PinEnabled, GoalReminder, DailyReminder },
     dispatch
   ] = useDataLayerValue();
-  const [ theme , setTheme  ] = useTheme();
+  const [theme, setTheme] = useTheme();
   const styles = createSettinsSecreenStyles(theme);
 
   const [modalVisible, setModalVisible] = useState(false);
   const handleCurrencySelections = () => {
     setModalVisible(!modalVisible);
-    
   };
   const handleThemeToggle = () => {
-    setTheme(
-      { type:"SET_DARK_MODE" }
-    );
+    setTheme({ type: "SET_DARK_MODE" });
   };
   const handleDailyNotificationToggle = () => {
     dispatch({
@@ -46,9 +43,7 @@ export default function SettingsScreen() {
   };
   const handleModalClose = () => {
     setModalVisible(false);
-  }
- 
-
+  };
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "bottom"]}>
@@ -81,7 +76,7 @@ export default function SettingsScreen() {
       <View style={styles.settingGroup}>
         <Text style={styles.groupTitle}>Bildirimler</Text>
         <View style={styles.settingItem}>
-          <Text  style={styles.settingValue}>Günlük Hatırlatıcı</Text>
+          <Text style={styles.settingValue}>Günlük Hatırlatıcı</Text>
           <Switch
             onValueChange={handleDailyNotificationToggle}
             value={DailyReminder}
@@ -120,4 +115,3 @@ export default function SettingsScreen() {
     </SafeAreaView>
   );
 }
-
