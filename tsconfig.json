@@ -27,6 +27,12 @@
       ],
       "@assets/*": [
         "./assets/*"
+      ],
+      "@screens/*": [
+        "./screens/*"
+      ],
+      "@navigation/*": [
+        "./navigation/*"
       ]
     }
   },
