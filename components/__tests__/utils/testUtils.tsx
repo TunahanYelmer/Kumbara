@@ -1,10 +1,13 @@
 // test-utils.tsx
 import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react-native";
-import { StateProvider } from "@/context/state/StateProvider"; // ✅ named import
+import { StateProvider } from "@/context/state/StateProvider";
+import { ThemeProvider } from "@/context/theme/ThemeProvider";
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => (
-  <StateProvider>{children}</StateProvider>
+  <ThemeProvider>
+    <StateProvider>{children}</StateProvider>
+  </ThemeProvider>
 );
 
 const customRender = (

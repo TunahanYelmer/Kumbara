@@ -10,7 +10,7 @@ jest.mock('../../api/getTransactions');
 import { getTransactions } from '../../api/getTransactions';
 
 // Mock TransactionList component
-jest.mock('../TransactionList', () => {
+jest.mock('../TransactionHistory/TransactionList', () => {
   return function MockTransactionList({ paymentType, amount }: any) {
     return <Text testID="transaction-item">{`${paymentType}-${amount}`}</Text>;
   };

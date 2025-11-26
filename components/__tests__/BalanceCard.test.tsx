@@ -5,7 +5,7 @@ import * as api from "../../api/getBalance";
 import { useDataLayerValue } from "../../context/state/StateProvider";
 
 jest.mock("../../api/getBalance");
-jest.mock("../../context/StateProvider", () => ({
+jest.mock("../../context/state/StateProvider", () => ({
   useDataLayerValue: jest.fn(),
   StateProvider: ({ children }: any) => <>{children}</>,
   __esModule: true,

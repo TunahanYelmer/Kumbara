@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import { render, fireEvent, waitFor } from "@components/__tests__/utils/testUtils";
 import WithdrawMoneyModal from "@/components/WithDrawMoneyModal/WithdrawMoneyModal";
 import { useDataLayerValue } from "@/context/state/StateProvider";
 import { postTransaction } from "@api/postTransactions";
@@ -7,7 +7,7 @@ import { getTransactions } from "@api/getTransactions";
 
 jest.mock("../../api/postTransactions");
 jest.mock("../../api/getTransactions");
-jest.mock("../../context/StateProvider", () => ({
+jest.mock("../../context/state/StateProvider", () => ({
   useDataLayerValue: jest.fn(),
   StateProvider: ({ children }: any) => <>{children}</>,
   __esModule: true,
