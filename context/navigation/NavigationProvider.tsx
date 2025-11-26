@@ -67,7 +67,6 @@ export const NavigationProvider = ({ children }: { children: ReactNode }) => {
 
       if (navigationRef.isReady()) {
         navigationRef.navigate(route);
-        console.log("Routing");
       }
     },
     [dispatch]

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Image, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useTheme } from "@/context/theme/ThemeProvider";
@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator();
 export default function TabNavigator() {
   const [theme] = useTheme();
 
-  const styles = StyleSheet.create({
+  const styles = useMemo(() => StyleSheet.create({
     tabBarStyle: {
       backgroundColor: theme.BackgroundColor,
       height: 50,
@@ -18,7 +18,7 @@ export default function TabNavigator() {
       borderTopColor: theme.HiglightColor,
       borderTopWidth: 1
     }
-  });
+  }), [theme.BackgroundColor, theme.HiglightColor]);
 
   return (
     <Tab.Navigator
