@@ -22,6 +22,7 @@ export interface State {
   BioEnabled: boolean;
   PinEnabled: boolean;
   Balance: number;
+  ActiveTab: string;
   Transactions: Transactions[];
   Currency?: Currency[];
   // Add more state properties if needed
@@ -33,6 +34,7 @@ export const initialState: State = {
   BioEnabled: false,
   PinEnabled: false,
   Balance: 0,
+  ActiveTab: "Home",
   Transactions: [],
   Currency: [{ code: "TRY", symbol: "₺", name: "Turkish Lira" }]
   // Add more state properties if needed
@@ -48,7 +50,7 @@ export type Action =
   | { type: "SET_BIO_SECURITY" }
   | { type: "SET_DARK_MODE" }
   | { type: "SET_GOAL_REMİNDER" }
-  | { type: "SET_DAILY_REMINDER" };
+  | { type: "SET_DAILY_REMINDER" }| { type: "SET_ACTIVE_TAB"  ; ActiveTab?: string };
 
 // Add more action types if needed
 
@@ -90,6 +92,11 @@ const reducer = (state: State = initialState, action: Action): State => {
         ...state,
         DailyReminder: !state.DailyReminder
       };
+    case "SET_ACTIVE_TAB":
+      return {
+        ...state,
+        ActiveTab: action.ActiveTab ?? state.ActiveTab
+      };  
     // Add more cases for other actions if needed
     default:
       return state;
