@@ -16,6 +16,12 @@ ButtonBorderColor: string;
 ButtonColor: string;
 ButtonTextColor: string;
 
+//User
+
+UserBackgroundColor:string;
+
+
+
 // Balance Card
 BalanceCardColor: [string, string, ...string[]]; // Gradient (min 2 colors)
 BalanceCardTitleColor: string;
@@ -97,6 +103,10 @@ ButtonBorderColor: "#E5E7EB",
 ButtonColor: "#3B82F6",
 ButtonTextColor: "#FFFFFF",
 
+//User
+
+UserBackgroundColor:"rgba(255, 255, 255,0)",
+
 // Balance Card
 BalanceCardColor: ["#3856d9", "#253cb0"],
 BalanceCardTitleColor: "#d5dbf5",
@@ -177,6 +187,11 @@ ModalButtonBGColor:"#5cce43"
 ButtonBorderColor: "#1E293B",
 ButtonColor: "#2563EB",
 ButtonTextColor: "#FFFFFF",
+
+//User
+
+UserBackgroundColor:"rgba(255, 255, 255,0)",
+
 
 // Balance Card
 BalanceCardColor: ["#5cce43", "#99FF00"],
