@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { createNotificationScreenStyles } from "./styles/NotificationScreen.styles";
+import TabNavigator from "@/navigation/TabNavigator";
 
 const { width, height } = Dimensions.get("window");
 
