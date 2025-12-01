@@ -1,6 +1,18 @@
 import axios from "axios";
 
+
+const BASE_URL = "http://192.168.1.108:8082";
+ 
 export async function getBalance(): Promise<number> {
-  const response = await axios.get("http://192.168.1.108:8080/balance");
-  return response.data.balance;
+  try {
+    const response = await axios.get(`${BASE_URL}/balance`);
+    return response.data.balance;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      console.error("Error fetching balance:", err.response?.status, err.response?.data);
+    } else {
+      console.error("Unknown error fetching balance:", err);
+    }
+    throw err;
+  }
 }
