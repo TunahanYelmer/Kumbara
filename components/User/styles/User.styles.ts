@@ -1,28 +1,34 @@
 import { StyleSheet } from "react-native";
 import { Theme}from "@context/theme/themeReducer" // or wherever your Theme type is
 
-export const createUserStyles = (width : number) =>
+export const createUserStyles = (theme : Theme ,width : number) =>
 
        StyleSheet.create({
-  container: {
+  userContainer: {
     flexDirection: "row",
     alignItems: "center",
-    margin: width * 0.04, // ✅ responsive margin
+    justifyContent: "space-around",
+    margin: width * 0.015, // ✅ responsive margin
+    backgroundColor:theme.UserBackgroundColor // ✅ responsive margin
   },
-  image: {
+  userIcon: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  userImage: {
     width: width * 0.15, // ✅ 15% of screen width
     height: width * 0.15,
     borderRadius: width * 0.075, // ✅ keeps circle shape
     marginRight: width * 0.03,
   },
-  info: {
+  userInfo: {
     flexDirection: "column",
   },
-  label: {
+  userLabel: {
     fontWeight: "bold",
     fontSize: width * 0.045, // ✅ responsive font
   },
-  welcome: {
+  userWelcome: {
     fontSize: width * 0.04,
     color: "#555",
   },
