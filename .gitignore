@@ -2,13 +2,17 @@
 
 # dependencies
 node_modules/
-/database
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+!database/.gitkeep
 # Expo
 .expo/
 dist/
 web-build/
 expo-env.d.ts
 
+.claude.md
 # Native
 .kotlin/
 *.orig.*
@@ -17,15 +21,18 @@ expo-env.d.ts
 *.p12
 *.key
 *.mobileprovision
-
+.env 
 # Metro
 .metro-health-check*
-
+/backend/.env
 # debug
 npm-debug.*
 yarn-debug.*
 yarn-error.*
 
+*.db-journal
+*.db-wal
+*.db-shm
 # macOS
 .DS_Store
 *.pem
