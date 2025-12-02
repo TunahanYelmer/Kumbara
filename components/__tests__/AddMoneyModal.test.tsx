@@ -26,7 +26,7 @@ const mockPostTransaction = postTransaction as jest.MockedFunction<typeof postTr
 // ----------------------
 // Mock context
 // ----------------------
-jest.mock("../../context/StateProvider", () => ({
+jest.mock("../../context/state/StateProvider", () => ({
   useDataLayerValue: () => [
     { Balance: 1000, Transactions: [] },
     jest.fn(),
@@ -85,7 +85,7 @@ describe("AddMoneyModal", () => {
       expect(mockGetBalance).toHaveBeenCalled();
       expect(mockPostBalance).toHaveBeenCalledWith(1500);
       expect(mockPostTransaction).toHaveBeenCalledWith("deposit", 500, "income");
-      expect(alertMock).toHaveBeenCalledWith("Başarılı ✅", "500 eklendi.");
+      expect(alertMock).toHaveBeenCalledWith("Başarılı ✅", "500 TL eklendi.");
       expect(input.props.value).toBe("");
     });
   });

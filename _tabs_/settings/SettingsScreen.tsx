@@ -28,12 +28,12 @@ export default function SettingsScreen() {
   };
   const handleGoalNotificationToggle = () => {
     dispatch({
-      type: "SET_GOAL_REMİNDER"
+      type: "SET_GOAL_REMINDER"
     });
   };
   const handlePinToggle = () => {
     dispatch({
-      type: "SET_PIN_SECURİTY"
+      type: "SET_PIN_SECURITY"
     });
   };
   const handleBiometricToggle = () => {
@@ -54,10 +54,7 @@ export default function SettingsScreen() {
         <CurrencyModal modalVisible={modalVisible} onClose={handleModalClose} />
         <TouchableOpacity
           style={styles.settingItem}
-          onPress={() => {
-            console.log(modalVisible);
-            handleCurrencySelections();
-          }}
+          onPress={handleCurrencySelections}
         >
           <Text style={styles.settingValue}>Para Birimi Seç</Text>
           <Text style={styles.settingValue}>

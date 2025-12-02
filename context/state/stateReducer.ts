@@ -46,11 +46,12 @@ export type Action =
       Transactions?: Transactions[];
     }
   | { type: "SET_CURRENCY"; Currency?: Currency[] }
-  | { type: "SET_PIN_SECURİTY" }
+  | { type: "SET_PIN_SECURITY" }
   | { type: "SET_BIO_SECURITY" }
   | { type: "SET_DARK_MODE" }
-  | { type: "SET_GOAL_REMİNDER" }
-  | { type: "SET_DAILY_REMINDER" }| { type: "SET_ACTIVE_TAB"  ; ActiveTab?: string };
+  | { type: "SET_GOAL_REMINDER" }
+  | { type: "SET_DAILY_REMINDER" }
+  | { type: "SET_ACTIVE_TAB"; ActiveTab?: string };
 
 // Add more action types if needed
 
@@ -71,7 +72,7 @@ const reducer = (state: State = initialState, action: Action): State => {
         ...state,
         Currency: action.Currency ?? state.Currency
       };
-    case "SET_PIN_SECURİTY":
+    case "SET_PIN_SECURITY":
       return {
         ...state,
         PinEnabled: !state.PinEnabled
@@ -81,10 +82,10 @@ const reducer = (state: State = initialState, action: Action): State => {
         ...state,
         BioEnabled: !state.BioEnabled
       };
-   
-    case "SET_GOAL_REMİNDER":
+
+    case "SET_GOAL_REMINDER":
       return {
-        ...state, 
+        ...state,
         GoalReminder: !state.GoalReminder
       };
     case "SET_DAILY_REMINDER":

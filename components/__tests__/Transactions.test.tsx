@@ -4,13 +4,13 @@ import { Text } from "react-native";
 import Transactions from "../Transactions/Transactions";
 
 // --- Mock Modals ---
-jest.mock("../AddMoneyModal", () => {
+jest.mock("../AddMoneyModal/AddMoneyModal", () => {
   return ({ modalVisible }: { modalVisible: boolean }) => {
     return modalVisible ? <Text testID="add-modal">Add Modal Open</Text> : null;
   };
 });
 
-jest.mock("../WithdrawMoneyModal", () => {
+jest.mock("../WithDrawMoneyModal/WithdrawMoneyModal", () => {
   return ({
     modalVisible,
     onConfirm,
