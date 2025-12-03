@@ -7,6 +7,7 @@ import (
 	"github.com/joho/godotenv"
 	_ "github.com/mattn/go-sqlite3"
 
+	"backend/auth"
 	"backend/auth/google"
 	"backend/database"
 	"backend/routes"
@@ -18,14 +19,13 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 	database.InitDB()
-	db := database.GetDB()
 
 	http.HandleFunc("/balance", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
-			routes.GetBalance(w, r, db)
+			auth.AuthMiddleware(routes.GetBalance)(w, r)
 		case http.MethodPost:
-			routes.PostBalance(w, r, db)
+			auth.AuthMiddleware(routes.PostBalance)(w, r)
 		default:
 			database.WriteJSON(w, http.StatusMethodNotAllowed, map[string]string{"error": "Method not allowed"})
 		}
@@ -34,9 +34,9 @@ func main() {
 	http.HandleFunc("/transactions", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
-			routes.GetTransactions(w, r, db)
+			auth.AuthMiddleware(routes.GetTransactions)(w, r)
 		case http.MethodPost:
-			routes.PostTransaction(w, r, db)
+			auth.AuthMiddleware(routes.PostTransaction)(w, r)
 		default:
 			database.WriteJSON(w, http.StatusMethodNotAllowed, map[string]string{"error": "Method not allowed"})
 		}
