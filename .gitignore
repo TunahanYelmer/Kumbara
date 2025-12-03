@@ -12,6 +12,7 @@ dist/
 web-build/
 expo-env.d.ts
 
+CLAUDE.md
 .claude.md
 # Native
 .kotlin/
@@ -29,7 +30,7 @@ expo-env.d.ts
 npm-debug.*
 yarn-debug.*
 yarn-error.*
-
+.CLAUDE.md
 *.db-journal
 *.db-wal
 *.db-shm
