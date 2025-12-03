@@ -17,6 +17,7 @@ export const RootStack = () => {
     <Stack.Navigator
       screenOptions={{ headerShown: false, animation: "ios_from_right" }}
     >
+      <Stack.Screen name="AuthScreen" component={AuthScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="Notifications" component={NotificationScreen} />

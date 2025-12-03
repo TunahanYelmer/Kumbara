@@ -1,10 +1,11 @@
 import { createNavigationContainerRef } from "@react-navigation/native";
 
 export type RootStackParamList = {
+  AuthScreen: undefined;
   Home: undefined;
   Notifications: undefined;
   Settings: undefined;
-  Tabs:undefined;
+  Tabs: undefined;
   Profile: undefined;
   // add more here...
 };
