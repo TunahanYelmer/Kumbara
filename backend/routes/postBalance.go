@@ -1,14 +1,16 @@
 package routes
 
 import (
-	"database/sql"
 	"encoding/json"
 	"net/http"
 
+	"backend/auth"
 	"backend/database"
 )
 
-func PostBalance(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+func PostBalance(w http.ResponseWriter, r *http.Request) {
+
+	db := database.GetDB()
 	var req struct {
 		Balance float64 `json:"balance"`
 	}
@@ -16,7 +18,12 @@ func PostBalance(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		database.WriteJSON(w, http.StatusBadRequest, map[string]string{"error": "Invalid JSON"})
 		return
 	}
-	_, err := db.Exec("UPDATE balance SET amount = ? WHERE id = 1", req.Balance)
+	userID, ok := r.Context().Value(auth.UserIDKey).(int64)
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	_, err := db.Exec("UPDATE balance SET balance = ? WHERE user_id = ?", req.Balance, userID)
 	if err != nil {
 		database.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": "Failed to update balance"})
 		return
