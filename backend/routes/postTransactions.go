@@ -1,19 +1,29 @@
 package routes
 
 import (
-	"database/sql"
 	"encoding/json"
 	"net/http"
 
+	"backend/auth"
 	"backend/database"
 )
 
-func PostTransaction(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+func PostTransaction(w http.ResponseWriter, r *http.Request) {
+	db := database.GetDB()
+
+	// Extract user_id from JWT context (NOT from request body!)
+	userID, ok := r.Context().Value(auth.UserIDKey).(int64)
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
 	var req struct {
 		Type     string  `json:"type"`     // "deposit" or "withdraw"
 		Category string  `json:"category"` // optional
 		Amount   float64 `json:"amount"`
 	}
+
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		database.WriteJSON(w, http.StatusBadRequest, map[string]string{"error": "Invalid JSON"})
 		return
@@ -39,7 +49,7 @@ func PostTransaction(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	// Check balance for withdrawal
 	if req.Type == "withdraw" {
 		var balance float64
-		if err := tx.QueryRow("SELECT amount FROM balance WHERE id = 1").Scan(&balance); err != nil {
+		if err := tx.QueryRow("SELECT balance FROM balance WHERE user_id = ?", userID).Scan(&balance); err != nil {
 			database.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": "Failed to read balance"})
 			return
 		}
@@ -50,17 +60,17 @@ func PostTransaction(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	}
 
 	// Update balance
-	balanceSQL := "UPDATE balance SET amount = amount + ? WHERE id = 1"
+	amount := req.Amount
 	if req.Type == "withdraw" {
-		req.Amount = -req.Amount
+		amount = -req.Amount
 	}
-	if _, err := tx.Exec(balanceSQL, req.Amount); err != nil {
+	if _, err := tx.Exec("UPDATE balance SET balance = balance + ? WHERE user_id = ?", amount, userID); err != nil {
 		database.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": "Failed to update balance"})
 		return
 	}
 
 	// Insert transaction
-	_, err = tx.Exec("INSERT INTO transactions (type, category, amount) VALUES (?, ?, ?)", req.Type, req.Category, req.Amount)
+	_, err = tx.Exec("INSERT INTO transactions (user_id, type, category, amount) VALUES (?, ?, ?, ?)", userID, req.Type, req.Category, amount)
 	if err != nil {
 		database.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": "Failed to insert transaction"})
 		return
