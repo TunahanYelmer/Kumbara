@@ -49,7 +49,7 @@ func PostTransaction(w http.ResponseWriter, r *http.Request) {
 	// Check balance for withdrawal
 	if req.Type == "withdraw" {
 		var balance float64
-		if err := tx.QueryRow("SELECT balance FROM balance WHERE user_id = ?", userID).Scan(&balance); err != nil {
+		if err := tx.QueryRow("SELECT amount FROM balance WHERE user_id = ?", userID).Scan(&balance); err != nil {
 			database.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": "Failed to read balance"})
 			return
 		}
@@ -64,7 +64,7 @@ func PostTransaction(w http.ResponseWriter, r *http.Request) {
 	if req.Type == "withdraw" {
 		amount = -req.Amount
 	}
-	if _, err := tx.Exec("UPDATE balance SET balance = balance + ? WHERE user_id = ?", amount, userID); err != nil {
+	if _, err := tx.Exec("UPDATE balance SET amount = amount + ? WHERE user_id = ?", amount, userID); err != nil {
 		database.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": "Failed to update balance"})
 		return
 	}

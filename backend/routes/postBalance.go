@@ -23,7 +23,7 @@ func PostBalance(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
-	_, err := db.Exec("UPDATE balance SET balance = ? WHERE user_id = ?", req.Balance, userID)
+	_, err := db.Exec("UPDATE balance SET amount = ? WHERE user_id = ?", req.Balance, userID)
 	if err != nil {
 		database.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": "Failed to update balance"})
 		return

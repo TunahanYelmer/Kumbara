@@ -25,7 +25,7 @@ func GetTransactions(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	var txs []map[string]interface{}
+	txs := make([]map[string]interface{}, 0)
 	for rows.Next() {
 		var id int
 		var typ string

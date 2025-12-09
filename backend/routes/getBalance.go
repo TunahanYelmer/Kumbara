@@ -18,7 +18,7 @@ func GetBalance(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	err := db.QueryRow("SELECT amount FROM balance WHERE id = ?", userID).Scan(&amount)
+	err := db.QueryRow("SELECT amount FROM balance WHERE user_id = ?", userID).Scan(&amount)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			database.WriteJSON(w, http.StatusNotFound, map[string]string{"error": "Balance not found"})
