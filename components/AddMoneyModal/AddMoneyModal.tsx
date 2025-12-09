@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, Modal, TextInput, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  Modal,
+  TextInput,
+  TouchableOpacity,
+  Alert
+} from "react-native";
 import { useDataLayerValue } from "@/context/state/StateProvider";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { createAddMoneyModalStyles } from "./styles/AddMoneyModal.styles";
@@ -7,6 +14,7 @@ import { getBalance } from "@api/getBalance";
 import { postBalance } from "@api/postBalance";
 import { postTransaction } from "@api/postTransactions";
 import { Action, Transactions } from "@/context/state/stateReducer";
+import { getToken } from "@/utils/auth";
 
 interface AddMoneyModalProps {
   modalVisible: boolean; // Controls whether the modal is shown
@@ -45,12 +53,19 @@ export default function AddMoneyModal({
     }
 
     try {
+      // Get JWT token from storage
+      const jwtToken = await getToken();
+      if (!jwtToken) {
+        Alert.alert("Hata", "Oturum bulunamadı. Lütfen tekrar giriş yapın.");
+        return;
+      }
+
       // Fetch the current balance from the server
-      const currentBalance = await getBalance();
+      const currentBalance = await getBalance(jwtToken);
       const updatedBalance = currentBalance + numericAmount;
 
       // Update the balance on the server
-      await postBalance(updatedBalance);
+      await postBalance(updatedBalance, jwtToken);
 
       // Update global state with the new balance
       dispatch({ type: "SET_BALANCE", Balance: updatedBalance } as Action);
@@ -65,7 +80,7 @@ export default function AddMoneyModal({
       };
 
       // Save transaction on the server
-      await postTransaction("deposit", numericAmount, "income");
+      await postTransaction(jwtToken, "deposit", numericAmount, "income");
 
       // Update transaction list in global state
       dispatch({
@@ -123,7 +138,10 @@ export default function AddMoneyModal({
             {/* Cancel Button */}
             <TouchableOpacity
               testID="cancel-button"
-              style={[styles.modalButton, { backgroundColor: theme.ButtonColor }]}
+              style={[
+                styles.modalButton,
+                { backgroundColor: theme.ButtonColor }
+              ]}
               onPress={() => setModalVisible(false)}
             >
               <Text style={styles.buttonText}>İptal</Text>

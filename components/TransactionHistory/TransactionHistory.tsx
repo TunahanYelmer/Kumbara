@@ -13,12 +13,23 @@ type TabType = "all" | "income" | "expense";
 import { Transactions, Action } from "@/context/state/stateReducer";
 import { useDataLayerValue } from "@/context/state/StateProvider";
 import { getTransactions } from "@api/getTransactions";
+import { getToken } from "@/utils/auth";
 import TransactionList from "@/components/TransactionHistory/TransactionList";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { createTransactionHistoryStyles } from "./styles/TranscationHistory.styles";
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * TransactionsHistory Component
+ * -----------------------------
+ * Displays a filterable list of user transactions with tabs for:
+ * - All transactions
+ * - Income (deposits)
+ * - Expenses (withdrawals)
+ *
+ * Fetches transaction data from API on mount and updates global state.
+ */
 const TransactionsHistory = () => {
   const [selectedTab, setSelectedTab] = useState<TabType>("all");
 
@@ -27,15 +38,30 @@ const TransactionsHistory = () => {
   const [theme] = useTheme();
   const styles = createTransactionHistoryStyles(theme, width, height);
 
-  // Fetch transactions from API
+  // Fetch transactions from API on component mount
   useEffect(() => {
     handleRetrievingTransactions();
   }, []);
 
+  /**
+   * Fetches transactions from the backend API:
+   * 1. Retrieves JWT token from storage
+   * 2. Calls API to get user's transactions
+   * 3. Maps API response to local interface
+   * 4. Updates global state with transactions
+   */
   const handleRetrievingTransactions = async () => {
     try {
       setIsLoading(true);
-      const result = await getTransactions();
+
+      // Get JWT token from storage
+      const token = await getToken();
+      if (!token) {
+        console.error("❌ No token found");
+        return;
+      }
+
+      const result = await getTransactions(token);
 
       // Validate result
       if (!result || !Array.isArray(result)) {
@@ -95,10 +121,19 @@ const TransactionsHistory = () => {
     return false;
   });
 
+  /**
+   * Updates the selected tab filter
+   * @param tab - The tab to select ("all", "income", or "expense")
+   */
   const handleSelectedTab = (tab: TabType) => {
     setSelectedTab(tab);
   };
 
+  /**
+   * Renders a single transaction item in the FlatList
+   * Determines payment type based on transaction type and category
+   * @param item - The transaction object to render
+   */
   const renderItem = ({ item }: { item: Transactions }) => {
     if (!item) {
       console.warn("⚠️ Undefined item in renderItem");
@@ -136,8 +171,8 @@ const TransactionsHistory = () => {
         {selectedTab === "all"
           ? "Henüz işlem yok"
           : selectedTab === "income"
-          ? "Gelir işlemi yok"
-          : "Gider işlemi yok"}
+            ? "Gelir işlemi yok"
+            : "Gider işlemi yok"}
       </Text>
     </View>
   );

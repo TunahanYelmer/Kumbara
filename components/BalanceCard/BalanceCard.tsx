@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Dimensions, ActivityIndicator } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { getBalance } from "@api/getBalance";
+import { getToken } from "@/utils/auth";
 import { useDataLayerValue } from "@/context/state/StateProvider";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { createBalanceCardStyles } from "./styles/BalanceCard.styles";
@@ -36,8 +37,15 @@ const BalanceCard = () => {
 
     const fetchBalance = async () => {
       try {
+        // Get JWT token from storage
+        const token = await getToken();
+        if (!token) {
+          console.error("❌ No token found");
+          return;
+        }
+
         // Fetch user's balance via API
-        const result = await getBalance();
+        const result = await getBalance(token);
 
         // Only update state if component is still mounted
         if (isMounted) {

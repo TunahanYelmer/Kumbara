@@ -10,11 +10,23 @@ import {
 } from "react-native";
 import { getTransactions } from "@api/getTransactions";
 import { postTransaction } from "@api/postTransactions";
+import { getToken } from "@/utils/auth";
 import { useDataLayerValue } from "@/context/state/StateProvider";
 import { Transactions, Action } from "@/context/state/stateReducer";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { createWidthrawMoneyModalStyles } from "./styles/WithDrawMoneyModal..styles";
 
+/**
+ * WithdrawMoneyModal Component
+ * ----------------------------
+ * A two-step modal for withdrawing money from the user's balance.
+ * Step 1: User enters the amount to withdraw
+ * Step 2: User selects a reason/category for the withdrawal
+ *
+ * @param modalVisible - Controls whether the modal is displayed
+ * @param setModalVisible - Function to show/hide the modal
+ * @param onConfirm - Callback triggered after successful withdrawal
+ */
 interface WithdrawMoneyModalProps {
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
@@ -39,12 +51,20 @@ export default function WithdrawMoneyModal({
   const [theme] = useTheme();
   const styles = createWidthrawMoneyModalStyles(theme);
 
+  /**
+   * Updates the global balance state after withdrawal
+   * @param newBalance - The new balance after withdrawal
+   */
   const handleWithdrawBalanceUpdate = (newBalance: number) => {
     dispatch({ type: "SET_BALANCE", Balance: newBalance } as Action);
   };
 
-  const handleTransactionsUpdate = async () => {
-    const result = await getTransactions();
+  /**
+   * Fetches updated transactions from API and updates global state
+   * @param token - JWT authentication token
+   */
+  const handleTransactionsUpdate = async (token: string) => {
+    const result = await getTransactions(token);
     const transactions: Transactions[] = result.map((item: any) => ({
       id: item.transaction_id,
       type: item.type,
@@ -58,6 +78,12 @@ export default function WithdrawMoneyModal({
     } as Action);
   };
 
+  /**
+   * Validates the entered amount and proceeds to reason selection:
+   * 1. Checks if amount is a valid positive number
+   * 2. Verifies sufficient balance exists
+   * 3. Advances to reason selection step
+   */
   const handleNextAmount = () => {
     const numericAmount = parseFloat(amount);
     if (isNaN(numericAmount) || numericAmount <= 0) {
@@ -71,6 +97,14 @@ export default function WithdrawMoneyModal({
     setStep("reason");
   };
 
+  /**
+   * Handles the withdrawal confirmation:
+   * 1. Validates a reason is selected
+   * 2. Retrieves JWT token from storage
+   * 3. Posts withdrawal transaction to API
+   * 4. Updates local balance and transaction state
+   * 5. Resets modal state and closes
+   */
   const handleConfirmReason = async () => {
     if (!reason) {
       Alert.alert("Lütfen bir sebep seçin!");
@@ -78,10 +112,18 @@ export default function WithdrawMoneyModal({
     }
     setLoading(true);
     try {
-      await postTransaction("withdraw", parseFloat(amount), reason);
+      // Get JWT token from storage
+      const token = await getToken();
+      if (!token) {
+        Alert.alert("Hata", "Oturum bulunamadı. Lütfen tekrar giriş yapın.");
+        setLoading(false);
+        return;
+      }
+
+      await postTransaction(token, "withdraw", parseFloat(amount), reason);
       onConfirm(parseFloat(amount), reason);
       handleWithdrawBalanceUpdate(Balance - parseFloat(amount));
-      await handleTransactionsUpdate();
+      await handleTransactionsUpdate(token);
       setModalVisible(false);
       setStep("amount");
       setAmount("");
@@ -89,15 +131,21 @@ export default function WithdrawMoneyModal({
       setLoading(false);
     } catch (error) {
       Alert.alert("İşlem sırasında bir hata oluştu!");
+      setLoading(false);
     }
   };
 
+  /**
+   * Resets modal state and closes the modal
+   */
   const handleCancel = () => {
     setStep("amount");
     setAmount("");
     setReason(null);
     setModalVisible(false);
   };
+
+  // Available withdrawal reason categories
   const reasons = ["food", "market", "transport", "bill", "other"];
   const reasonsMap: Map<string, string> = new Map([
     ["food", "Yemek"],
