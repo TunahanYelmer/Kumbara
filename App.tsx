@@ -19,7 +19,7 @@ export default function App() {
             <GestureHandlerRootView style={{ flex: 1 }}>
               <SafeAreaView
                 style={{ flex: 1 }}
-                edges={["top", "left", "right"]}
+                edges={["top", "left", "right", "bottom"]}
               >
                 <NavigationContainer ref={navigationRef}>
                   <User />

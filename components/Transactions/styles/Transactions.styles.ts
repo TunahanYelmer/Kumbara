@@ -1,9 +1,12 @@
 import { StyleSheet } from "react-native";
-import { Theme}from "@context/theme/themeReducer" // or wherever your Theme type is
+import { Theme } from "@context/theme/themeReducer"; // or wherever your Theme type is
 
-export const createTransactionsStyles = (theme: Theme , width : number , height : number) =>
-
-    StyleSheet.create({
+export const createTransactionsStyles = (
+  theme: Theme,
+  width: number,
+  height: number
+) =>
+  StyleSheet.create({
     container: {
       flexDirection: "row",
       alignItems: "center",
@@ -14,7 +17,7 @@ export const createTransactionsStyles = (theme: Theme , width : number , height 
       flexDirection: "row",
       backgroundColor: theme.AddButtonBgColor,
       padding: width * 0.02,
-      marginLeft : width * 0.03,
+      marginLeft: width * 0.03,
       borderRadius: width * 0.07,
       alignItems: "center",
       justifyContent: "center",
@@ -27,7 +30,7 @@ export const createTransactionsStyles = (theme: Theme , width : number , height 
       flexDirection: "row",
       backgroundColor: theme.SubstractButtonBgColor,
       padding: width * 0.02,
-      marginRight : width * 0.03,
+      marginRight: width * 0.03,
       borderRadius: width * 0.07,
       alignItems: "center",
       justifyContent: "center",
@@ -60,7 +63,6 @@ export const createTransactionsStyles = (theme: Theme , width : number , height 
       color: theme.SubstractButtonTextColor,
       fontWeight: "500",
       textAlign: "center",
-      fontSize: width * 0.04}
+      fontSize: width * 0.04
+    }
   });
-
- 
