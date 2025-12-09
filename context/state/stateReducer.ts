@@ -1,3 +1,11 @@
+export interface User {
+  email: string | null | undefined;
+  name: string | null | undefined;
+  givenName: string | null | undefined;
+  photo: string | null | undefined;
+  id: string | null | undefined;
+}
+
 export interface Transactions {
   id: number;
   type: "deposit" | "withdraw";
@@ -25,6 +33,7 @@ export interface State {
   ActiveTab: string;
   Transactions: Transactions[];
   Currency?: Currency[];
+  User: User[] | undefined;
   // Add more state properties if needed
 }
 export const initialState: State = {
@@ -36,7 +45,8 @@ export const initialState: State = {
   Balance: 0,
   ActiveTab: "Home",
   Transactions: [],
-  Currency: [{ code: "TRY", symbol: "₺", name: "Turkish Lira" }]
+  Currency: [{ code: "TRY", symbol: "₺", name: "Turkish Lira" }],
+  User: []
   // Add more state properties if needed
 };
 export type Action =
@@ -51,7 +61,8 @@ export type Action =
   | { type: "SET_DARK_MODE" }
   | { type: "SET_GOAL_REMINDER" }
   | { type: "SET_DAILY_REMINDER" }
-  | { type: "SET_ACTIVE_TAB"; ActiveTab?: string };
+  | { type: "SET_ACTIVE_TAB"; ActiveTab?: string }
+  | { type: "SET_AUTH_USER"; User?: User[] };
 
 // Add more action types if needed
 
@@ -97,7 +108,12 @@ const reducer = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         ActiveTab: action.ActiveTab ?? state.ActiveTab
-      };  
+      };
+    case "SET_AUTH_USER":
+      return {
+        ...state,
+        User: action.User ?? state.User
+      };
     // Add more cases for other actions if needed
     default:
       return state;
