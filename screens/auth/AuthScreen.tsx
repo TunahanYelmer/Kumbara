@@ -1,22 +1,64 @@
-import { Text, View, TouchableOpacity, Dimensions, Alert } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+  Alert,
+  Image
+} from "react-native";
 import React from "react";
+import Constants from "expo-constants";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { createAuthScreenStyles } from "./styles/AuthScreen.styles";
 import { authenticateWithGoogle } from "@api/googleAuth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { GOOGLE_WEB_CLIENT_ID } from "@env";
 import { storeToken } from "@/utils/auth";
+import { useNavigationContext } from "@context/navigation/NavigationProvider";
+import HomeScreen from "@/_tabs_/home/HomeScreen";
 
 const { width } = Dimensions.get("window");
 
+/**
+ * AuthScreen Component
+ * --------------------
+ * The authentication screen providing multiple sign-in options:
+ * - Google Sign-In (OAuth)
+ * - Apple Sign-In (TODO)
+ * - Guest mode access
+ *
+ * Handles the complete Google OAuth flow including token exchange with backend.
+ */
 const AuthScreen = () => {
   const [theme] = useTheme();
   const styles = createAuthScreenStyles(theme, width);
+  const { navigate } = useNavigationContext();
 
+  /**
+   * Handles Google Sign-In authentication flow:
+   * 1. Configures Google Sign-In with web client ID
+   * 2. Triggers Google's sign-in UI
+   * 3. Receives Google ID token on success
+   * 4. Sends token to backend for JWT exchange
+   * 5. Stores JWT token locally for authenticated requests
+   */
   const handleGoogleSignIn = async () => {
     try {
+      const googleWebClientId = Constants.expoConfig?.extra?.googleWebClientId;
+
+      // Debug: Show what client ID is being used
+      console.log("Web Client ID:", googleWebClientId);
+      Alert.alert(
+        "Debug",
+        `Using webClientId: ${googleWebClientId?.substring(0, 20)}...`
+      );
+
+      if (!googleWebClientId) {
+        Alert.alert("Error", "Google Client ID not configured");
+        return;
+      }
+
       GoogleSignin.configure({
-        webClientId: GOOGLE_WEB_CLIENT_ID,
+        webClientId: googleWebClientId,
         offlineAccess: true
       });
 
@@ -37,27 +79,38 @@ const AuthScreen = () => {
       console.log("Authentication complete! JWT token stored.");
 
       Alert.alert("Success", "Successfully signed in!");
-      // TODO: Navigate to main app
+      navigate("Home");
     } catch (error: any) {
       console.error("Google Sign In error:", error);
 
-      if (error.code === 'SIGN_IN_CANCELLED') {
+      if (error.code === "SIGN_IN_CANCELLED") {
         Alert.alert("Cancelled", "Sign in was cancelled");
-      } else if (error.code === 'IN_PROGRESS') {
+      } else if (error.code === "IN_PROGRESS") {
         Alert.alert("In Progress", "Sign in is already in progress");
-      } else if (error.code === 'PLAY_SERVICES_NOT_AVAILABLE') {
+      } else if (error.code === "PLAY_SERVICES_NOT_AVAILABLE") {
         Alert.alert("Error", "Google Play Services not available");
       } else {
-        Alert.alert("Error", `Sign in failed: ${error.message || 'Unknown error'}`);
+        Alert.alert(
+          "Error",
+          `Sign in failed: ${error.message || "Unknown error"}`
+        );
       }
     }
   };
 
+  /**
+   * Handles Apple Sign-In authentication (not yet implemented)
+   * TODO: Implement Apple OAuth flow
+   */
   const handleAppleSignIn = () => {
     console.log("Apple Sign In pressed");
     // TODO: Implement Apple authentication
   };
 
+  /**
+   * Allows user to continue without authentication
+   * TODO: Navigate to main app with limited functionality
+   */
   const handleGuestMode = () => {
     console.log("Continue as guest");
     // TODO: Navigate to main app without auth

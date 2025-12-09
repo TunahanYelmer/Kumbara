@@ -50,7 +50,7 @@ func GoogleAuth(w http.ResponseWriter, r *http.Request) {
 		}
 		userID, _ = result.LastInsertId()
 
-		_, err = db.Exec(`INSERT INTO balance (user_id, balance) VALUES (?, 0)`, userID)
+		_, err = db.Exec(`INSERT INTO balance (user_id, amount) VALUES (?,0)`, userID)
 		if err != nil {
 			http.Error(w, "Failed to create balance", http.StatusInternalServerError)
 			return
