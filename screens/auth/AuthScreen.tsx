@@ -12,9 +12,11 @@ import { useTheme } from "@/context/theme/ThemeProvider";
 import { createAuthScreenStyles } from "./styles/AuthScreen.styles";
 import { authenticateWithGoogle } from "@api/googleAuth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { storeToken } from "@/utils/auth";
+import { storeToken, storeUser } from "@/utils/auth";
 import { useNavigationContext } from "@context/navigation/NavigationProvider";
+import { useDataLayerValue } from "@/context/state/StateProvider";
 import HomeScreen from "@/_tabs_/home/HomeScreen";
+import User from "@/components/User/User";
 
 const { width } = Dimensions.get("window");
 
@@ -32,6 +34,7 @@ const AuthScreen = () => {
   const [theme] = useTheme();
   const styles = createAuthScreenStyles(theme, width);
   const { navigate } = useNavigationContext();
+  const [, dispatch] = useDataLayerValue();
 
   /**
    * Handles Google Sign-In authentication flow:
@@ -44,14 +47,6 @@ const AuthScreen = () => {
   const handleGoogleSignIn = async () => {
     try {
       const googleWebClientId = Constants.expoConfig?.extra?.googleWebClientId;
-
-      // Debug: Show what client ID is being used
-      console.log("Web Client ID:", googleWebClientId);
-      Alert.alert(
-        "Debug",
-        `Using webClientId: ${googleWebClientId?.substring(0, 20)}...`
-      );
-
       if (!googleWebClientId) {
         Alert.alert("Error", "Google Client ID not configured");
         return;
@@ -65,18 +60,37 @@ const AuthScreen = () => {
       await GoogleSignin.hasPlayServices();
 
       const userInfo = await GoogleSignin.signIn();
-      console.log("Google Sign In successful!", userInfo);
+      if (userInfo) {
+      }
+
+      const user = userInfo.data?.user;
+      const email = user?.email;
+      const name = user?.name;
+      const givenName = user?.givenName;
+      const photo = user?.photo;
+      const id = user?.id;
+
+      if (user) {
+        try {
+          await storeUser(email, name, givenName, photo, id);
+          dispatch({
+            type: "SET_AUTH_USER",
+            User: [{ email, name, givenName, photo, id }]
+          });
+        } catch (error) {
+          console.error("Error storing user:", error);
+          throw error;
+        }
+      }
 
       const googleIdToken = userInfo.data?.idToken;
       if (!googleIdToken) {
         throw new Error("No ID token received from Google");
       }
 
-      console.log("Got Google ID token, sending to backend...");
       const jwtToken = await authenticateWithGoogle(googleIdToken);
 
       await storeToken(jwtToken);
-      console.log("Authentication complete! JWT token stored.");
 
       Alert.alert("Success", "Successfully signed in!");
       navigate("Home");
