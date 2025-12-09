@@ -8,9 +8,11 @@ import { NavigationProvider } from "./context/navigation/NavigationProvider";
 import { navigationRef } from "./navigation/NavigationTypes";
 import Navbar from "@navigation/Navbar/Navbar";
 import User from "@components/User/User";
+import { clearToken } from "./utils/auth";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
+  clearToken();
   return (
     <SafeAreaProvider>
       <ThemeProvider>
