@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, View, Switch, TouchableOpacity } from "react-native";
+import { Text, View, Switch, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDataLayerValue } from "../../context/state/StateProvider";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import CurrencyModal from "@_tabs_/settings/CurrencyModal";
+import User from "@/components/User/User";
+import Navbar from "@/navigation/Navbar/Navbar";
 import { createSettinsSecreenStyles } from "./styles/SettingsScreen.styles";
 
 export default function SettingsScreen() {
@@ -47,6 +49,9 @@ export default function SettingsScreen() {
 
   return (
     <View style={styles.safeArea}>
+      <View style={styles.userContainer}>
+        <User />
+      </View>
       <Text style={styles.settingsTitle}>Ayarlar</Text>
 
       <View style={styles.settingGroup}>
@@ -103,6 +108,9 @@ export default function SettingsScreen() {
           <Text style={styles.settingValue}>Biyometrik Kilit</Text>
           <Switch onValueChange={handleBiometricToggle} value={BioEnabled} />
         </View>
+      </View>
+      <View style={styles.navbarContainer}>
+        <Navbar />
       </View>
     </View>
   );
