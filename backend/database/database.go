@@ -26,6 +26,8 @@ func InitDB() {
 			name TEXT,
 			provider TEXT CHECK(provider IN ('google', 'apple', 'email')),
 			provider_user_id TEXT,
+			givenName TEXT,
+			photoUrl TEXT,
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			UNIQUE(provider, provider_user_id)
 		)
