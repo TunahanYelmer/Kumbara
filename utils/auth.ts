@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { jwtDecode } from "jwt-decode";
 
 const JWT_TOKEN_KEY = "jwt_token";
 
@@ -89,9 +90,22 @@ export async function clearToken(): Promise<void> {
 }
 
 /**
+ * Get Token
  * Check if user is authenticated (has valid token)
+ * Check if token is expired
+ * Multiply the token exp by 1000 to match units (seconds to miliseconds)
  */
 export async function isAuthenticated(): Promise<boolean> {
   const token = await getToken();
-  return token !== null;
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    const time = Date.now();
+    if (decodedToken.exp && decodedToken.exp * 1000 >= time) {
+      return true;
+    } else {
+      await clearToken();
+    }
+  }
+
+  return false;
 }
