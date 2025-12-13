@@ -45,6 +45,8 @@ func main() {
 		switch r.Method {
 		case http.MethodPost:
 			google.GoogleAuth(w, r)
+		case http.MethodPatch:
+			auth.AuthMiddleware(routes.PatchUser)(w, r)
 		default:
 			database.WriteJSON(w, http.StatusMethodNotAllowed, map[string]string{"error": "Method not allowed"})
 
