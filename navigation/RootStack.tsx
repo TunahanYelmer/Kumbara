@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import TabNavigator from "./TabNavigator";
 import NotificationScreen from "@/screens/notifications/NotificationScreen";
 
 import { RootStackParamList } from "./NavigationTypes";
