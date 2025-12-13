@@ -12,9 +12,10 @@ import { useTheme } from "@/context/theme/ThemeProvider";
 import { createAuthScreenStyles } from "./styles/AuthScreen.styles";
 import { authenticateWithGoogle } from "@api/googleAuth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { storeToken, storeUser } from "@/utils/auth";
+import { getToken, storeToken, storeUser } from "@/utils/auth";
 import { useNavigationContext } from "@context/navigation/NavigationProvider";
 import { useDataLayerValue } from "@/context/state/StateProvider";
+import { patchUser } from "@/api/patchUser";
 import HomeScreen from "@/_tabs_/home/HomeScreen";
 import User from "@/components/User/User";
 
@@ -89,8 +90,10 @@ const AuthScreen = () => {
       }
 
       const jwtToken = await authenticateWithGoogle(googleIdToken);
-
       await storeToken(jwtToken);
+      if (givenName && photo) {
+        await patchUser(givenName, photo, jwtToken);
+      }
 
       Alert.alert("Success", "Successfully signed in!");
       navigate("Home");
