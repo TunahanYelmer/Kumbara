@@ -6,8 +6,6 @@ import { StateProvider } from "@context/state/StateProvider";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { NavigationProvider } from "./context/navigation/NavigationProvider";
 import { navigationRef } from "./navigation/NavigationTypes";
-import Navbar from "@navigation/Navbar/Navbar";
-import User from "@components/User/User";
 import { clearToken } from "./utils/auth";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
@@ -24,9 +22,7 @@ export default function App() {
                 edges={["top", "left", "right", "bottom"]}
               >
                 <NavigationContainer ref={navigationRef}>
-                  <User />
                   <RootStack />
-                  <Navbar />
                 </NavigationContainer>
               </SafeAreaView>
             </GestureHandlerRootView>
