@@ -5,7 +5,8 @@ import {
   View,
   FlatList,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  useWindowDimensions
 } from "react-native";
 import { useState, useEffect } from "react";
 
@@ -17,8 +18,6 @@ import { getToken } from "@/utils/auth";
 import TransactionList from "@/components/TransactionHistory/TransactionList";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { createTransactionHistoryStyles } from "./styles/TranscationHistory.styles";
-
-const { width, height } = Dimensions.get("window");
 
 /**
  * TransactionsHistory Component
@@ -32,7 +31,7 @@ const { width, height } = Dimensions.get("window");
  */
 const TransactionsHistory = () => {
   const [selectedTab, setSelectedTab] = useState<TabType>("all");
-
+  const { width, height } = useWindowDimensions();
   const [isLoading, setIsLoading] = useState(true);
   const [{ Transactions }, dispatch] = useDataLayerValue();
   const [theme] = useTheme();

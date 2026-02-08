@@ -1,34 +1,37 @@
 import React from "react";
-import { StyleSheet, StatusBar as RNStatusBar, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View, useWindowDimensions } from "react-native";
 import User from "@/components/User/User";
-import Navbar from "@/navigation/Navbar/Navbar";
 import BalanceCard from "@/components/BalanceCard/BalanceCard";
 import Transactions from "@/components/Transactions/Transactions";
 import TransactionHistory from "@/components/TransactionHistory/TransactionHistory";
-import Notifications from "@/components/notifications/Notifications";
 import { createHomeScreenStyles } from "./styles/HomeScreen.styles";
 import { useTheme } from "@/context/theme/ThemeProvider";
 
 export default function HomeScreen() {
   const [theme] = useTheme();
-  const styles = createHomeScreenStyles(theme);
+  const { width, height } = useWindowDimensions();
+  const styles = createHomeScreenStyles(theme, width, height);
 
   return (
     <View style={styles.container}>
-      <View style={styles.userContainer}>
+      {/* Compact Header */}
+      <View style={styles.header}>
         <User />
       </View>
 
-      <View style={{ alignItems: "center" }}>
+      {/* Hero Balance Card - Larger and more prominent */}
+      <View style={styles.heroSection}>
         <BalanceCard />
       </View>
-      <View style={styles.transactionsContainer}>
+
+      {/* Quick Actions - Overlapping with balance card */}
+      <View style={styles.quickActions}>
         <Transactions />
-        <TransactionHistory />
       </View>
-      <View style={styles.navbarContainer}>
-        <Navbar />
+
+      {/* Transaction History - Has its own FlatList scrolling */}
+      <View style={styles.historyWrapper}>
+        <TransactionHistory />
       </View>
     </View>
   );

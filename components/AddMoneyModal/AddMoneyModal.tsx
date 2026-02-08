@@ -5,7 +5,8 @@ import {
   Modal,
   TextInput,
   TouchableOpacity,
-  Alert
+  Alert,
+  useWindowDimensions
 } from "react-native";
 import { useDataLayerValue } from "@/context/state/StateProvider";
 import { useTheme } from "@/context/theme/ThemeProvider";
@@ -33,7 +34,8 @@ export default function AddMoneyModal({
 
   // Get the current app theme and generate styles accordingly
   const [theme] = useTheme();
-  const styles = createAddMoneyModalStyles(theme);
+  const { width, height } = useWindowDimensions();
+  const styles = createAddMoneyModalStyles(theme, width, height);
 
   /**
    * Handles adding money:

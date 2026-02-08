@@ -1,54 +1,105 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@context/theme/themeReducer"; // or wherever your Theme type is
+import { Theme } from "@context/theme/themeReducer";
+import { spacing, typography, shadows, borderRadius } from "@/constants/designSystem";
 
-export const createSettinsSecreenStyles = (theme: Theme) =>
-  StyleSheet.create({
+/**
+ * SettingsScreen Styles - Premium Settings Design
+ *
+ * Professional fintech settings with:
+ * - Card-based setting groups with shadows.card elevation
+ * - Responsive typography and spacing
+ * - Better visual hierarchy
+ * - Enhanced touch targets (48px minimum)
+ * - Design system integration throughout
+ */
+export const createSettinsSecreenStyles = (theme: Theme, width: number, height: number) => {
+  const space = spacing(width, height);
+  const typo = typography(width);
+  const radius = borderRadius(width);
+
+  return StyleSheet.create({
     safeArea: {
       flex: 1,
-      backgroundColor: theme.SettingsScreenBackgroundColor
+      backgroundColor: theme.SettingsScreenBackgroundColor,
     },
-    container: {},
-    settingsText: {
-      fontSize: 20,
-      textAlign: "center",
-      marginTop: 50
+
+    container: {
+      flex: 1,
     },
+
+    // User profile section
+    userContainer: {
+      paddingVertical: space.sm,      // Design system spacing
+      paddingHorizontal: space.md,
+    },
+
+    // Page title - premium typography
     settingsTitle: {
-      fontSize: 24,
-      fontWeight: "bold",
-      padding: 16,
-      textAlign: "center"
+      ...typo.h1,                     // Typography system (was fontSize: 24)
+      color: theme.SettingsGroupTitleColor,
+      paddingHorizontal: space.md,    // Design system (was hardcoded 16)
+      paddingVertical: space.md,
+      textAlign: "center",
     },
+
+    // Legacy settings text (if still used)
+    settingsText: {
+      ...typo.h2,                     // Typography system (was fontSize: 20)
+      textAlign: "center",
+      marginTop: space.xxl,           // Design system (was hardcoded 50)
+    },
+
+    // Setting groups - card-based design with elevation
     settingGroup: {
       backgroundColor: theme.SettingsGroupBackgroundColor,
-      marginVertical: 8,
-      paddingHorizontal: 16,
-      borderRadius: 8
+      marginVertical: space.sm,       // Design system (was hardcoded 8)
+      marginHorizontal: space.md,     // Add horizontal margins
+      paddingHorizontal: space.md,    // Design system (was hardcoded 16)
+      paddingVertical: space.sm,      // Add vertical padding
+      borderRadius: radius.xl,        // Premium rounding (was hardcoded 8)
+      ...shadows.card,                // Card elevation for depth
     },
+
+    // Group title - uppercase with tracking
     groupTitle: {
-      fontSize: 16,
-      fontWeight: "600",
-      paddingVertical: 12,
-      color: theme.SettingsGroupTitleColor
+      ...typo.captionBold,            // Typography system (was fontSize: 16)
+      color: theme.SettingsGroupTitleColor,
+      paddingVertical: space.sm,      // Design system (was hardcoded 12)
+      textTransform: "uppercase",     // Make group titles stand out
+      letterSpacing: 1.2,             // More tracking for labels
     },
+
+    // Setting items with proper touch targets
     settingItem: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      marginLeft: 8,
-      paddingVertical: 12,
+      paddingVertical: space.md,      // Design system (was hardcoded 12)
+      paddingHorizontal: space.sm,    // Design system (was marginLeft: 8)
       borderTopWidth: 1,
-      borderTopColor: theme.SettingsItemBorderColor
+      borderTopColor: theme.SettingsItemBorderColor,
+      minHeight: 48,                  // Accessibility
     },
+
     settingValue: {
-      color: theme.SettingsItemValueColor
+      ...typo.body,                   // Typography system
+      color: theme.SettingsItemValueColor,
     },
+
+    // Currency display with hierarchy
     currencySymbol: {
-      fontWeight: "bold"
+      ...typo.h2,                     // Larger for prominence (was fontWeight: bold)
+      color: theme.SettingsCurrencyCodeColor,
     },
+
     currencyCode: {
-      color: theme.SettingsCurrencyCodeColor
+      ...typo.body,                   // Typography system
+      color: theme.SettingsCurrencyCodeColor,
     },
-    userContainer: {},
-    navbarContainer: {}
+
+    // Navbar container
+    navbarContainer: {
+      marginTop: "auto",              // Push to bottom
+    },
   });
+};

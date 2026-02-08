@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, Switch, TouchableOpacity } from "react-native";
+import { Text, View, Switch, TouchableOpacity, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDataLayerValue } from "../../context/state/StateProvider";
 import { useTheme } from "@/context/theme/ThemeProvider";
@@ -14,7 +14,8 @@ export default function SettingsScreen() {
     dispatch
   ] = useDataLayerValue();
   const [theme, setTheme] = useTheme();
-  const styles = createSettinsSecreenStyles(theme);
+  const { width, height } = useWindowDimensions();
+  const styles = createSettinsSecreenStyles(theme, width, height);
 
   const [modalVisible, setModalVisible] = useState(false);
   const handleCurrencySelections = () => {

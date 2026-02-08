@@ -1,18 +1,17 @@
 import React, { FC } from "react";
-import { View, Text, Image, Dimensions } from "react-native";
+import { View, Text, Image, useWindowDimensions } from "react-native";
 import { createUserStyles } from "./styles/User.styles";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { useDataLayerValue } from "@/context/state/StateProvider";
 import Notifications from "@/components/notifications/Notifications";
 
-const { width } = Dimensions.get("window");
-
 const User: FC = () => {
   const [theme] = useTheme();
+  const { width, height } = useWindowDimensions();
   const [{ User }] = useDataLayerValue();
   const photo = User?.[0]?.photo;
   const givenName = User?.[0]?.givenName;
-  const styles = createUserStyles(theme, width);
+  const styles = createUserStyles(theme, width, height);
   return (
     <View style={styles.userContainer}>
       <View style={styles.userIcon}>

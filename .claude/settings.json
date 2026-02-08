@@ -1,0 +1,6 @@
+{
+  "enabledPlugins": {
+    "frontend-design@my-plugins": true,
+    "aesthetic@my-plugins": true
+  }
+}

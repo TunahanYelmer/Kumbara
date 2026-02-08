@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Dimensions, ActivityIndicator } from "react-native";
+import { View, Text, useWindowDimensions, ActivityIndicator } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { getBalance } from "@api/getBalance";
 import { getToken } from "@/utils/auth";
@@ -7,15 +7,14 @@ import { useDataLayerValue } from "@/context/state/StateProvider";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { createBalanceCardStyles } from "./styles/BalanceCard.styles";
 
-// Get screen width for responsive layout styling
-const { width } = Dimensions.get("window");
-
 /**
  * BalanceCard Component
  * ----------------------
  * Displays the user's current balance inside a styled gradient card.
  * It fetches the balance from the API on mount and updates global state.
  * While loading, it shows an ActivityIndicator instead of the amount.
+ *
+ * Enhanced with useWindowDimensions for dynamic responsive updates.
  */
 const BalanceCard = () => {
   // Local state to control loading spinner
@@ -24,8 +23,9 @@ const BalanceCard = () => {
   // Access global balance and currency from context
   const [{ Balance, Currency }, dispatch] = useDataLayerValue();
 
-  // Get active theme and generate component styles
+  // Get active theme and responsive dimensions
   const [theme] = useTheme();
+  const { width } = useWindowDimensions();
   const styles = createBalanceCardStyles(theme, width);
 
   /**

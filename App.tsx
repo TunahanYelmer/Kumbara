@@ -8,6 +8,7 @@ import { NavigationProvider } from "./context/navigation/NavigationProvider";
 import { navigationRef } from "./navigation/NavigationTypes";
 import { clearToken } from "./utils/auth";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import Navbar from "./navigation/Navbar/Navbar";
 
 export default function App() {
   clearToken();
@@ -23,6 +24,7 @@ export default function App() {
               >
                 <NavigationContainer ref={navigationRef}>
                   <RootStack />
+                  <Navbar />
                 </NavigationContainer>
               </SafeAreaView>
             </GestureHandlerRootView>

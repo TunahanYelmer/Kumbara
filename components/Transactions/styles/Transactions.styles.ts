@@ -1,68 +1,80 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@context/theme/themeReducer"; // or wherever your Theme type is
+import { Theme } from "@context/theme/themeReducer";
+import { spacing, borderRadius, shadows, typography } from "@/constants/designSystem";
 
+/**
+ * Transactions Styles - Professional Action Buttons
+ *
+ * Modern fintech design with refined spacing and typography
+ * Optimized for thumb-friendly interactions
+ */
 export const createTransactionsStyles = (
   theme: Theme,
   width: number,
   height: number
-) =>
-  StyleSheet.create({
+) => {
+  const space = spacing(width, height);
+  const radius = borderRadius(width);
+  const typo = typography(width);
+
+  return StyleSheet.create({
     container: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      margin: width * 0.03
+      marginHorizontal: space.md,
+      marginVertical: space.sm,
+      gap: space.sm,                   // Modern gap property
     },
     add: {
+      flex: 1,                         // Equal width buttons
       flexDirection: "row",
       backgroundColor: theme.AddButtonBgColor,
-      padding: width * 0.02,
-      marginLeft: width * 0.03,
-      borderRadius: width * 0.07,
+      paddingVertical: space.md,       // Comfortable touch target
+      paddingHorizontal: space.lg,
+      borderRadius: radius.xl,         // Premium rounding
       alignItems: "center",
       justifyContent: "center",
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      elevation: 3
+      ...shadows.button,
+      minHeight: 48,                   // Minimum touch target (HIG)
     },
     substract: {
+      flex: 1,                         // Equal width buttons
       flexDirection: "row",
       backgroundColor: theme.SubstractButtonBgColor,
-      padding: width * 0.02,
-      marginRight: width * 0.03,
-      borderRadius: width * 0.07,
+      paddingVertical: space.md,       // Comfortable touch target
+      paddingHorizontal: space.lg,
+      borderRadius: radius.xl,         // Premium rounding
       alignItems: "center",
       justifyContent: "center",
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.1,
-      elevation: 3
+      ...shadows.button,
+      minHeight: 48,                   // Minimum touch target (HIG)
     },
     icon: {
-      width: width * 0.08,
-      height: width * 0.08,
-      marginRight: width * 0.02
+      width: width * 0.06,             // Refined icon size
+      height: width * 0.06,
+      marginRight: space.xs,
     },
     button: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "transparent",
-      paddingVertical: height * 0.01,
-      paddingHorizontal: width * 0.03,
-      borderRadius: width * 0.02
+      paddingVertical: space.sm,
+      paddingHorizontal: space.md,
+      borderRadius: radius.lg,
     },
     AddbuttonText: {
       color: theme.AddButtonTextColor,
-      fontWeight: "500",
+      ...typo.body,
+      fontWeight: "600",               // Semibold for emphasis
       textAlign: "center",
-      fontSize: width * 0.04
     },
     SubstructButtonText: {
       color: theme.SubstractButtonTextColor,
-      fontWeight: "500",
+      ...typo.body,
+      fontWeight: "600",               // Semibold for emphasis
       textAlign: "center",
-      fontSize: width * 0.04
-    }
+    },
   });
+};

@@ -4,14 +4,12 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  Dimensions,
+  useWindowDimensions,
   TouchableOpacity
 } from "react-native";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { createNotificationScreenStyles } from "./styles/NotificationScreen.styles";
 import TabNavigator from "@/navigation/TabNavigator";
-
-const { width, height } = Dimensions.get("window");
 
 type NotificationItem = {
   id: string;
@@ -44,7 +42,8 @@ const notificationsData: NotificationItem[] = [
 
 const NotificationScreen = () => {
   const [theme] = useTheme();
-  const styles = createNotificationScreenStyles(theme);
+  const { width, height } = useWindowDimensions();
+  const styles = createNotificationScreenStyles(theme, width, height);
 
   const renderItem = ({ item }: { item: NotificationItem }) => (
     <TouchableOpacity style={styles.itemContainer}>

@@ -1,56 +1,79 @@
 import { StyleSheet } from "react-native";
-import { Theme}from "@context/theme/themeReducer" // or wherever your Theme type is
+import { Theme } from "@context/theme/themeReducer";
+import {
+  spacing,
+  borderRadius,
+  typography,
+  shadows
+} from "@/constants/designSystem";
 
-export const createTransactionHistoryStyles = (theme: Theme , width : number , height: number) =>
+/**
+ * TransactionHistory Styles - Professional List Design
+ *
+ * Clean, scannable transaction list inspired by modern banking apps
+ * Optimized for readability and quick scanning
+ */
+export const createTransactionHistoryStyles = (
+  theme: Theme,
+  width: number,
+  height: number
+) => {
+  const space = spacing(width, height);
+  const radius = borderRadius(width);
+  const typo = typography(width);
 
-      StyleSheet.create({
-         container: {
-           backgroundColor: theme.BackgroundColor,
-           padding: width * 0.04,
-           margin: width * 0.025,
-           borderRadius: width * 0.025
-         },
-         tabs: {
-           flexDirection: "row",
-           marginVertical: height * 0.015
-         },
-         tabButton: {
-           backgroundColor: theme.TabButtonBgColor,
-           paddingVertical: height * 0.008,
-           paddingHorizontal: width * 0.04,
-           borderRadius: width * 0.05,
-           marginRight: width * 0.02
-         },
-         tabButtonText: {
-           fontSize: width * 0.04,
-           color: theme.TabButtonInactiveColour,
-           textAlign: "center"
-         },
-         activeTabText: {
-           color: theme.TabActiveColor,
-           fontWeight: "700"
-         },
-         loadingContainer: {
-           alignItems: "center",
-           justifyContent: "center",
-           paddingVertical: height * 0.05
-         },
-         loadingText: {
-           marginTop: height * 0.01,
-           fontSize: width * 0.035,
-           color: theme.TransactionHistoryLoadingColor
-         },
-         emptyContainer: {
-           alignItems: "center",
-           justifyContent: "center",
-           paddingVertical: height * 0.05
-         },
-         emptyText: {
-           fontSize: width * 0.04,
-           color: theme.TransactionHistoryEmptyTextColor,
-           textAlign: "center"
-         }
-       });
-
-
- 
+  return StyleSheet.create({
+    container: {
+      backgroundColor: theme.BackgroundColor,
+      padding: space.md, // Comfortable padding
+      marginHorizontal: space.sm,
+      marginTop: space.sm,
+      marginBottom: space.md,
+      borderRadius: radius.lg,
+      ...shadows.card // Subtle card elevation
+    },
+    tabs: {
+      flexDirection: "row",
+      marginBottom: space.sm,
+      gap: space.xs // Modern gap property
+    },
+    tabButton: {
+      backgroundColor: theme.TabButtonBgColor,
+      paddingVertical: space.sm,
+      paddingHorizontal: space.md,
+      borderRadius: radius.lg, // Pill-shaped tabs
+      minHeight: 32 // Minimum touch target
+    },
+    tabButtonText: {
+      ...typo.caption,
+      fontWeight: "500",
+      color: theme.TabButtonInactiveColour,
+      textAlign: "center"
+    },
+    activeTabText: {
+      color: theme.TabActiveColor,
+      fontWeight: "700"
+    },
+    loadingContainer: {
+      alignItems: "center",
+      justifyContent: "center",
+      paddingVertical: space.xl
+    },
+    loadingText: {
+      marginTop: space.sm,
+      ...typo.caption,
+      color: theme.TransactionHistoryLoadingColor
+    },
+    emptyContainer: {
+      alignItems: "center",
+      justifyContent: "center",
+      paddingVertical: space.xl
+    },
+    emptyText: {
+      ...typo.body,
+      color: theme.TransactionHistoryEmptyTextColor,
+      textAlign: "center",
+      opacity: 0.7
+    }
+  });
+};

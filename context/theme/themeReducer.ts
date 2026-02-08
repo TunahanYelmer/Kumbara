@@ -16,9 +16,16 @@ export interface Theme {
   ButtonColor: string;
   ButtonTextColor: string;
 
-  //User
-
+  // User
   UserBackgroundColor: string;
+  UserNameColor: string;
+  UserWelcomeColor: string;
+
+  // Notifications
+  NotificationCardBgColor: string;
+  NotificationCardTitleColor: string;
+  NotificationCardDescriptionColor: string;
+  NotificationCardTimeColor: string;
 
   // Balance Card
   BalanceCardColor: [string, string, ...string[]]; // Gradient (min 2 colors)
@@ -101,9 +108,16 @@ export const initialTheme: Theme = {
   ButtonColor: "#3B82F6",
   ButtonTextColor: "#FFFFFF",
 
-  //User
-
+  // User
   UserBackgroundColor: "rgba(255, 255, 255,0)",
+  UserNameColor: "#111827",
+  UserWelcomeColor: "#6B7280",
+
+  // Notifications
+  NotificationCardBgColor: "#FFFFFF",
+  NotificationCardTitleColor: "#111827",
+  NotificationCardDescriptionColor: "#6B7280",
+  NotificationCardTimeColor: "#9CA3AF",
 
   // Balance Card
   BalanceCardColor: ["#3856d9", "#253cb0"],
@@ -186,9 +200,16 @@ export const darkTheme: Theme = {
   ButtonColor: "#2563EB",
   ButtonTextColor: "#FFFFFF",
 
-  //User
-
+  // User
   UserBackgroundColor: "rgba(255, 255, 255,0)",
+  UserNameColor: "#F1F5F9",
+  UserWelcomeColor: "#CBD5E1",
+
+  // Notifications
+  NotificationCardBgColor: "#1E293B",
+  NotificationCardTitleColor: "#F1F5F9",
+  NotificationCardDescriptionColor: "#CBD5E1",
+  NotificationCardTimeColor: "#94A3B8",
 
   // Balance Card
   BalanceCardColor: ["#5cce43", "#99FF00"],

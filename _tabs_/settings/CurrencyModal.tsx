@@ -6,7 +6,7 @@ import {
   Pressable,
   View,
   ScrollView,
-  Dimensions,
+  useWindowDimensions,
   NativeSyntheticEvent,
   NativeScrollEvent
 } from "react-native";
@@ -25,15 +25,18 @@ const currencies = [
   { code: "USD", symbol: "$", name: "US Dollar" },
   { code: "EUR", symbol: "€", name: "Euro" }
 ];
-const ITEM_HEIGHT = 40;
-
 
 const CurrencyModal = ({ modalVisible , onClose}: CurrencyModalProps) => {
   const scrollRef = useRef<ScrollView>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [{ Currency }, dispatch] = useDataLayerValue();
   const [theme] = useTheme();
-  const styles = createCurrencyModalStyles(theme , ITEM_HEIGHT);
+  const { width, height } = useWindowDimensions();
+
+  // Calculate responsive ITEM_HEIGHT
+  const ITEM_HEIGHT = width * 0.12;  // ~45px on standard phones
+
+  const styles = createCurrencyModalStyles(theme, width, height, ITEM_HEIGHT);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;

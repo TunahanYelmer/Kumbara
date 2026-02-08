@@ -6,7 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert
+  Alert,
+  useWindowDimensions
 } from "react-native";
 import { getTransactions } from "@api/getTransactions";
 import { postTransaction } from "@api/postTransactions";
@@ -14,7 +15,7 @@ import { getToken } from "@/utils/auth";
 import { useDataLayerValue } from "@/context/state/StateProvider";
 import { Transactions, Action } from "@/context/state/stateReducer";
 import { useTheme } from "@/context/theme/ThemeProvider";
-import { createWidthrawMoneyModalStyles } from "./styles/WithDrawMoneyModal..styles";
+import { createWithdrawMoneyModalStyles } from "./styles/WithDrawMoneyModal..styles";
 
 /**
  * WithdrawMoneyModal Component
@@ -49,7 +50,8 @@ export default function WithdrawMoneyModal({
 
   const [{ Balance }, dispatch] = useDataLayerValue();
   const [theme] = useTheme();
-  const styles = createWidthrawMoneyModalStyles(theme);
+  const { width, height } = useWindowDimensions();
+  const styles = createWithdrawMoneyModalStyles(theme, width, height);
 
   /**
    * Updates the global balance state after withdrawal
