@@ -4,6 +4,8 @@ import { createUserStyles } from "./styles/User.styles";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { useDataLayerValue } from "@/context/state/StateProvider";
 import ChartIcon from "@assets/icons/chart.svg";
+import FlameIcon from "@assets/icons/flame.svg";
+import TrendArrowIcon from "@assets/icons/trendArrow.svg";
 import Notifications from "@/components/notifications/Notifications";
 
 const User: FC = () => {
@@ -18,16 +20,17 @@ const User: FC = () => {
       <View style={styles.userHeader}>
         <View style={styles.userGreating}>
           <View style={styles.userWelcome}>
-            <Text style={styles.userWelcomeText}>Hi,Alex</Text>
+            <Text style={styles.userWelcomeText}>Hi, Alex! </Text>
           </View>
           <View style={styles.userStreak}>
-            <Text style={styles.userStreakIcon}>Fire</Text>
+            <FlameIcon />
+
             <Text style={styles.userStreakText}>12 days</Text>
           </View>
         </View>
         <View style={styles.userInsight}>
           <Text style={styles.userInsightIcon}>
-            <ChartIcon />
+            <TrendArrowIcon />
           </Text>
           <Text style={styles.userInsightText}>
             You're saving %23 more this month
