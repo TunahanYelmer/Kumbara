@@ -1,6 +1,12 @@
-import { View, Image, TouchableOpacity, useWindowDimensions } from "react-native";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  useWindowDimensions
+} from "react-native";
 import React from "react";
 import { useTheme } from "@context/theme/ThemeProvider";
+import NotificationBellIcon from "@assets/icons/notificationsBell.svg";
 import { createNotificationStyles } from "./styles/Notifications.styles";
 import { useNavigationContext } from "@context/navigation/NavigationProvider";
 
@@ -20,7 +26,7 @@ const Notifications = () => {
   return (
     <View style={styles.view}>
       <TouchableOpacity style={styles.button} onPress={handleNavigation}>
-        <Image style={styles.icon} source={icon} resizeMode="contain" />
+        <NotificationBellIcon />
       </TouchableOpacity>
     </View>
   );
