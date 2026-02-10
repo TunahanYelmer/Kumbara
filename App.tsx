@@ -11,7 +11,6 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Navbar from "./navigation/Navbar/Navbar";
 
 export default function App() {
-  clearToken();
   return (
     <SafeAreaProvider>
       <ThemeProvider>
