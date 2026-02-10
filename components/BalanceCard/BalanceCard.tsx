@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, useWindowDimensions, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  useWindowDimensions,
+  ActivityIndicator
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { getBalance } from "@api/getBalance";
 import { getToken } from "@/utils/auth";

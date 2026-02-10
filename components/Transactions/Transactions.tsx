@@ -20,11 +20,11 @@ const Transactions: FC = () => {
 
   // Use correct require() syntax for React Native images
   const AddButtonIcon = theme.DarkMode
-    ? require("@assets/add-white.png")
-    : require("@assets/add.png");
+    ? require("@assets/icons/add-white.png")
+    : require("@assets/icons/add.png");
   const WithdrawButtonIcon = theme.DarkMode
-    ? require("@assets/withdraw-white.png")
-    : require("@assets/withdraw.png");
+    ? require("@assets/icons/withdraw-white.png")
+    : require("@assets/icons/withdraw.png");
 
   return (
     <View style={styles.container}>

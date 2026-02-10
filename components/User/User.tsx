@@ -3,6 +3,7 @@ import { View, Text, Image, useWindowDimensions } from "react-native";
 import { createUserStyles } from "./styles/User.styles";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { useDataLayerValue } from "@/context/state/StateProvider";
+import ChartIcon from "@assets/icons/chart.svg";
 import Notifications from "@/components/notifications/Notifications";
 
 const User: FC = () => {
@@ -14,20 +15,29 @@ const User: FC = () => {
   const styles = createUserStyles(theme, width, height);
   return (
     <View style={styles.userContainer}>
-      <View style={styles.userIcon}>
-        <View>
-          <Image
-            source={{ uri: photo ?? undefined }}
-            style={styles.userImage}
-          />
+      <View style={styles.userHeader}>
+        <View style={styles.userGreating}>
+          <View style={styles.userWelcome}>
+            <Text style={styles.userWelcomeText}>Hi,Alex</Text>
+          </View>
+          <View style={styles.userStreak}>
+            <Text style={styles.userStreakIcon}>Fire</Text>
+            <Text style={styles.userStreakText}>12 days</Text>
+          </View>
         </View>
-        <View style={styles.userInfo}>
-          <Text style={styles.userLabel}>{givenName}</Text>
-          <Text style={styles.userWelcome}>Hoşgeldin !!</Text>
+        <View style={styles.userInsight}>
+          <Text style={styles.userInsightIcon}>
+            <ChartIcon />
+          </Text>
+          <Text style={styles.userInsightText}>
+            You're saving %23 more this month
+          </Text>
         </View>
       </View>
-      <View>
-        <Notifications />
+      <View style={styles.userIconContainer}>
+        <View style={styles.userIcon}>
+          <Notifications />
+        </View>
       </View>
     </View>
   );

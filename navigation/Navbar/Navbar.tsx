@@ -34,11 +34,11 @@ function Navbar() {
   };
   const icons = {
     home: !theme.DarkMode
-      ? require("@assets/home.png")
-      : require("@assets/home-white.png"),
+      ? require("@assets/icons/home.png")
+      : require("@assets/icons/home-white.png"),
     settings: !theme.DarkMode
-      ? require("@assets/settings.png")
-      : require("@assets/settings-white.png")
+      ? require("@assets/icons/settings.png")
+      : require("@assets/icons/settings-white.png")
   };
 
   return (

@@ -1,6 +1,13 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "@context/theme/themeReducer";
-import { spacing, typography, shadows } from "@/constants/designSystem";
+import {
+  spacing,
+  typography,
+  shadows,
+  borderRadius,
+  layout,
+  iconSizes
+} from "@/constants/designSystem";
 
 /**
  * User Component Styles - Premium User Profile Design
@@ -11,49 +18,87 @@ import { spacing, typography, shadows } from "@/constants/designSystem";
  * - Optional avatar shadow for depth
  * - Theme-based colors (no hardcoded values)
  */
-export const createUserStyles = (theme: Theme, width: number, height: number) => {
+export const createUserStyles = (
+  theme: Theme,
+  width: number,
+  height: number
+) => {
   const space = spacing(width, height);
   const typo = typography(width);
+  const radius = borderRadius(width);
+  const icons = iconSizes(width);
 
   return StyleSheet.create({
     userContainer: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-around",
-      paddingVertical: space.sm,        // Design system spacing
+      paddingVertical: space.sm, // Design system spacing
       paddingHorizontal: space.md,
-      backgroundColor: theme.UserBackgroundColor,
+      backgroundColor: theme.UserBackgroundColor
     },
-
-    userIcon: {
+    userHeader: {},
+    userGreating: {
       flexDirection: "row",
       alignItems: "center",
+      gap: space.xs
+    },
+    userWelcome: {},
+    userWelcomeText: {
+      ...typo.h1, // Typography system (was fontSize: width * 0.04)
+      color: theme.UserWelcomeTextColor // Theme color instead of hardcoded #555
+    },
+    userStreak: {
+      ...layout.rowCenter, // ✅ Replaces flexDirection + alignItems
+      justifyContent: "center", // ✅ Still need this for centering
+      backgroundColor: theme.UserStreakBackgroundColor, // ✅ Fixed typo
+      paddingHorizontal: space.md, // ✅ ~15px (was 12)
+      paddingVertical: space.xs, // ✅ ~4px (was 6)
+      borderRadius: radius.xxl, // ✅ ~20px (exact match!)
+      borderWidth: 1,
+      borderColor: theme.UserStreakBorderColor
+    },
+    userStreakText: {
+      ...typo.small,
+      color: theme.UserStreakTextColor
+    },
+    userStreakIcon: {},
+    userInsight: {
+      ...layout.row,
+      gap: space.xs,
+      marginTop: space.xs
+    },
+    userInsightIcon: {},
+
+    userInsightText: {
+      ...typo.caption,
+      color: theme.UserInsightTextColor
+    },
+    userIconContainer: {},
+
+    userIcon: {
+      width: icons.md,
+      height: icons.md
     },
 
     // Avatar with responsive sizing and optional shadow
     userImage: {
-      width: width * 0.15,              // 15% of screen width (good size)
-      height: width * 0.15,
-      borderRadius: width * 0.075,      // Keeps circle shape
-      marginRight: space.md,            // Design system spacing
-      ...shadows.subtle,                // Add subtle depth to avatar
+      width: width * 0.15, // 15% of screen width (good size)
+      height: width * 0.15, // Keeps circle shape
+      marginRight: space.md // Design system spacing
     },
 
     userInfo: {
       flexDirection: "column",
-      gap: space.xs,                    // Modern gap property
+      gap: space.xs // Modern gap property
     },
 
     // User name with typography system
     userLabel: {
-      ...typo.h3,                       // Typography system (was fontSize: width * 0.045)
-      color: theme.UserNameColor,       // Theme color (remove hardcoded if needed)
-    },
+      ...typo.h3, // Typography system (was fontSize: width * 0.045)
+      color: theme.UserNameColor // Theme color (remove hardcoded if needed)
+    }
 
     // Welcome text with typography system
-    userWelcome: {
-      ...typo.caption,                  // Typography system (was fontSize: width * 0.04)
-      color: theme.UserWelcomeColor,    // Theme color instead of hardcoded #555
-    },
   });
 };

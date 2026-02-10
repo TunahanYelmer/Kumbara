@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "@context/theme/themeReducer";
-import { spacing, shadows } from "@/constants/designSystem";
+import { spacing, shadows, iconSizes } from "@/constants/designSystem";
 
 /**
  * Notifications Button Styles - Premium Icon Button Design
@@ -11,33 +11,36 @@ import { spacing, shadows } from "@/constants/designSystem";
  * - Optional subtle shadow for depth
  * - Theme-aware icon switching
  */
-export const createNotificationStyles = (theme: Theme, width: number, height: number) => {
+export const createNotificationStyles = (
+  theme: Theme,
+  width: number,
+  height: number
+) => {
   const space = spacing(width, height);
+  const icons = iconSizes(width);
 
   return StyleSheet.create({
     view: {
       flex: 1,
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "center"
     },
 
     // Touchable button with proper accessibility
     button: {
       justifyContent: "center",
       alignItems: "center",
-      width: width * 0.08,             // Design system sizing
+      width: width * 0.08, // Design system sizing
       height: width * 0.08,
-      minHeight: 44,                   // Accessibility (Apple HIG)
+      minHeight: 44, // Accessibility (Apple HIG)
       minWidth: 44,
-      borderRadius: width * 0.04,      // Circular button
-      ...shadows.subtle,               // Optional subtle background depth
+      borderRadius: width * 0.04 // Circular button
     },
 
     // Icon sizing
     icon: {
-      width: width * 0.06,             // Slightly smaller than button for padding
-      height: width * 0.06,
-      tintColor: theme.DarkMode ? undefined : undefined,  // Let image handle theming
-    },
+      width: icons.lg,
+      height: icons.lg
+    }
   });
 };

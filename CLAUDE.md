@@ -5,17 +5,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 Kumbara is a React Native savings tracker app built with Expo. It consists of:
+
 - **Frontend**: React Native mobile app (TypeScript)
 - **Backend**: Go HTTP API server with SQLite database
 - Two database layers: Local SQLite (expo-sqlite) for mobile, and backend SQLite for API persistence
 
 ## Development Commands
 
-## you are my software engineering profesor your only purpose to teach me how to code 
-## always plan mode 
+## you are my software engineering profesor your only purpose to teach me how to code
+
+## always plan mode
+
 ## always give hints instead of giving the full solution
 
-
+## use strictly the designsystem.ts if you are suggesting css
 
 ### Frontend (React Native/Expo)
 
@@ -52,6 +55,7 @@ go build -o kumbara-api main.go
 ```
 
 **Note**: The IP address `192.168.1.108` is hardcoded in multiple places:
+
 - `package.json` (REACT_NATIVE_PACKAGER_HOSTNAME)
 - `api/getBalance.ts` (BASE_URL)
 - Backend may need to listen on this specific network interface
@@ -61,11 +65,13 @@ go build -o kumbara-api main.go
 ### Frontend Structure
 
 The app uses a context-based state management pattern with three main providers:
+
 1. **ThemeProvider** (`context/theme/`): Manages app theme/styling
 2. **StateProvider** (`context/state/`): Global state using reducer pattern (see `stateReducer.ts`)
 3. **NavigationProvider** (`context/navigation/`): Navigation state management
 
 **Navigation hierarchy**:
+
 ```
 App.tsx
 └── RootStack (Stack Navigator)
@@ -76,6 +82,7 @@ App.tsx
 ```
 
 **Path aliases** (configured in `tsconfig.json` and `package.json`):
+
 - `@/*` → root directory
 - `@components/*` → `./components/*`
 - `@api/*` → `./api/*`
@@ -90,6 +97,7 @@ App.tsx
 **Two separate SQLite databases exist**:
 
 1. **Local Mobile DB** (`database/db.ts`):
+
    - Uses `expo-sqlite` package
    - Database file: `kumbara.db`
    - Tables: `accounts`, `transactions`
@@ -102,12 +110,14 @@ App.tsx
    - Accessed via REST API endpoints at port 8082
 
 **API Endpoints** (`backend/main.go:189-216`):
+
 - `GET /balance` - Get current balance
 - `POST /balance` - Update balance (body: `{"balance": number}`)
 - `GET /transactions` - List all transactions (ordered by date DESC)
 - `POST /transactions` - Create transaction (body: `{"type": "deposit"|"withdraw", "category": string, "amount": number}`)
 
 **API client** (`api/` directory):
+
 - `getBalance.ts`, `postBalance.ts`
 - `getTransactions.ts`, `postTransactions.ts`
 - All use axios with BASE_URL `http://192.168.1.108:8082`
@@ -115,6 +125,7 @@ App.tsx
 ### Component Organization
 
 Key components in `components/`:
+
 - `BalanceCard/` - Display current balance with gradient styling
 - `TransactionHistory/` - Transaction list view
 - `Transactions/` - Individual transaction items
@@ -128,6 +139,7 @@ All major components have corresponding test files in `components/__tests__/`
 ### State Management
 
 The app uses a reducer pattern (`context/state/stateReducer.ts`):
+
 - Access state via `useDataLayerValue()` hook from `StateProvider`
 - Returns `[state, dispatch]` tuple
 - Initial state defined in `stateReducer.ts`
@@ -140,6 +152,7 @@ The app uses a reducer pattern (`context/state/stateReducer.ts`):
 - Test files: `components/__tests__/*.test.tsx`
 
 Run a single test file:
+
 ```bash
 npx jest components/__tests__/BalanceCard.test.tsx
 ```

@@ -10,8 +10,8 @@ const Notifications = () => {
   const { width, height } = useWindowDimensions();
   const styles = createNotificationStyles(theme, width, height);
   const icon = theme.DarkMode
-    ? require("@assets/notification-white.png")
-    : require("@assets/notification.png");
+    ? require("@assets/icons/notification-white.png")
+    : require("@assets/icons/notification.png");
 
   const handleNavigation = () => {
     navigate("Notifications");

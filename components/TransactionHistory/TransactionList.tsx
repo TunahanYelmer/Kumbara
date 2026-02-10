@@ -72,20 +72,20 @@ const TransactionList: React.FC<Props> = ({ paymentType, amount }) => {
   */
   const iconSources: Record<Props["paymentType"], any> = !theme.DarkMode
     ? {
-        food: require("@assets/food.png"),
-        market: require("@assets/market.png"),
-        transport: require("@assets/transport.png"),
-        bill: require("@assets/bill.png"),
-        income: require("@assets/income.png"),
-        other: require("@assets/other.png")
+        food: require("@assets/icons/food.png"),
+        market: require("@assets/icons/market.png"),
+        transport: require("@assets/icons/transport.png"),
+        bill: require("@assets/icons/bill.png"),
+        income: require("@assets/icons/income.png"),
+        other: require("@assets/icons/other.png")
       }
     : {
-        food: require("@assets/food-white.png"),
-        market: require("@assets/market-white.png"),
-        transport: require("@assets/transport-white.png"),
-        bill: require("@assets/bill-white.png"),
-        income: require("@assets/income-white.png"),
-        other: require("@assets/other-white.png")
+        food: require("@assets/icons/food-white.png"),
+        market: require("@assets/icons/market-white.png"),
+        transport: require("@assets/icons/transport-white.png"),
+        bill: require("@assets/icons/bill-white.png"),
+        income: require("@assets/icons/income-white.png"),
+        other: require("@assets/icons/other-white.png")
       };
 
   /**

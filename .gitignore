@@ -11,7 +11,7 @@ database/*.sqlite3
 dist/
 web-build/
 expo-env.d.ts
-
+Claude.md
 CLAUDE.md
 .claude.md
 # Native

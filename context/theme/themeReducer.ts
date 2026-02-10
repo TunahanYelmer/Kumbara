@@ -19,7 +19,11 @@ export interface Theme {
   // User
   UserBackgroundColor: string;
   UserNameColor: string;
-  UserWelcomeColor: string;
+  UserWelcomeTextColor: string;
+  UserStreakBorderColor: string;
+  UserStreakBackgroundColor: string;
+  UserStreakTextColor: string;
+  UserInsightTextColor: string;
 
   // Notifications
   NotificationCardBgColor: string;
@@ -111,7 +115,11 @@ export const initialTheme: Theme = {
   // User
   UserBackgroundColor: "rgba(255, 255, 255,0)",
   UserNameColor: "#111827",
-  UserWelcomeColor: "#6B7280",
+  UserWelcomeTextColor: "#6B7280",
+  UserStreakBorderColor: "#F59E0B",
+  UserStreakBackgroundColor: "#ffffff",
+  UserStreakTextColor: "",
+  UserInsightTextColor: "",
 
   // Notifications
   NotificationCardBgColor: "#FFFFFF",
@@ -203,7 +211,11 @@ export const darkTheme: Theme = {
   // User
   UserBackgroundColor: "rgba(255, 255, 255,0)",
   UserNameColor: "#F1F5F9",
-  UserWelcomeColor: "#CBD5E1",
+  UserWelcomeTextColor: "#CBD5E1",
+  UserStreakBorderColor: "#F59E0B",
+  UserStreakBackgroundColor: "#ffffff",
+  UserStreakTextColor: "",
+  UserInsightTextColor: "",
 
   // Notifications
   NotificationCardBgColor: "#1E293B",
