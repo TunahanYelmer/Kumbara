@@ -10,7 +10,7 @@
  * style={{ padding: spacing(width, height).lg }}
  */
 
-import { TextStyle, ViewStyle } from "react-native";
+import { TextStyle, ViewStyle, StyleSheet } from "react-native";
 
 /**
  * Calculate responsive base unit from screen width
@@ -222,6 +222,27 @@ export const borderRadius = (width: number) => {
     xl: width * 0.042, // ~16px - hero elements
     xxl: width * 0.053, // ~20px - prominent cards
     round: width * 0.5 // Fully circular (avatars, pills)
+  };
+};
+
+/**
+ * Border Width Scale - Standardized Line Thicknesses
+ *
+ * Provides consistent border and divider line widths
+ * Use for borders, dividers, and stroke widths
+ *
+ * Usage:
+ * - borderWidth: borderWidths().xs
+ * - height: borderWidths().hairline (for horizontal lines)
+ */
+export const borderWidths = () => {
+  return {
+    hairline: StyleSheet.hairlineWidth, // Thinnest possible (~0.5px)
+    xs: 1, // Standard thin border
+    sm: 2, // Medium border
+    md: 3, // Thick border
+    lg: 4, // Extra thick border
+    xl: 5  // Very thick border (rare)
   };
 };
 
