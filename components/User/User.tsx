@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { View, Text, Image, useWindowDimensions } from "react-native";
-import { createUserStyles } from "./styles/User.styles";
+import { createUserStyles, createUserIconProps } from "./styles/User.styles";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { useDataLayerValue } from "@/context/state/StateProvider";
 import ChartIcon from "@assets/icons/chart.svg";
@@ -15,6 +15,7 @@ const User: FC = () => {
   const photo = User?.[0]?.photo;
   const givenName = User?.[0]?.givenName;
   const styles = createUserStyles(theme, width, height);
+  const iconProps = createUserIconProps(theme, width, height);
   return (
     <View style={styles.userContainer}>
       <View style={styles.userHeader}>
@@ -23,14 +24,14 @@ const User: FC = () => {
             <Text style={styles.userWelcomeText}>Hi, Alex! </Text>
           </View>
           <View style={styles.userStreak}>
-            <FlameIcon />
+            <FlameIcon {...iconProps.flame} />
 
             <Text style={styles.userStreakText}>12 days</Text>
           </View>
         </View>
         <View style={styles.userInsight}>
           <Text style={styles.userInsightIcon}>
-            <TrendArrowIcon />
+            <TrendArrowIcon {...iconProps.trendArrow} />
           </Text>
           <Text style={styles.userInsightText}>
             You're saving %23 more this month

@@ -23,7 +23,11 @@ export interface Theme {
   UserStreakBorderColor: string;
   UserStreakBackgroundColor: string;
   UserStreakTextColor: string;
+  UserStreakFireIconFillColor: string;
+  UserStreakFireIconStrokeColor: string;
   UserInsightTextColor: string;
+  UserInsightTrendArrowFillColor: string;
+  UserInsightTrendArrowStrokeColor: string;
 
   // Notifications
   NotificationCardBgColor: string;
@@ -119,7 +123,11 @@ export const initialTheme: Theme = {
   UserStreakBorderColor: "#F59E0B",
   UserStreakBackgroundColor: "#ffffff",
   UserStreakTextColor: "",
+  UserStreakFireIconFillColor: "#F59E0B",
+  UserStreakFireIconStrokeColor: "#F59E0B",
   UserInsightTextColor: "",
+  UserInsightTrendArrowFillColor: "#5cce43",
+  UserInsightTrendArrowStrokeColor: "#5cce43",
 
   // Notifications
   NotificationCardBgColor: "#FFFFFF",
@@ -215,7 +223,11 @@ export const darkTheme: Theme = {
   UserStreakBorderColor: "#F59E0B",
   UserStreakBackgroundColor: "#ffffff",
   UserStreakTextColor: "",
+  UserStreakFireIconFillColor: "#F59E0B",
+  UserStreakFireIconStrokeColor: "#F59E0B",
   UserInsightTextColor: "",
+  UserInsightTrendArrowFillColor: "#5cce43",
+  UserInsightTrendArrowStrokeColor: "#5cce43",
 
   // Notifications
   NotificationCardBgColor: "#1E293B",

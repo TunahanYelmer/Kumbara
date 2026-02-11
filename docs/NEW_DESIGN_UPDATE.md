@@ -9,6 +9,7 @@
 Based on `docs/ekra.png`, Kumbara is shifting to a **modern, dark-themed interface** with significant UX improvements:
 
 ### Visual Identity
+
 - **Primary Theme:** Dark mode (charcoal/navy background)
 - **Accent Colors:** Cyan/Teal (#22D3EE, #14B8A6) - not blue!
 - **Secondary Accents:** Purple gradients for variety
@@ -24,6 +25,7 @@ Based on `docs/ekra.png`, Kumbara is shifting to a **modern, dark-themed interfa
 #### Current → New
 
 **Current Home:**
+
 ```
 ┌─────────────────┐
 │ User Avatar     │
@@ -36,6 +38,7 @@ Based on `docs/ekra.png`, Kumbara is shifting to a **modern, dark-themed interfa
 ```
 
 **New Home (ekra.png):**
+
 ```
 ┌─────────────────────────────┐
 │ Hi, Alex  🔥 12 days    🔔  │ ← Greeting + Streak + Notification
@@ -67,6 +70,7 @@ Based on `docs/ekra.png`, Kumbara is shifting to a **modern, dark-themed interfa
 ```
 
 **Major Differences:**
+
 1. **Streak tracking** - Gamification element
 2. **Savings insight** - "23% more this month"
 3. **Hero card redesign** - Larger, more prominent
@@ -79,12 +83,14 @@ Based on `docs/ekra.png`, Kumbara is shifting to a **modern, dark-themed interfa
 ### 2. Navigation Structure Change
 
 #### Current Navigation:
+
 ```
 Bottom Tabs: [Home] [Settings]
 (2 tabs)
 ```
 
 #### New Navigation (ekra.png):
+
 ```
 Bottom Tabs: [🏠 Home] [📊 Stats] [🎯 Goals] [⚙️ Settings]
             + Floating Action Button (center)
@@ -92,38 +98,47 @@ Bottom Tabs: [🏠 Home] [📊 Stats] [🎯 Goals] [⚙️ Settings]
 ```
 
 **Implementation:**
+
 ```typescript
 // navigation/TabNavigator.tsx
 <Tab.Navigator
   screenOptions={{
     tabBarStyle: {
       backgroundColor: '#1F2937', // Dark gray
-      borderTopColor: '#374151',
+      borderTopColor: '#374151'
     },
     tabBarActiveTintColor: '#22D3EE', // Cyan
-    tabBarInactiveTintColor: '#6B7280', // Gray
+    tabBarInactiveTintColor: '#6B7280' // Gray
   }}
 >
-  <Tab.Screen name="Home" component={HomeScreen}
+  <Tab.Screen
+    name='Home'
+    component={HomeScreen}
     options={{ tabBarIcon: ({ color }) => <HomeIcon color={color} /> }}
   />
-  <Tab.Screen name="Stats" component={StatsScreen}
+  <Tab.Screen
+    name='Stats'
+    component={StatsScreen}
     options={{ tabBarIcon: ({ color }) => <StatsIcon color={color} /> }}
   />
 
   {/* Placeholder for FAB */}
-  <Tab.Screen name="AddTransaction" component={EmptyComponent}
+  <Tab.Screen
+    name='AddTransaction'
+    component={EmptyComponent}
     options={{
-      tabBarButton: () => (
-        <FloatingActionButton onPress={handleQuickAdd} />
-      )
+      tabBarButton: () => <FloatingActionButton onPress={handleQuickAdd} />
     }}
   />
 
-  <Tab.Screen name="Goals" component={GoalsScreen}
+  <Tab.Screen
+    name='Goals'
+    component={GoalsScreen}
     options={{ tabBarIcon: ({ color }) => <GoalIcon color={color} /> }}
   />
-  <Tab.Screen name="Settings" component={SettingsScreen}
+  <Tab.Screen
+    name='Settings'
+    component={SettingsScreen}
     options={{ tabBarIcon: ({ color }) => <SettingsIcon color={color} /> }}
   />
 </Tab.Navigator>
@@ -138,45 +153,47 @@ Bottom Tabs: [🏠 Home] [📊 Stats] [🎯 Goals] [⚙️ Settings]
 **File:** `/constants/designSystem.ts`
 
 **Replace `accentColors`:**
+
 ```typescript
 // OLD (Blue-based)
 export const accentColors = {
-  primary: '#3B82F6',    // Blue 500
-  secondary: '#60A5FA',  // Blue 400
-  success: '#10B981',    // Emerald 500
-  warning: '#F59E0B',    // Amber 500
-  error: '#EF4444',      // Red 500
-  purple: '#8B5CF6',     // Violet 500
-};
+  primary: '#3B82F6', // Blue 500
+  secondary: '#60A5FA', // Blue 400
+  success: '#10B981', // Emerald 500
+  warning: '#F59E0B', // Amber 500
+  error: '#EF4444', // Red 500
+  purple: '#8B5CF6' // Violet 500
+}
 
 // NEW (Cyan/Teal-based) - BASED ON EKRA.PNG
 export const accentColors = {
-  primary: '#22D3EE',    // Cyan 400 - Main accent
-  secondary: '#14B8A6',  // Teal 500 - Secondary accent
-  success: '#10B981',    // Emerald 500 - Keep for positive
-  warning: '#F59E0B',    // Amber 500 - Keep for warnings
-  error: '#EF4444',      // Red 500 - Keep for errors
-  purple: '#A78BFA',     // Violet 400 - For goal variety
-  darkBg: '#111827',     // Gray 900 - Background
-  cardBg: '#1F2937',     // Gray 800 - Card background
-  cardBorder: '#374151', // Gray 700 - Subtle borders
-};
+  primary: '#22D3EE', // Cyan 400 - Main accent
+  secondary: '#14B8A6', // Teal 500 - Secondary accent
+  success: '#10B981', // Emerald 500 - Keep for positive
+  warning: '#F59E0B', // Amber 500 - Keep for warnings
+  error: '#EF4444', // Red 500 - Keep for errors
+  purple: '#A78BFA', // Violet 400 - For goal variety
+  darkBg: '#111827', // Gray 900 - Background
+  cardBg: '#1F2937', // Gray 800 - Card background
+  cardBorder: '#374151' // Gray 700 - Subtle borders
+}
 ```
 
 **Add Gradient Colors:**
+
 ```typescript
 export const gradients = {
   // Progress bar gradients
-  cyanGradient: ['#22D3EE', '#14B8A6'],     // Cyan to Teal
-  purpleGradient: ['#A78BFA', '#8B5CF6'],   // Light to Dark Purple
-  greenGradient: ['#34D399', '#10B981'],    // Light to Dark Green
+  cyanGradient: ['#22D3EE', '#14B8A6'], // Cyan to Teal
+  purpleGradient: ['#A78BFA', '#8B5CF6'], // Light to Dark Purple
+  greenGradient: ['#34D399', '#10B981'], // Light to Dark Green
 
   // Hero card gradient
-  heroGradient: ['#1F2937', '#111827'],     // Subtle dark gradient
+  heroGradient: ['#1F2937', '#111827'], // Subtle dark gradient
 
   // Button gradients
-  primaryButton: ['#22D3EE', '#06B6D4'],    // Cyan gradient
-};
+  primaryButton: ['#22D3EE', '#06B6D4'] // Cyan gradient
+}
 ```
 
 ---
@@ -188,11 +205,13 @@ export const gradients = {
 **What:** Track consecutive days user logs transactions
 
 **UI Location:** Top right of home screen
+
 ```
 Hi, Alex  🔥 12 days
 ```
 
 **Database Schema:**
+
 ```sql
 -- Add to users table
 ALTER TABLE users ADD COLUMN current_streak INTEGER DEFAULT 0;
@@ -201,32 +220,34 @@ ALTER TABLE users ADD COLUMN last_activity_date DATE;
 ```
 
 **Logic:**
+
 ```typescript
 const updateStreak = async (userId: number) => {
-  const today = new Date().toDateString();
-  const lastActivity = await getLastActivityDate(userId);
+  const today = new Date().toDateString()
+  const lastActivity = await getLastActivityDate(userId)
 
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterday = new Date()
+  yesterday.setDate(yesterday.getDate() - 1)
 
   if (lastActivity === today) {
     // Already logged today, no change
-    return;
+    return
   } else if (lastActivity === yesterday.toDateString()) {
     // Consecutive day! Increment streak
-    await incrementStreak(userId);
+    await incrementStreak(userId)
   } else {
     // Streak broken, reset to 1
-    await resetStreak(userId);
+    await resetStreak(userId)
   }
 
-  await updateLastActivityDate(userId, today);
-};
+  await updateLastActivityDate(userId, today)
+}
 
 // Call this whenever user adds a transaction
 ```
 
 **Component:**
+
 ```typescript
 const StreakBadge = ({ days }: { days: number }) => {
   return (
@@ -257,48 +278,54 @@ streakBadge: {
 **What:** Show % increase/decrease vs last month
 
 **UI Location:** Below greeting
+
 ```
 📈 You're saving 23% more this month
 ```
 
 **Calculation:**
+
 ```typescript
 const getSavingsComparison = async (userId: number) => {
-  const thisMonth = await getMonthlySavings(userId, getCurrentMonth());
-  const lastMonth = await getMonthlySavings(userId, getLastMonth());
+  const thisMonth = await getMonthlySavings(userId, getCurrentMonth())
+  const lastMonth = await getMonthlySavings(userId, getLastMonth())
 
-  if (lastMonth === 0) return null; // No comparison possible
+  if (lastMonth === 0) return null // No comparison possible
 
-  const percentChange = ((thisMonth - lastMonth) / lastMonth) * 100;
+  const percentChange = ((thisMonth - lastMonth) / lastMonth) * 100
 
   return {
     percent: Math.abs(percentChange).toFixed(0),
     isIncrease: percentChange > 0,
     icon: percentChange > 0 ? '📈' : '📉',
-    message: percentChange > 0
-      ? `You're saving ${Math.abs(percentChange).toFixed(0)}% more this month`
-      : `You're saving ${Math.abs(percentChange).toFixed(0)}% less this month`
-  };
-};
+    message:
+      percentChange > 0
+        ? `You're saving ${Math.abs(percentChange).toFixed(0)}% more this month`
+        : `You're saving ${Math.abs(percentChange).toFixed(0)}% less this month`
+  }
+}
 ```
 
 **Component:**
+
 ```typescript
 const SavingsInsight = ({ comparison }) => {
-  if (!comparison) return null;
+  if (!comparison) return null
 
   return (
     <View style={styles.insightContainer}>
       <Text style={styles.insightIcon}>{comparison.icon}</Text>
-      <Text style={[
-        styles.insightText,
-        { color: comparison.isIncrease ? '#10B981' : '#EF4444' }
-      ]}>
+      <Text
+        style={[
+          styles.insightText,
+          { color: comparison.isIncrease ? '#10B981' : '#EF4444' }
+        ]}
+      >
         {comparison.message}
       </Text>
     </View>
-  );
-};
+  )
+}
 ```
 
 ---
@@ -310,14 +337,16 @@ const SavingsInsight = ({ comparison }) => {
 **New:** Gradient progress bars with glow effect
 
 **Implementation:**
+
 ```bash
 npm install react-native-linear-gradient
 npx expo install expo-linear-gradient
 ```
 
 **Component:**
+
 ```typescript
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient'
 
 const GradientProgressBar = ({
   progress, // 0-100
@@ -335,37 +364,38 @@ const GradientProgressBar = ({
         />
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   progressContainer: {
     width: '100%',
-    marginVertical: 8,
+    marginVertical: 8
   },
   progressBackground: {
     backgroundColor: '#374151', // Dark gray
     borderRadius: 8,
     overflow: 'hidden',
-    height: '100%',
+    height: '100%'
   },
   progressBar: {
     height: '100%',
-    borderRadius: 8,
-  },
-});
+    borderRadius: 8
+  }
+})
 ```
 
 **Goal-Specific Colors:**
+
 ```typescript
 // Assign gradient based on goal category or index
 const goalGradients = {
-  vacation: ['#22D3EE', '#14B8A6'],  // Cyan
-  car: ['#A78BFA', '#8B5CF6'],       // Purple
+  vacation: ['#22D3EE', '#14B8A6'], // Cyan
+  car: ['#A78BFA', '#8B5CF6'], // Purple
   emergency: ['#34D399', '#10B981'], // Green
-  purchase: ['#FB923C', '#F59E0B'],  // Orange
-  other: ['#60A5FA', '#3B82F6'],     // Blue
-};
+  purchase: ['#FB923C', '#F59E0B'], // Orange
+  other: ['#60A5FA', '#3B82F6'] // Blue
+}
 ```
 
 ---
@@ -377,11 +407,13 @@ const goalGradients = {
 **New:** Emoji/icon for each goal
 
 **Database Schema:**
+
 ```sql
 ALTER TABLE goals ADD COLUMN icon_emoji TEXT DEFAULT '💰';
 ```
 
 **Emoji Picker for Goal Creation:**
+
 ```typescript
 const goalEmojiOptions = [
   { category: 'vacation', emojis: ['✈️', '🏖️', '🗺️', '🎒', '⛱️'] },
@@ -390,11 +422,12 @@ const goalEmojiOptions = [
   { category: 'education', emojis: ['📚', '🎓', '✏️', '💻', '🔬'] },
   { category: 'health', emojis: ['💪', '🏃', '🧘', '🏋️', '⚕️'] },
   { category: 'emergency', emojis: ['🆘', '🚨', '💰', '🏦', '🔒'] },
-  { category: 'other', emojis: ['🎯', '⭐', '💎', '🎁', '🔮'] },
-];
+  { category: 'other', emojis: ['🎯', '⭐', '💎', '🎁', '🔮'] }
+]
 
 const GoalEmojiPicker = ({ onSelect, selectedCategory }) => {
-  const emojis = goalEmojiOptions.find(g => g.category === selectedCategory)?.emojis || [];
+  const emojis =
+    goalEmojiOptions.find(g => g.category === selectedCategory)?.emojis || []
 
   return (
     <View style={styles.emojiPicker}>
@@ -404,15 +437,16 @@ const GoalEmojiPicker = ({ onSelect, selectedCategory }) => {
         </TouchableOpacity>
       ))}
     </View>
-  );
-};
+  )
+}
 ```
 
 **Goal Card Component:**
+
 ```typescript
 const GoalCard = ({ goal }: { goal: Goal }) => {
-  const progress = (goal.current_amount / goal.target_amount) * 100;
-  const gradientColors = goalGradients[goal.category] || goalGradients.other;
+  const progress = (goal.current_amount / goal.target_amount) * 100
+  const gradientColors = goalGradients[goal.category] || goalGradients.other
 
   return (
     <View style={styles.goalCard}>
@@ -425,12 +459,18 @@ const GoalCard = ({ goal }: { goal: Goal }) => {
           <Text style={styles.goalName}>{goal.name}</Text>
           <View style={styles.timeContainer}>
             <Text style={styles.timeIcon}>⏰</Text>
-            <Text style={styles.timeText}>{getTimeRemaining(goal.deadline)}</Text>
+            <Text style={styles.timeText}>
+              {getTimeRemaining(goal.deadline)}
+            </Text>
           </View>
         </View>
         <View style={styles.amountContainer}>
-          <Text style={styles.currentAmount}>${goal.current_amount.toLocaleString()}</Text>
-          <Text style={styles.targetAmount}>of ${goal.target_amount.toLocaleString()}</Text>
+          <Text style={styles.currentAmount}>
+            ${goal.current_amount.toLocaleString()}
+          </Text>
+          <Text style={styles.targetAmount}>
+            of ${goal.target_amount.toLocaleString()}
+          </Text>
         </View>
       </View>
 
@@ -441,8 +481,8 @@ const GoalCard = ({ goal }: { goal: Goal }) => {
         height={10}
       />
     </View>
-  );
-};
+  )
+}
 ```
 
 ---
@@ -452,14 +492,11 @@ const GoalCard = ({ goal }: { goal: Goal }) => {
 **What:** Central + button for quick actions
 
 **Implementation:**
+
 ```typescript
 const FloatingActionButton = ({ onPress }: { onPress: () => void }) => {
   return (
-    <TouchableOpacity
-      style={styles.fab}
-      onPress={onPress}
-      activeOpacity={0.8}
-    >
+    <TouchableOpacity style={styles.fab} onPress={onPress} activeOpacity={0.8}>
       <LinearGradient
         colors={['#22D3EE', '#06B6D4']}
         style={styles.fabGradient}
@@ -469,8 +506,8 @@ const FloatingActionButton = ({ onPress }: { onPress: () => void }) => {
         <Text style={styles.fabIcon}>+</Text>
       </LinearGradient>
     </TouchableOpacity>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   fab: {
@@ -484,54 +521,64 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
     shadowRadius: 8,
-    elevation: 8,
+    elevation: 8
   },
   fabGradient: {
     width: '100%',
     height: '100%',
     borderRadius: 30,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   fabIcon: {
     fontSize: 32,
     color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
-});
+    fontWeight: 'bold'
+  }
+})
 ```
 
 **FAB Action Sheet:**
+
 ```typescript
 const QuickActionSheet = ({ visible, onClose }) => {
   return (
-    <Modal visible={visible} transparent animationType="slide">
+    <Modal visible={visible} transparent animationType='slide'>
       <View style={styles.actionSheetOverlay}>
         <View style={styles.actionSheet}>
-          <TouchableOpacity style={styles.action} onPress={() => {
-            onClose();
-            navigateTo('AddMoney');
-          }}>
+          <TouchableOpacity
+            style={styles.action}
+            onPress={() => {
+              onClose()
+              navigateTo('AddMoney')
+            }}
+          >
             <View style={[styles.actionIcon, { backgroundColor: '#10B981' }]}>
               <Text style={styles.actionEmoji}>💰</Text>
             </View>
             <Text style={styles.actionText}>Add Money</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.action} onPress={() => {
-            onClose();
-            navigateTo('Withdraw');
-          }}>
+          <TouchableOpacity
+            style={styles.action}
+            onPress={() => {
+              onClose()
+              navigateTo('Withdraw')
+            }}
+          >
             <View style={[styles.actionIcon, { backgroundColor: '#EF4444' }]}>
               <Text style={styles.actionEmoji}>💸</Text>
             </View>
             <Text style={styles.actionText}>Withdraw</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.action} onPress={() => {
-            onClose();
-            navigateTo('NewGoal');
-          }}>
+          <TouchableOpacity
+            style={styles.action}
+            onPress={() => {
+              onClose()
+              navigateTo('NewGoal')
+            }}
+          >
             <View style={[styles.actionIcon, { backgroundColor: '#22D3EE' }]}>
               <Text style={styles.actionEmoji}>🎯</Text>
             </View>
@@ -544,8 +591,8 @@ const QuickActionSheet = ({ visible, onClose }) => {
         </View>
       </View>
     </Modal>
-  );
-};
+  )
+}
 ```
 
 ---
@@ -555,30 +602,30 @@ const QuickActionSheet = ({ visible, onClose }) => {
 **File:** `screens/home/HomeScreen.tsx`
 
 ```typescript
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { useDataLayerValue } from '@/context/state/StateProvider';
-import { useTheme } from '@/context/theme/ThemeProvider';
-import { createHomeScreenStyles } from './styles/HomeScreen.styles';
-import StreakBadge from '@/components/StreakBadge';
-import SavingsInsight from '@/components/SavingsInsight';
-import BalanceHeroCard from '@/components/BalanceHeroCard';
-import ActionButton from '@/components/ActionButton';
-import GoalCard from '@/components/GoalCard';
+import React, { useState, useEffect } from 'react'
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { useDataLayerValue } from '@/context/state/StateProvider'
+import { useTheme } from '@/context/theme/ThemeProvider'
+import { createHomeScreenStyles } from './styles/HomeScreen.styles'
+import StreakBadge from '@/components/StreakBadge'
+import SavingsInsight from '@/components/SavingsInsight'
+import BalanceHeroCard from '@/components/BalanceHeroCard'
+import ActionButton from '@/components/ActionButton'
+import GoalCard from '@/components/GoalCard'
 
 export default function HomeScreen({ navigation }) {
-  const [{ Balance, Goals, User, streak }, dispatch] = useDataLayerValue();
-  const [theme] = useTheme();
-  const [savingsComparison, setSavingsComparison] = useState(null);
+  const [{ Balance, Goals, User, streak }, dispatch] = useDataLayerValue()
+  const [theme] = useTheme()
+  const [savingsComparison, setSavingsComparison] = useState(null)
 
-  const { width, height } = useWindowDimensions();
-  const styles = createHomeScreenStyles(theme, width, height);
+  const { width, height } = useWindowDimensions()
+  const styles = createHomeScreenStyles(theme, width, height)
 
   useEffect(() => {
-    fetchSavingsComparison();
-  }, []);
+    fetchSavingsComparison()
+  }, [])
 
-  const topGoals = Goals?.slice(0, 2) || []; // Show first 2 goals
+  const topGoals = Goals?.slice(0, 2) || [] // Show first 2 goals
 
   return (
     <ScrollView style={styles.container}>
@@ -596,36 +643,34 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       {/* Savings Insight */}
-      {savingsComparison && (
-        <SavingsInsight comparison={savingsComparison} />
-      )}
+      {savingsComparison && <SavingsInsight comparison={savingsComparison} />}
 
       {/* Hero Balance Card */}
       <BalanceHeroCard
         balance={Balance}
         activeGoals={Goals?.length || 0}
         percentChange={8.4}
-        lastUpdated="today"
+        lastUpdated='today'
       />
 
       {/* Action Buttons */}
       <View style={styles.actionsRow}>
         <ActionButton
-          icon="💰"
-          label="Add Money"
-          color="#10B981"
+          icon='💰'
+          label='Add Money'
+          color='#10B981'
           onPress={() => setAddMoneyVisible(true)}
         />
         <ActionButton
-          icon="💸"
-          label="Withdraw"
-          color="#EF4444"
+          icon='💸'
+          label='Withdraw'
+          color='#EF4444'
           onPress={() => setWithdrawVisible(true)}
         />
         <ActionButton
-          icon="🎯"
-          label="New Goal"
-          color="#22D3EE"
+          icon='🎯'
+          label='New Goal'
+          color='#22D3EE'
           onPress={() => navigation.navigate('CreateGoal')}
         />
       </View>
@@ -640,24 +685,28 @@ export default function HomeScreen({ navigation }) {
         </View>
 
         {topGoals.length > 0 ? (
-          topGoals.map(goal => (
-            <GoalCard key={goal.goal_id} goal={goal} />
-          ))
+          topGoals.map(goal => <GoalCard key={goal.goal_id} goal={goal} />)
         ) : (
           <EmptyState
-            icon="🎯"
-            message="No goals yet. Create your first savings goal!"
-            actionText="Create Goal"
+            icon='🎯'
+            message='No goals yet. Create your first savings goal!'
+            actionText='Create Goal'
             onAction={() => navigation.navigate('CreateGoal')}
           />
         )}
       </View>
 
       {/* Modals */}
-      <AddMoneyModal visible={addMoneyVisible} onClose={() => setAddMoneyVisible(false)} />
-      <WithdrawMoneyModal visible={withdrawVisible} onClose={() => setWithdrawVisible(false)} />
+      <AddMoneyModal
+        visible={addMoneyVisible}
+        onClose={() => setAddMoneyVisible(false)}
+      />
+      <WithdrawMoneyModal
+        visible={withdrawVisible}
+        onClose={() => setWithdrawVisible(false)}
+      />
     </ScrollView>
-  );
+  )
 }
 ```
 
@@ -666,11 +715,12 @@ export default function HomeScreen({ navigation }) {
 ### 6. Updated Component Styles
 
 **Hero Balance Card:**
+
 ```typescript
 const createBalanceHeroCardStyles = (theme, width, height) => {
-  const space = spacing(width, height);
-  const typo = typography(width);
-  const radius = borderRadius(width);
+  const space = spacing(width, height)
+  const typo = typography(width)
+  const radius = borderRadius(width)
 
   return StyleSheet.create({
     heroCard: {
@@ -681,19 +731,19 @@ const createBalanceHeroCardStyles = (theme, width, height) => {
       borderRadius: radius.xxl,
       borderWidth: 1,
       borderColor: theme.cardBorder || '#374151',
-      ...shadows.hero,
+      ...shadows.hero
     },
     headerRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginBottom: space.sm,
+      marginBottom: space.sm
     },
     totalSavingsLabel: {
       ...typo.captionBold,
       color: '#9CA3AF', // Gray 400
       textTransform: 'uppercase',
-      letterSpacing: 1.2,
+      letterSpacing: 1.2
     },
     percentChange: {
       flexDirection: 'row',
@@ -701,12 +751,12 @@ const createBalanceHeroCardStyles = (theme, width, height) => {
       backgroundColor: 'rgba(16, 185, 129, 0.1)', // Green with transparency
       paddingHorizontal: space.sm,
       paddingVertical: 4,
-      borderRadius: radius.md,
+      borderRadius: radius.md
     },
     percentChangeText: {
       ...typo.captionBold,
       color: '#10B981', // Green
-      marginLeft: 4,
+      marginLeft: 4
     },
     balanceAmount: {
       ...typo.display,
@@ -714,35 +764,36 @@ const createBalanceHeroCardStyles = (theme, width, height) => {
       fontWeight: '900',
       color: '#22D3EE', // Cyan
       marginVertical: space.sm,
-      letterSpacing: -1,
+      letterSpacing: -1
     },
     infoRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginTop: space.md,
+      marginTop: space.md
     },
     infoItem: {
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'center'
     },
     infoIcon: {
       fontSize: 16,
-      marginRight: 6,
+      marginRight: 6
     },
     infoText: {
       ...typo.caption,
-      color: '#9CA3AF',
-    },
-  });
-};
+      color: '#9CA3AF'
+    }
+  })
+}
 ```
 
 **Action Button:**
+
 ```typescript
 const createActionButtonStyles = (theme, width, height, color) => {
-  const space = spacing(width, height);
-  const typo = typography(width);
-  const radius = borderRadius(width);
+  const space = spacing(width, height)
+  const typo = typography(width)
+  const radius = borderRadius(width)
 
   return StyleSheet.create({
     button: {
@@ -756,7 +807,7 @@ const createActionButtonStyles = (theme, width, height, color) => {
       minHeight: 100,
       borderWidth: 1,
       borderColor: theme.cardBorder || '#374151',
-      ...shadows.button,
+      ...shadows.button
     },
     iconContainer: {
       width: 50,
@@ -765,18 +816,18 @@ const createActionButtonStyles = (theme, width, height, color) => {
       backgroundColor: `${color}20`, // Color with 20% opacity
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: space.sm,
+      marginBottom: space.sm
     },
     icon: {
-      fontSize: 24,
+      fontSize: 24
     },
     label: {
       ...typo.caption,
       color: theme.TextColor,
-      fontWeight: '600',
-    },
-  });
-};
+      fontWeight: '600'
+    }
+  })
+}
 ```
 
 ---
@@ -786,6 +837,7 @@ const createActionButtonStyles = (theme, width, height, color) => {
 Based on the new design, update your app store screenshots:
 
 ### Screenshot 1: Home Screen (Hero)
+
 - Show full home screen with:
   - Streak badge
   - Savings insight
@@ -794,36 +846,43 @@ Based on the new design, update your app store screenshots:
   - 2 goal cards with progress
 
 **Marketing overlay text:**
+
 ```
 "Track savings with style 💎"
 ```
 
 ### Screenshot 2: Goals Screen
+
 - Show full goals list
 - Multiple goals with different icons
 - Gradient progress bars
 - Completed goals section
 
 **Marketing overlay:**
+
 ```
 "Achieve your dreams 🎯"
 ```
 
 ### Screenshot 3: Stats/Reports Screen
+
 - Beautiful charts with cyan gradients
 - Monthly comparison
 - Category breakdown
 
 **Marketing overlay:**
+
 ```
 "Visualize your progress 📊"
 ```
 
 ### Screenshot 4: Dark Mode Showcase
+
 - Side-by-side comparison (if you add light mode)
 - Or just emphasize dark elegance
 
 **Marketing overlay:**
+
 ```
 "Beautiful in the dark 🌙"
 ```
@@ -841,20 +900,20 @@ Based on the new design, update your app store screenshots:
 ```typescript
 export const primaryColorScheme = {
   // Accent colors
-  primary: '#22D3EE',      // Cyan 400 - Main CTAs, progress bars
-  secondary: '#14B8A6',    // Teal 500 - Secondary elements
-  success: '#10B981',      // Emerald - Positive metrics
-  warning: '#F59E0B',      // Amber - Warnings, streak badges
-  error: '#EF4444',        // Red - Errors, withdrawals
-  purple: '#A78BFA',       // Violet - Goal variety
+  primary: '#22D3EE', // Cyan 400 - Main CTAs, progress bars
+  secondary: '#14B8A6', // Teal 500 - Secondary elements
+  success: '#10B981', // Emerald - Positive metrics
+  warning: '#F59E0B', // Amber - Warnings, streak badges
+  error: '#EF4444', // Red - Errors, withdrawals
+  purple: '#A78BFA', // Violet - Goal variety
 
   // Background colors (DARK FIRST)
-  background: '#111827',   // Gray 900 - App background
-  cardBg: '#1F2937',       // Gray 800 - Card backgrounds
-  cardBorder: '#374151',   // Gray 700 - Subtle borders
+  background: '#111827', // Gray 900 - App background
+  cardBg: '#1F2937', // Gray 800 - Card backgrounds
+  cardBorder: '#374151', // Gray 700 - Subtle borders
 
   // Text colors
-  textPrimary: '#F9FAFB',  // Gray 50 - Main text
+  textPrimary: '#F9FAFB', // Gray 50 - Main text
   textSecondary: '#9CA3AF', // Gray 400 - Secondary text
   textTertiary: '#6B7280', // Gray 500 - Tertiary text
 
@@ -864,8 +923,8 @@ export const primaryColorScheme = {
   successGradient: ['#34D399', '#10B981'],
 
   // Special
-  fabShadow: 'rgba(34, 211, 238, 0.5)', // Cyan glow
-};
+  fabShadow: 'rgba(34, 211, 238, 0.5)' // Cyan glow
+}
 ```
 
 **Alternative Schemes** (keep for user choice):
@@ -879,6 +938,7 @@ export const primaryColorScheme = {
 ## 🔧 Implementation Priority
 
 ### Phase 1: Core Design Update (Week 1-2)
+
 1. ✅ Update color scheme to cyan/teal
 2. ✅ Implement new navigation (4 tabs + FAB)
 3. ✅ Redesign home screen layout
@@ -886,6 +946,7 @@ export const primaryColorScheme = {
 5. ✅ Update all card styles to match ekra.png
 
 ### Phase 2: New Features (Week 3-4)
+
 1. ✅ Streak tracking system
 2. ✅ Savings percentage comparison
 3. ✅ Icon-based goal cards
@@ -893,6 +954,7 @@ export const primaryColorScheme = {
 5. ✅ Goals preview on home
 
 ### Phase 3: Polish (Week 5)
+
 1. ✅ Animations and transitions
 2. ✅ Micro-interactions
 3. ✅ Empty states
@@ -900,6 +962,7 @@ export const primaryColorScheme = {
 5. ✅ Error handling
 
 ### Phase 4: Testing & Screenshots (Week 6)
+
 1. ✅ Test on multiple devices
 2. ✅ Capture new screenshots
 3. ✅ Update app store listings
@@ -912,11 +975,13 @@ export const primaryColorScheme = {
 ## 📝 Updated App Store Description
 
 **Short Description (80 chars):**
+
 ```
 Track savings, crush goals, see progress. Beautiful dark UI. 💎
 ```
 
 **Full Description (Update):**
+
 ```
 💎 BEAUTIFUL DARK DESIGN
 
@@ -961,16 +1026,19 @@ Kumbara features a stunning dark interface with cyan gradients and smooth animat
 ### Design Decisions to Question:
 
 🤔 **Should goals be on home screen or separate tab?**
+
 - Pros: Constant visibility, motivation
 - Cons: Home screen clutter, slower loading
 - **Think:** Test both, measure which increases goal completion
 
 🤔 **Is 4-tab navigation too many?**
+
 - Pros: Clear separation of features
 - Cons: More taps to navigate
 - **Think:** Could Stats be merged with Home? Could Goals be a modal?
 
 🤔 **Dark theme only or light mode too?**
+
 - Pros of dark: Modern, battery-saving (OLED), less eye strain
 - Cons: Some users prefer light
 - **Think:** Implement both, let users choose
