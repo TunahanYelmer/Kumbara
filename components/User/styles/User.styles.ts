@@ -9,6 +9,43 @@ import {
   iconSizes
 } from "@/constants/designSystem";
 
+interface Icon {
+  stroke: string;
+  fill: string;
+  height: number;
+  width: number;
+}
+
+/**
+ * User Component Icon Properties -
+ *
+ * - Accepts theme provider
+ * - Screen Width
+ * - Screen Height
+ * - You can change height , width  fill color , stroke color of the svg icons
+ */
+export const createUserIconProps = (
+  theme: Theme,
+  width: number,
+  height: number
+) => {
+  const icons = iconSizes(width);
+  return {
+    flame: {
+      width: icons.sm,
+      height: icons.sm,
+      fill: theme.UserStreakFireIconFillColor,
+      stroke: theme.UserStreakFireIconStrokeColor
+    },
+    trendArrow: {
+      width: icons.xs,
+      height: icons.xs,
+      fill: theme.UserInsightTrendArrowFillColor,
+      stroke: theme.UserInsightTrendArrowStrokeColor
+    }
+  };
+};
+
 /**
  * User Component Styles - Premium User Profile Design
  *
@@ -62,7 +99,10 @@ export const createUserStyles = (
       ...typo.small,
       color: theme.UserStreakTextColor
     },
-    userStreakIcon: {},
+    userStreakFlameIcon: {
+      height: icons.sm,
+      width: icons.sm
+    },
     userInsight: {
       ...layout.row,
       gap: space.xs,
