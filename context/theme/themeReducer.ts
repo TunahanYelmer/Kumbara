@@ -39,6 +39,17 @@ export interface Theme {
   BalanceCardColor: [string, string, ...string[]]; // Gradient (min 2 colors)
   BalanceCardTitleColor: string;
   BalanceCardAmountColor: string;
+  BalanceCardDeficitBadgeBackgroundColor: string;
+  BalanceCardDeficitPercentageTextColor: string;
+  BalanceCardDeficitIconFillColor: string;
+  BalanceCardDeficitIconStrokeColor: string;
+  BalanceCardBorderLineColor: string;
+  BalanceCardGoalsIconFillColor: string;
+  BalanceCardGoalsIconStrokeColor: string;
+  BalanceCardGoalsTextColor: string;
+  BalanceCardCalendarIconFillColor: string;
+  BalanceCardCalendarIconStrokeColor: string;
+  BalanceCardLastUpdateTextColor: string;
 
   // Tabs
   TabColour: string;
@@ -139,6 +150,17 @@ export const initialTheme: Theme = {
   BalanceCardColor: ["#3856d9", "#253cb0"],
   BalanceCardTitleColor: "#d5dbf5",
   BalanceCardAmountColor: "#d5dbf5",
+  BalanceCardDeficitBadgeBackgroundColor: "#10B981",
+  BalanceCardDeficitPercentageTextColor: "#FFFFFF",
+  BalanceCardDeficitIconFillColor: "#FFFFFF",
+  BalanceCardDeficitIconStrokeColor: "#10B981",
+  BalanceCardBorderLineColor: "rgba(213, 219, 245, 0.2)",
+  BalanceCardGoalsIconFillColor: "#d5dbf5",
+  BalanceCardGoalsIconStrokeColor: "#d5dbf5",
+  BalanceCardGoalsTextColor: "#d5dbf5",
+  BalanceCardCalendarIconFillColor: "#000000",
+  BalanceCardCalendarIconStrokeColor: "#d5dbf5",
+  BalanceCardLastUpdateTextColor: "#d5dbf5",
 
   // Tabs
   TabButtonBgColor: "#F3F4F6",
@@ -239,6 +261,17 @@ export const darkTheme: Theme = {
   BalanceCardColor: ["#5cce43", "#99FF00"],
   BalanceCardTitleColor: "#E0E7FF",
   BalanceCardAmountColor: "#FACC15",
+  BalanceCardDeficitBadgeBackgroundColor: "#10B981",
+  BalanceCardDeficitPercentageTextColor: "#FFFFFF",
+  BalanceCardDeficitIconFillColor: "#FFFFFF",
+  BalanceCardDeficitIconStrokeColor: "#10B981",
+  BalanceCardBorderLineColor: "rgba(224, 231, 255, 0.2)",
+  BalanceCardGoalsIconFillColor: "#E0E7FF",
+  BalanceCardGoalsIconStrokeColor: "#E0E7FF",
+  BalanceCardGoalsTextColor: "#E0E7FF",
+  BalanceCardCalendarIconFillColor: "",
+  BalanceCardCalendarIconStrokeColor: "#E0E7FF",
+  BalanceCardLastUpdateTextColor: "#E0E7FF",
 
   // Tabs
   TabButtonBgColor: "#1E293B",
