@@ -51,6 +51,14 @@ export interface Theme {
   BalanceCardCalendarIconStrokeColor: string;
   BalanceCardLastUpdateTextColor: string;
 
+  // Quick Action Cards (Add Money, Withdraw, Add Goal)
+  AddMoneyCardBgColor: string;
+  AddMoneyTextColor: string;
+  WithdrawCardBgColor: string;
+  WithdrawTextColor: string;
+  AddGoalCardBgColor: string;
+  AddGoalTextColor: string;
+
   // Tabs
   TabColour: string;
   TabButtonBgColor: string;
@@ -162,6 +170,14 @@ export const initialTheme: Theme = {
   BalanceCardCalendarIconStrokeColor: "#d5dbf5",
   BalanceCardLastUpdateTextColor: "#d5dbf5",
 
+  // Quick Action Cards
+  AddMoneyCardBgColor: "#10B981",      // Emerald green
+  AddMoneyTextColor: "#FFFFFF",        // White
+  WithdrawCardBgColor: "#F59E0B",      // Amber orange
+  WithdrawTextColor: "#FFFFFF",        // White
+  AddGoalCardBgColor: "#8B5CF6",       // Violet purple
+  AddGoalTextColor: "#FFFFFF",         // White
+
   // Tabs
   TabButtonBgColor: "#F3F4F6",
   TabColour: "#F3F4F6",
@@ -272,6 +288,14 @@ export const darkTheme: Theme = {
   BalanceCardCalendarIconFillColor: "",
   BalanceCardCalendarIconStrokeColor: "#E0E7FF",
   BalanceCardLastUpdateTextColor: "#E0E7FF",
+
+  // Quick Action Cards
+  AddMoneyCardBgColor: "#059669",      // Darker emerald green
+  AddMoneyTextColor: "#FFFFFF",        // White
+  WithdrawCardBgColor: "#D97706",      // Darker amber orange
+  WithdrawTextColor: "#FFFFFF",        // White
+  AddGoalCardBgColor: "#7C3AED",       // Darker violet purple
+  AddGoalTextColor: "#FFFFFF",         // White
 
   // Tabs
   TabButtonBgColor: "#1E293B",

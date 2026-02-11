@@ -1,6 +1,45 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "@context/theme/themeReducer";
-import { spacing, borderRadius, shadows, typography } from "@/constants/designSystem";
+import {
+  spacing,
+  borderRadius,
+  shadows,
+  typography,
+  iconSizes
+} from "@/constants/designSystem";
+
+/**
+ * Icon Props for Quick Action Cards
+ *
+ * Returns size and color configuration for SVG icons
+ */
+export const createTransactionsIconProps = (
+  theme: Theme,
+  width: number,
+  height: number
+) => {
+  const icons = iconSizes(width);
+  return {
+    wallet: {
+      width: icons.md,
+      height: icons.md,
+      fill: theme.AddMoneyTextColor,
+      stroke: theme.AddMoneyTextColor,
+    },
+    withdraw: {
+      width: icons.md,
+      height: icons.md,
+      fill: theme.WithdrawTextColor,
+      stroke: theme.WithdrawTextColor,
+    },
+    info: {
+      width: icons.md,
+      height: icons.md,
+      fill: theme.AddGoalTextColor,
+      stroke: theme.AddGoalTextColor,
+    }
+  };
+};
 
 /**
  * Transactions Styles - Professional Action Buttons
@@ -18,63 +57,71 @@ export const createTransactionsStyles = (
   const typo = typography(width);
 
   return StyleSheet.create({
+    // Main wrapper - minimal styling
     container: {
+      marginHorizontal: space.md,
+      marginVertical: space.sm,
+    },
+
+    // Horizontal row for 3 cards
+    quickActionsContainer: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      marginHorizontal: space.md,
-      marginVertical: space.sm,
-      gap: space.sm,                   // Modern gap property
+      gap: space.sm, // Space between buttons
     },
-    add: {
-      flex: 1,                         // Equal width buttons
-      flexDirection: "row",
-      backgroundColor: theme.AddButtonBgColor,
-      paddingVertical: space.md,       // Comfortable touch target
-      paddingHorizontal: space.lg,
-      borderRadius: radius.xl,         // Premium rounding
+
+    // Shared card style (all 3 buttons)
+    quickActionCard: {
+      flex: 1, // Equal width for all 3
+      flexDirection: "column", // Icon above text
       alignItems: "center",
       justifyContent: "center",
-      ...shadows.button,
-      minHeight: 48,                   // Minimum touch target (HIG)
-    },
-    substract: {
-      flex: 1,                         // Equal width buttons
-      flexDirection: "row",
-      backgroundColor: theme.SubstractButtonBgColor,
-      paddingVertical: space.md,       // Comfortable touch target
-      paddingHorizontal: space.lg,
-      borderRadius: radius.xl,         // Premium rounding
-      alignItems: "center",
-      justifyContent: "center",
-      ...shadows.button,
-      minHeight: 48,                   // Minimum touch target (HIG)
-    },
-    icon: {
-      width: width * 0.06,             // Refined icon size
-      height: width * 0.06,
-      marginRight: space.xs,
-    },
-    button: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: "transparent",
-      paddingVertical: space.sm,
+      paddingVertical: space.lg,
       paddingHorizontal: space.md,
-      borderRadius: radius.lg,
+      borderRadius: radius.xl, // Rounded corners
+      ...shadows.card, // Subtle shadow
+      minHeight: 100, // Minimum height for touch target
     },
-    AddbuttonText: {
-      color: theme.AddButtonTextColor,
-      ...typo.body,
-      fontWeight: "600",               // Semibold for emphasis
+
+    // Specific background colors for each button
+    addMoneyCard: {
+      backgroundColor: theme.AddMoneyCardBgColor,
+    },
+
+    withdrawCard: {
+      backgroundColor: theme.WithdrawCardBgColor,
+    },
+
+    addGoalCard: {
+      backgroundColor: theme.AddGoalCardBgColor,
+    },
+
+    // Icon wrapper
+    iconContainer: {
+      marginBottom: space.sm, // Space between icon and text
+      alignItems: "center",
+      justifyContent: "center",
+    },
+
+    // Shared text style
+    actionText: {
+      ...typo.caption,
+      fontWeight: "600",
       textAlign: "center",
     },
-    SubstructButtonText: {
-      color: theme.SubstractButtonTextColor,
-      ...typo.body,
-      fontWeight: "600",               // Semibold for emphasis
-      textAlign: "center",
+
+    // Specific text colors for each button
+    addMoneyText: {
+      color: theme.AddMoneyTextColor,
     },
+
+    withdrawText: {
+      color: theme.WithdrawTextColor,
+    },
+
+    addGoalText: {
+      color: theme.AddGoalTextColor,
+    }
   });
 };

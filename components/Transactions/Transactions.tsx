@@ -3,10 +3,24 @@ import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
 import AddMoneyModal from "@/components/AddMoneyModal/AddMoneyModal";
 import WithdrawMoneyModal from "@/components/WithDrawMoneyModal/WithdrawMoneyModal";
 import { useTheme } from "@/context/theme/ThemeProvider";
-import { createTransactionsStyles } from "./styles/Transactions.styles";
+import { createTransactionsStyles, createTransactionsIconProps } from "./styles/Transactions.styles";
+
+// Import SVG icons
+import WalletIcon from "@assets/icons/wallet.svg";
+import WithdrawIcon from "@assets/icons/withdraw.svg";
+import InfoIcon from "@assets/icons/info.svg";
 
 const { width, height } = Dimensions.get("window");
 
+/* ========== ORIGINAL TRANSACTIONS COMPONENT (COMMENTED OUT FOR REDESIGN) ==========
+/**
+ * Transactions Component (Original - 2 Buttons)
+ * ----------------------
+ * Two action buttons: Add Money and Withdraw Money
+ * Uses PNG icons and Turkish text
+ * Opens modals for each action
+ */
+/*
 const Transactions: FC = () => {
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [withdrawModalVisible, setWithdrawModalVisible] = useState(false);
@@ -28,7 +42,7 @@ const Transactions: FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* ----------------- Add Money Section ----------------- */}
+      {/* ----------------- Add Money Section ----------------- *\/
       <View style={styles.add}>
         <TouchableOpacity
           testID="add-money-button"
@@ -44,7 +58,7 @@ const Transactions: FC = () => {
         </TouchableOpacity>
       </View>
 
-      {/* ----------------- Withdraw Money Section ----------------- */}
+      {/* ----------------- Withdraw Money Section ----------------- *\/
       <View style={styles.substract}>
         <TouchableOpacity
           testID="withdraw-money-button"
@@ -59,6 +73,54 @@ const Transactions: FC = () => {
           <Image source={WithdrawButtonIcon} style={styles.icon} />
           <Text style={styles.SubstructButtonText}>Para Çıkar</Text>
         </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+*/
+/* ========== END OF COMMENTED ORIGINAL TRANSACTIONS COMPONENT ========== */
+
+/**
+ * Transactions Component (NEW DESIGN - ekra.png)
+ * ----------------------
+ * Three action buttons: Add Money, Withdraw Money, Add Goal
+ * Matches ekra.png design
+ */
+const Transactions: FC = () => {
+  const [theme] = useTheme();
+  const styles = createTransactionsStyles(theme, width, height);
+  const iconProps = createTransactionsIconProps(theme, width, height);
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.quickActionsContainer}>
+        {/* Add Money */}
+        <View style={[styles.quickActionCard, styles.addMoneyCard]}>
+          <View style={styles.iconContainer}>
+            <WalletIcon {...iconProps.wallet} />
+          </View>
+          <Text style={[styles.actionText, styles.addMoneyText]}>
+            Add Money
+          </Text>
+        </View>
+
+        {/* Withdraw */}
+        <View style={[styles.quickActionCard, styles.withdrawCard]}>
+          <View style={styles.iconContainer}>
+            <WithdrawIcon {...iconProps.withdraw} />
+          </View>
+          <Text style={[styles.actionText, styles.withdrawText]}>Withdraw</Text>
+        </View>
+
+        {/* Add Goal */}
+        <View style={[styles.quickActionCard, styles.addGoalCard]}>
+          <View style={styles.iconContainer}>
+            <InfoIcon {...iconProps.info} />
+          </View>
+          <Text style={[styles.actionText, styles.addGoalText]}>
+            Yeni Hedef
+          </Text>
+        </View>
       </View>
     </View>
   );
