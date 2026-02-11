@@ -1,6 +1,42 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "@context/theme/themeReducer";
-import { borderRadius, shadows, typography, spacing } from "@/constants/designSystem";
+import {
+  borderRadius,
+  shadows,
+  typography,
+  spacing,
+  iconSizes,
+  layout,
+  borderWidths
+} from "@/constants/designSystem";
+
+export const createBalanceCardIconProps = (
+  theme: Theme,
+  width: number,
+  height: number
+) => {
+  const icons = iconSizes(width);
+  return {
+    trendArrow: {
+      width: icons.xs,
+      height: icons.xs,
+      fill: theme.BalanceCardDeficitIconFillColor,
+      stroke: theme.BalanceCardGoalsIconStrokeColor
+    },
+    goals: {
+      width: icons.sm,
+      height: icons.sm,
+      fill: theme.BalanceCardGoalsIconFillColor,
+      stroke: theme.BalanceCardGoalsIconStrokeColor
+    },
+    calendar: {
+      width: icons.sm,
+      height: icons.sm,
+      fill: theme.BalanceCardCalendarIconFillColor,
+      stroke: theme.BalanceCardCalendarIconStrokeColor
+    }
+  };
+};
 
 /**
  * BalanceCard Styles - Premium Fintech Hero Card
@@ -17,45 +53,87 @@ export const createBalanceCardStyles = (theme: Theme, width: number) => {
   const radius = borderRadius(width);
   const typo = typography(width);
   const space = spacing(width, 0);
+  const borders = borderWidths();
 
   return StyleSheet.create({
-    card: {
-      width: width * 0.92,
-      borderRadius: radius.xxl,        // More premium rounding (20px)
-      padding: width * 0.064,          // Balanced padding (24px)
-      marginHorizontal: width * 0.04,
-      marginVertical: space.sm,
-      // Premium hero shadow
-      ...shadows.hero,
-      // Subtle border for sophistication
-      borderWidth: 1,
-      borderColor: 'rgba(255, 255, 255, 0.18)',
-      // Extra polish
-      overflow: 'hidden',              // Ensures gradient stays within bounds
+    cardContainer: {
+      flexDirection: "column",
+      alignSelf: "stretch",
+      backgroundColor: theme.BalanceCardColor[0],
+      borderRadius: radius.xl,
+      padding: space.xxl,
+      marginHorizontal: space.md, // ✅ Space from screen edges
+      marginVertical: space.lg, // ✅ More space top/bottom
+      ...shadows.hero
     },
-    title: {
-      color: theme.BalanceCardTitleColor,
-      ...typo.caption,                 // Use typography system
-      fontWeight: "500",
-      marginBottom: space.sm,
-      opacity: 0.92,
-      textTransform: 'uppercase' as const,
-      letterSpacing: 1.2,              // More tracking for labels
-    },
-    amountContainer: {
+    savingsContainer: {
       flexDirection: "row",
-      alignItems: "flex-end",
-      gap: width * 0.012,
-      marginTop: space.xs,
+      alignItems: "center",
+      justifyContent: "space-between"
     },
-    amount: {
-      color: theme.BalanceCardAmountColor,
-      ...typo.display,                 // Hero typography
-      fontWeight: "900",               // Black weight for maximum impact
-      includeFontPadding: false,       // Tighter vertical spacing
+    savings: {
+      gap: space.xl
     },
+    savingsText: {
+      ...typo.h3,
+      color: theme.BalanceCardTitleColor
+    },
+    savingsDeficit: {
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "row",
+      borderRadius: radius.xxl,
+      paddingVertical: space.xs,
+      paddingHorizontal: space.md,
+      backgroundColor: theme.BalanceCardDeficitBadgeBackgroundColor,
+      gap: space.md
+    },
+    savingsDefictPercentage: {
+      color: theme.BalanceCardDeficitPercentageTextColor
+    },
+    savingsDeficitIcon: {},
+    balanceContainer: {},
+    balanceAmount: {
+      flexDirection: "row",
+      gap: space.xs
+    },
+    balanceUnit: {
+      ...typo.display,
+      color: theme.BalanceCardAmountColor
+    },
+    balanceValue: {
+      ...typo.display,
+      color: theme.BalanceCardAmountColor
+    },
+    borderLine: {
+      height: borders.hairline, // or borders.xs
+      backgroundColor: theme.BalanceCardBorderLineColor,
+      alignSelf: "stretch",
+      marginVertical: space.md
+    },
+    cardFooter: { flexDirection: "row", justifyContent: "space-between" },
+    goalsContainer: {},
+    goals: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: space.md
+    },
+    goalsIcon: {},
+    goalsText: {
+      ...typo.caption,
+      color: theme.BalanceCardGoalsTextColor
+    },
+    lastUpdate: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: space.md
+    },
+    lastUpdateIcon: {},
+    lastUpdateText: {
+      ...typo.caption,
+      color: theme.BalanceCardLastUpdateTextColor
+    }
   });
 };
-
-
- 
