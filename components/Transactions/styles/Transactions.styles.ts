@@ -23,20 +23,20 @@ export const createTransactionsIconProps = (
     wallet: {
       width: icons.md,
       height: icons.md,
-      fill: theme.AddMoneyTextColor,
-      stroke: theme.AddMoneyTextColor,
+      fill: theme.AddMoneyIconFillColor,
+      stroke: theme.AddMoneyIconStrokeColor
     },
     withdraw: {
       width: icons.md,
       height: icons.md,
-      fill: theme.WithdrawTextColor,
-      stroke: theme.WithdrawTextColor,
+      fill: theme.WithdrawIconFillColor,
+      stroke: theme.WithdrawIconStrokeColor
     },
     info: {
       width: icons.md,
       height: icons.md,
-      fill: theme.AddGoalTextColor,
-      stroke: theme.AddGoalTextColor,
+      fill: theme.AddGoalIconFillColor,
+      stroke: theme.AddGoalIconStrokeColor
     }
   };
 };
@@ -60,7 +60,7 @@ export const createTransactionsStyles = (
     // Main wrapper - minimal styling
     container: {
       marginHorizontal: space.md,
-      marginVertical: space.sm,
+      marginVertical: space.sm
     },
 
     // Horizontal row for 3 cards
@@ -68,7 +68,7 @@ export const createTransactionsStyles = (
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      gap: space.sm, // Space between buttons
+      gap: space.sm // Space between buttons
     },
 
     // Shared card style (all 3 buttons)
@@ -81,47 +81,66 @@ export const createTransactionsStyles = (
       paddingHorizontal: space.md,
       borderRadius: radius.xl, // Rounded corners
       ...shadows.card, // Subtle shadow
-      minHeight: 100, // Minimum height for touch target
+      minHeight: 100 // Minimum height for touch target
     },
 
     // Specific background colors for each button
     addMoneyCard: {
-      backgroundColor: theme.AddMoneyCardBgColor,
+      backgroundColor: theme.AddMoneyCardBgColor
     },
 
     withdrawCard: {
-      backgroundColor: theme.WithdrawCardBgColor,
+      backgroundColor: theme.WithdrawCardBgColor
     },
 
     addGoalCard: {
-      backgroundColor: theme.AddGoalCardBgColor,
+      backgroundColor: theme.AddGoalCardBgColor
     },
 
     // Icon wrapper
-    iconContainer: {
+    addMoneyIconContainer: {
       marginBottom: space.sm, // Space between icon and text
       alignItems: "center",
       justifyContent: "center",
+      backgroundColor: theme.AddMoneyIconBgColor,
+      padding: space.md,
+      borderRadius: radius.lg
+    },
+    withdrawIconContainer: {
+      marginBottom: space.sm, // Space between icon and text
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.WithdrawIconBgColor,
+      padding: space.md,
+      borderRadius: radius.lg
+    },
+    newGoalIconContainer: {
+      marginBottom: space.sm, // Space between icon and text
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.AddGoalIconBgColor,
+      padding: space.md,
+      borderRadius: radius.lg
     },
 
     // Shared text style
     actionText: {
       ...typo.caption,
       fontWeight: "600",
-      textAlign: "center",
+      textAlign: "center"
     },
 
     // Specific text colors for each button
     addMoneyText: {
-      color: theme.AddMoneyTextColor,
+      color: theme.AddMoneyTextColor
     },
 
     withdrawText: {
-      color: theme.WithdrawTextColor,
+      color: theme.WithdrawTextColor
     },
 
     addGoalText: {
-      color: theme.AddGoalTextColor,
+      color: theme.AddGoalTextColor
     }
   });
 };

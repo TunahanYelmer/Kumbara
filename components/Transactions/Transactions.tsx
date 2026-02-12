@@ -3,7 +3,10 @@ import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
 import AddMoneyModal from "@/components/AddMoneyModal/AddMoneyModal";
 import WithdrawMoneyModal from "@/components/WithDrawMoneyModal/WithdrawMoneyModal";
 import { useTheme } from "@/context/theme/ThemeProvider";
-import { createTransactionsStyles, createTransactionsIconProps } from "./styles/Transactions.styles";
+import {
+  createTransactionsStyles,
+  createTransactionsIconProps
+} from "./styles/Transactions.styles";
 
 // Import SVG icons
 import WalletIcon from "@assets/icons/wallet.svg";
@@ -96,7 +99,7 @@ const Transactions: FC = () => {
       <View style={styles.quickActionsContainer}>
         {/* Add Money */}
         <View style={[styles.quickActionCard, styles.addMoneyCard]}>
-          <View style={styles.iconContainer}>
+          <View style={styles.addMoneyIconContainer}>
             <WalletIcon {...iconProps.wallet} />
           </View>
           <Text style={[styles.actionText, styles.addMoneyText]}>
@@ -106,7 +109,7 @@ const Transactions: FC = () => {
 
         {/* Withdraw */}
         <View style={[styles.quickActionCard, styles.withdrawCard]}>
-          <View style={styles.iconContainer}>
+          <View style={styles.withdrawIconContainer}>
             <WithdrawIcon {...iconProps.withdraw} />
           </View>
           <Text style={[styles.actionText, styles.withdrawText]}>Withdraw</Text>
@@ -114,7 +117,7 @@ const Transactions: FC = () => {
 
         {/* Add Goal */}
         <View style={[styles.quickActionCard, styles.addGoalCard]}>
-          <View style={styles.iconContainer}>
+          <View style={styles.newGoalIconContainer}>
             <InfoIcon {...iconProps.info} />
           </View>
           <Text style={[styles.actionText, styles.addGoalText]}>
