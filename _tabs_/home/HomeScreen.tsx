@@ -4,6 +4,7 @@ import User from "@/components/User/User";
 import BalanceCard from "@/components/BalanceCard/BalanceCard";
 import Transactions from "@/components/Transactions/Transactions";
 import TransactionHistory from "@/components/TransactionHistory/TransactionHistory";
+import GoalsList from "@components/GoalsList/GoalsList";
 import { createHomeScreenStyles } from "./styles/HomeScreen.styles";
 import { useTheme } from "@/context/theme/ThemeProvider";
 
@@ -31,7 +32,7 @@ export default function HomeScreen() {
 
       {/* Transaction History - Has its own FlatList scrolling */}
       <View style={styles.historyWrapper}>
-        <TransactionHistory />
+        <GoalsList />
       </View>
     </View>
   );

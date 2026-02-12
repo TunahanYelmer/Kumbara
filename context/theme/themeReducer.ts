@@ -54,10 +54,47 @@ export interface Theme {
   // Quick Action Cards (Add Money, Withdraw, Add Goal)
   AddMoneyCardBgColor: string;
   AddMoneyTextColor: string;
+  AddMoneyIconFillColor: string;
+  AddMoneyIconStrokeColor: string;
+  AddMoneyIconBgColor: string;
+
   WithdrawCardBgColor: string;
   WithdrawTextColor: string;
+  WithdrawIconFillColor: string;
+  WithdrawIconStrokeColor: string;
+  WithdrawIconBgColor: string;
   AddGoalCardBgColor: string;
   AddGoalTextColor: string;
+  AddGoalIconFillColor: string;
+  AddGoalIconStrokeColor: string;
+  AddGoalIconBgColor: string;
+
+  // Goals List
+  GoalsListHeaderTitleColor: string;
+  GoalsListHeaderCountColor: string;
+  GoalCardBgColor: string;
+  GoalCardNameColor: string;
+  GoalCardDeadlineIconColor: string;
+  GoalCardDeadlineTextColor: string;
+  GoalCardProgressBgColor: string;
+  GoalCardProgressFillColor: string;
+  GoalCardProgressTextColor: string;
+  GoalCardAmountLabelColor: string;
+  GoalCardCurrentAmountColor: string;
+  GoalCardTargetAmountColor: string;
+  GoalCardBorderColor: string;
+  GoalCardRemainingLabelColor: string;
+  GoalCardRemainingAmountColor: string;
+
+  // Navbar (Bottom Tab Navigation)
+  NavbarBgColor: string;
+  NavbarBorderColor: string;
+  NavbarIconActiveColor: string;
+  NavbarIconInactiveColor: string;
+  NavbarIconActiveBgColor: string;
+  NavbarTextActiveColor: string;
+  NavbarTextInactiveColor: string;
+  NavbarIndicatorColor: string;
 
   // Tabs
   TabColour: string;
@@ -171,12 +208,48 @@ export const initialTheme: Theme = {
   BalanceCardLastUpdateTextColor: "#d5dbf5",
 
   // Quick Action Cards
-  AddMoneyCardBgColor: "#10B981",      // Emerald green
-  AddMoneyTextColor: "#FFFFFF",        // White
-  WithdrawCardBgColor: "#F59E0B",      // Amber orange
-  WithdrawTextColor: "#FFFFFF",        // White
-  AddGoalCardBgColor: "#8B5CF6",       // Violet purple
-  AddGoalTextColor: "#FFFFFF",         // White
+  AddMoneyCardBgColor: "#1c1d26", // Emerald green
+  AddMoneyTextColor: "#FFFFFF",
+  AddMoneyIconFillColor: "",
+  AddMoneyIconStrokeColor: "#00d4aa",
+  AddMoneyIconBgColor: "#18393b", // White
+  WithdrawCardBgColor: "#1c1d26", // Amber orange
+  WithdrawTextColor: "#FFFFFF",
+  WithdrawIconFillColor: "",
+  WithdrawIconStrokeColor: "#6367f0",
+  WithdrawIconBgColor: "#262744", // White
+  AddGoalCardBgColor: "#1c1d26", // Violet purple
+  AddGoalTextColor: "#FFFFFF",
+  AddGoalIconFillColor: "",
+  AddGoalIconStrokeColor: "#f49e0a",
+  AddGoalIconBgColor: "#3c3022",
+
+  // Goals List
+  GoalsListHeaderTitleColor: "#111827",
+  GoalsListHeaderCountColor: "#6B7280",
+  GoalCardBgColor: "#FFFFFF",
+  GoalCardNameColor: "#111827",
+  GoalCardDeadlineIconColor: "#8b8b9e",
+  GoalCardDeadlineTextColor: "#8b8b9e",
+  GoalCardProgressBgColor: "#E5E7EB",
+  GoalCardProgressFillColor: "#10B981",
+  GoalCardProgressTextColor: "#10B981",
+  GoalCardAmountLabelColor: "#6B7280",
+  GoalCardCurrentAmountColor: "#111827",
+  GoalCardTargetAmountColor: "#8b8b9e",
+  GoalCardBorderColor: "rgba(255,255,255,0.05)",
+  GoalCardRemainingLabelColor: "#6B7280",
+  GoalCardRemainingAmountColor: "#F59E0B",
+
+  // Navbar (Bottom Tab Navigation)
+  NavbarBgColor: "#FFFFFF",
+  NavbarBorderColor: "#E5E7EB",
+  NavbarIconActiveColor: "#00d4aa",
+  NavbarIconInactiveColor: "#9CA3AF",
+  NavbarIconActiveBgColor: "rgba(0, 212, 170, 0.1)",
+  NavbarTextActiveColor: "#00d4aa",
+  NavbarTextInactiveColor: "#6B7280",
+  NavbarIndicatorColor: "#00d4aa",
 
   // Tabs
   TabButtonBgColor: "#F3F4F6",
@@ -290,12 +363,48 @@ export const darkTheme: Theme = {
   BalanceCardLastUpdateTextColor: "#E0E7FF",
 
   // Quick Action Cards
-  AddMoneyCardBgColor: "#059669",      // Darker emerald green
-  AddMoneyTextColor: "#FFFFFF",        // White
-  WithdrawCardBgColor: "#D97706",      // Darker amber orange
-  WithdrawTextColor: "#FFFFFF",        // White
-  AddGoalCardBgColor: "#7C3AED",       // Darker violet purple
-  AddGoalTextColor: "#FFFFFF",         // White
+  AddMoneyCardBgColor: "#059669", // Darker emerald green
+  AddMoneyTextColor: "#FFFFFF",
+  AddMoneyIconFillColor: "#FFFFFF",
+  AddMoneyIconStrokeColor: "#FFFFFF",
+  AddMoneyIconBgColor: "#18393b",
+  WithdrawCardBgColor: "#D97706", // Darker amber orange
+  WithdrawTextColor: "#FFFFFF",
+  WithdrawIconFillColor: "",
+  WithdrawIconStrokeColor: "",
+  WithdrawIconBgColor: "", // White
+  AddGoalCardBgColor: "#7C3AED", // Darker violet purple
+  AddGoalTextColor: "#FFFFFF",
+  AddGoalIconFillColor: "",
+  AddGoalIconStrokeColor: "",
+  AddGoalIconBgColor: "",
+
+  // Goals List
+  GoalsListHeaderTitleColor: "#ffffff",
+  GoalsListHeaderCountColor: "#94A3B8",
+  GoalCardBgColor: "#1c1c27",
+  GoalCardNameColor: "#ffffff",
+  GoalCardDeadlineIconColor: "#8b8b9e",
+  GoalCardDeadlineTextColor: "#8b8b9e",
+  GoalCardProgressBgColor: "rgba(255,255,255,0.08)",
+  GoalCardProgressFillColor: "#10B981",
+  GoalCardProgressTextColor: "#10B981",
+  GoalCardAmountLabelColor: "#8b8b9e",
+  GoalCardCurrentAmountColor: "#ffffff",
+  GoalCardTargetAmountColor: "#8b8b9e",
+  GoalCardBorderColor: "rgba(255,255,255,0.05)",
+  GoalCardRemainingLabelColor: "#8b8b9e",
+  GoalCardRemainingAmountColor: "#F59E0B",
+
+  // Navbar (Bottom Tab Navigation)
+  NavbarBgColor: "#1c1c27",
+  NavbarBorderColor: "rgba(255,255,255,0.05)",
+  NavbarIconActiveColor: "#00d4aa",
+  NavbarIconInactiveColor: "#64748B",
+  NavbarIconActiveBgColor: "rgba(0, 212, 170, 0.1)",
+  NavbarTextActiveColor: "#00d4aa",
+  NavbarTextInactiveColor: "#94A3B8",
+  NavbarIndicatorColor: "#00d4aa",
 
   // Tabs
   TabButtonBgColor: "#1E293B",

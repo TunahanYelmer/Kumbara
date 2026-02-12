@@ -202,6 +202,15 @@ export const shadows: Record<string, ViewStyle> = {
     shadowOpacity: 0.2,
     shadowRadius: 48,
     elevation: 16
+  },
+
+  // Navbar - Bottom navigation shadow (upward)
+  navbar: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 8
   }
 };
 
