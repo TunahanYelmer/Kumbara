@@ -20,6 +20,8 @@ Kumbara is a React Native savings tracker app built with Expo. It consists of:
 
 ## use strictly the designsystem.ts if you are suggesting css
 
+## dont mention any of claude or ai when commiting the github i dont want to show i used claude
+
 ### Frontend (React Native/Expo)
 
 ```bash

@@ -86,6 +86,19 @@ export interface Theme {
   GoalCardRemainingLabelColor: string;
   GoalCardRemainingAmountColor: string;
 
+  // Stats Screen
+  StatsCardBgColor: string;
+  StatsCardBorderColor: string;
+  StatsLabelColor: string;
+  StatsValueColor: string;
+  StatsChartLineColor: string;
+  StatsChartGridColor: string;
+  StatsHighlightColor: string;
+  StatsPeriodButtonBgColor: string;
+  StatsPeriodButtonActiveColor: string;
+  StatsPeriodButtonTextColor: string;
+  StatsProgressBarBgColor: string;
+
   // Navbar (Bottom Tab Navigation)
   NavbarBgColor: string;
   NavbarBorderColor: string;
@@ -215,12 +228,12 @@ export const initialTheme: Theme = {
   AddMoneyIconBgColor: "#18393b", // White
   WithdrawCardBgColor: "#1c1d26", // Amber orange
   WithdrawTextColor: "#FFFFFF",
-  WithdrawIconFillColor: "",
+  WithdrawIconFillColor: "#FFFFFF",
   WithdrawIconStrokeColor: "#6367f0",
   WithdrawIconBgColor: "#262744", // White
   AddGoalCardBgColor: "#1c1d26", // Violet purple
   AddGoalTextColor: "#FFFFFF",
-  AddGoalIconFillColor: "",
+  AddGoalIconFillColor: "#FFFFFF",
   AddGoalIconStrokeColor: "#f49e0a",
   AddGoalIconBgColor: "#3c3022",
 
@@ -240,6 +253,19 @@ export const initialTheme: Theme = {
   GoalCardBorderColor: "rgba(255,255,255,0.05)",
   GoalCardRemainingLabelColor: "#6B7280",
   GoalCardRemainingAmountColor: "#F59E0B",
+
+  // Stats Screen - Light theme
+  StatsCardBgColor: "#FFFFFF",
+  StatsCardBorderColor: "#E5E7EB",
+  StatsLabelColor: "#6B7280",
+  StatsValueColor: "#111827",
+  StatsChartLineColor: "#3B82F6",
+  StatsChartGridColor: "#F3F4F6",
+  StatsHighlightColor: "#00d4aa",
+  StatsPeriodButtonBgColor: "#F3F4F6",
+  StatsPeriodButtonActiveColor: "#00d4aa",
+  StatsPeriodButtonTextColor: "#111827",
+  StatsProgressBarBgColor: "#E5E7EB",
 
   // Navbar (Bottom Tab Navigation)
   NavbarBgColor: "#FFFFFF",
@@ -370,14 +396,14 @@ export const darkTheme: Theme = {
   AddMoneyIconBgColor: "#18393b",
   WithdrawCardBgColor: "#D97706", // Darker amber orange
   WithdrawTextColor: "#FFFFFF",
-  WithdrawIconFillColor: "",
-  WithdrawIconStrokeColor: "",
-  WithdrawIconBgColor: "", // White
+  WithdrawIconFillColor: "#FFFFFF",
+  WithdrawIconStrokeColor: "#FFFFFF",
+  WithdrawIconBgColor: "#262744", // Purple background
   AddGoalCardBgColor: "#7C3AED", // Darker violet purple
   AddGoalTextColor: "#FFFFFF",
-  AddGoalIconFillColor: "",
-  AddGoalIconStrokeColor: "",
-  AddGoalIconBgColor: "",
+  AddGoalIconFillColor: "#FFFFFF",
+  AddGoalIconStrokeColor: "#FFFFFF",
+  AddGoalIconBgColor: "#3d2463",
 
   // Goals List
   GoalsListHeaderTitleColor: "#ffffff",
@@ -395,6 +421,19 @@ export const darkTheme: Theme = {
   GoalCardBorderColor: "rgba(255,255,255,0.05)",
   GoalCardRemainingLabelColor: "#8b8b9e",
   GoalCardRemainingAmountColor: "#F59E0B",
+
+  // Stats Screen - Dark theme
+  StatsCardBgColor: "#1c1c27",
+  StatsCardBorderColor: "#2D2D3A",
+  StatsLabelColor: "#9CA3AF",
+  StatsValueColor: "#E0E7FF",
+  StatsChartLineColor: "#00d4aa",
+  StatsChartGridColor: "#2D2D3A",
+  StatsHighlightColor: "#00d4aa",
+  StatsPeriodButtonBgColor: "#2D2D3A",
+  StatsPeriodButtonActiveColor: "#00d4aa",
+  StatsPeriodButtonTextColor: "#E0E7FF",
+  StatsProgressBarBgColor: "#2D2D3A",
 
   // Navbar (Bottom Tab Navigation)
   NavbarBgColor: "#1c1c27",
