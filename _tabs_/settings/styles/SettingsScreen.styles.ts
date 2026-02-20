@@ -1,17 +1,68 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "@context/theme/themeReducer";
-import { spacing, typography, shadows, borderRadius } from "@/constants/designSystem";
+import { spacing, typography, shadows, borderRadius, iconSizes } from "@/constants/designSystem";
 
-/**
- * SettingsScreen Styles - Premium Settings Design
- *
- * Professional fintech settings with:
- * - Card-based setting groups with shadows.card elevation
- * - Responsive typography and spacing
- * - Better visual hierarchy
- * - Enhanced touch targets (48px minimum)
- * - Design system integration throughout
- */
+export const createSettingsIconProps = (
+  theme: Theme,
+  width: number,
+  height: number
+) => {
+  const icons = iconSizes(width);
+
+  return {
+    user: {
+      width: icons.md,
+      height: icons.md,
+      stroke: theme.StatsHighlightColor,
+    },
+    bell: {
+      width: icons.md,
+      height: icons.md,
+      stroke: theme.SettingsItemValueColor,
+    },
+    lock: {
+      width: icons.md,
+      height: icons.md,
+      stroke: theme.SettingsItemValueColor,
+    },
+    creditCard: {
+      width: icons.md,
+      height: icons.md,
+      stroke: theme.SettingsItemValueColor,
+    },
+    moon: {
+      width: icons.md,
+      height: icons.md,
+      stroke: theme.SettingsItemValueColor,
+    },
+    globe: {
+      width: icons.md,
+      height: icons.md,
+      stroke: theme.SettingsItemValueColor,
+    },
+    helpCircle: {
+      width: icons.md,
+      height: icons.md,
+      stroke: theme.SettingsItemValueColor,
+    },
+    fileText: {
+      width: icons.md,
+      height: icons.md,
+      stroke: theme.SettingsItemValueColor,
+    },
+    logOut: {
+      width: icons.md,
+      height: icons.md,
+      stroke: "#EF4444",
+    },
+    chevronRight: {
+      width: icons.sm,
+      height: icons.sm,
+      stroke: theme.StatsLabelColor,
+    },
+  };
+};
+
 export const createSettinsSecreenStyles = (theme: Theme, width: number, height: number) => {
   const space = spacing(width, height);
   const typo = typography(width);
@@ -20,86 +71,156 @@ export const createSettinsSecreenStyles = (theme: Theme, width: number, height: 
   return StyleSheet.create({
     safeArea: {
       flex: 1,
-      backgroundColor: theme.SettingsScreenBackgroundColor,
+      backgroundColor: theme.BackgroundColor,
     },
 
-    container: {
+    scrollContent: {
+      paddingBottom: space.xxl,
+    },
+
+    // Screen header
+    header: {
+      paddingHorizontal: space.lg,
+      paddingTop: space.lg,
+      paddingBottom: space.md,
+    },
+
+    screenTitle: {
+      ...typo.h1,
+      color: theme.StatsValueColor,
+      fontWeight: "700",
+    },
+
+    // Profile card at top
+    profileCard: {
+      backgroundColor: theme.StatsCardBgColor,
+      borderRadius: radius.xl,
+      padding: space.lg,
+      marginHorizontal: space.lg,
+      marginBottom: space.lg,
+      borderWidth: 1,
+      borderColor: theme.StatsCardBorderColor,
+      ...shadows.card,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: space.md,
+    },
+
+    avatar: {
+      width: width * 0.16,
+      height: width * 0.16,
+      borderRadius: radius.round,
+      backgroundColor: theme.StatsHighlightColor,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+
+    profileInfo: {
       flex: 1,
     },
 
-    // User profile section
-    userContainer: {
-      paddingVertical: space.sm,      // Design system spacing
-      paddingHorizontal: space.md,
+    profileName: {
+      ...typo.h3,
+      color: theme.StatsValueColor,
+      fontWeight: "600",
+      marginBottom: space.xs / 2,
     },
 
-    // Page title - premium typography
-    settingsTitle: {
-      ...typo.h1,                     // Typography system (was fontSize: 24)
-      color: theme.SettingsGroupTitleColor,
-      paddingHorizontal: space.md,    // Design system (was hardcoded 16)
-      paddingVertical: space.md,
-      textAlign: "center",
+    profileEmail: {
+      ...typo.caption,
+      color: theme.StatsLabelColor,
     },
 
-    // Legacy settings text (if still used)
-    settingsText: {
-      ...typo.h2,                     // Typography system (was fontSize: 20)
-      textAlign: "center",
-      marginTop: space.xxl,           // Design system (was hardcoded 50)
+    // Section container
+    section: {
+      marginHorizontal: space.lg,
+      marginBottom: space.lg,
     },
 
-    // Setting groups - card-based design with elevation
-    settingGroup: {
-      backgroundColor: theme.SettingsGroupBackgroundColor,
-      marginVertical: space.sm,       // Design system (was hardcoded 8)
-      marginHorizontal: space.md,     // Add horizontal margins
-      paddingHorizontal: space.md,    // Design system (was hardcoded 16)
-      paddingVertical: space.sm,      // Add vertical padding
-      borderRadius: radius.xl,        // Premium rounding (was hardcoded 8)
-      ...shadows.card,                // Card elevation for depth
+    sectionTitle: {
+      ...typo.caption,
+      color: theme.StatsLabelColor,
+      fontWeight: "600",
+      textTransform: "uppercase",
+      letterSpacing: 0.5,
+      marginBottom: space.sm,
+      paddingHorizontal: space.xs,
     },
 
-    // Group title - uppercase with tracking
-    groupTitle: {
-      ...typo.captionBold,            // Typography system (was fontSize: 16)
-      color: theme.SettingsGroupTitleColor,
-      paddingVertical: space.sm,      // Design system (was hardcoded 12)
-      textTransform: "uppercase",     // Make group titles stand out
-      letterSpacing: 1.2,             // More tracking for labels
+    sectionCard: {
+      backgroundColor: theme.StatsCardBgColor,
+      borderRadius: radius.xl,
+      borderWidth: 1,
+      borderColor: theme.StatsCardBorderColor,
+      ...shadows.card,
+      overflow: "hidden",
     },
 
-    // Setting items with proper touch targets
+    // Setting item
     settingItem: {
       flexDirection: "row",
-      justifyContent: "space-between",
       alignItems: "center",
-      paddingVertical: space.md,      // Design system (was hardcoded 12)
-      paddingHorizontal: space.sm,    // Design system (was marginLeft: 8)
-      borderTopWidth: 1,
-      borderTopColor: theme.SettingsItemBorderColor,
-      minHeight: 48,                  // Accessibility
+      paddingVertical: space.md,
+      paddingHorizontal: space.lg,
+      minHeight: 56,
+      gap: space.md,
+    },
+
+    settingItemWithBorder: {
+      borderBottomWidth: 1,
+      borderBottomColor: theme.StatsCardBorderColor,
+    },
+
+    iconContainer: {
+      width: width * 0.1,
+      height: width * 0.1,
+      borderRadius: radius.md,
+      backgroundColor: theme.StatsPeriodButtonBgColor,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+
+    settingContent: {
+      flex: 1,
+    },
+
+    settingLabel: {
+      ...typo.body,
+      color: theme.StatsValueColor,
+      fontWeight: "500",
     },
 
     settingValue: {
-      ...typo.body,                   // Typography system
-      color: theme.SettingsItemValueColor,
+      ...typo.caption,
+      color: theme.StatsLabelColor,
+      marginTop: space.xs / 2,
     },
 
-    // Currency display with hierarchy
-    currencySymbol: {
-      ...typo.h2,                     // Larger for prominence (was fontWeight: bold)
-      color: theme.SettingsCurrencyCodeColor,
+    // Logout button
+    logoutButton: {
+      backgroundColor: theme.StatsCardBgColor,
+      borderRadius: radius.xl,
+      padding: space.lg,
+      marginHorizontal: space.lg,
+      marginBottom: space.lg,
+      borderWidth: 1,
+      borderColor: theme.WithdrawIconFillColor,
+      ...shadows.card,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: space.sm,
     },
 
-    currencyCode: {
-      ...typo.body,                   // Typography system
-      color: theme.SettingsCurrencyCodeColor,
+    logoutText: {
+      ...typo.body,
+      color: theme.WithdrawIconFillColor,
+      fontWeight: "600",
     },
 
     // Navbar container
     navbarContainer: {
-      marginTop: "auto",              // Push to bottom
+      marginTop: "auto",
     },
   });
 };

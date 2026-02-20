@@ -42,6 +42,18 @@ export const createUserIconProps = (
       height: icons.xs,
       fill: theme.UserInsightTrendArrowFillColor,
       stroke: theme.UserInsightTrendArrowStrokeColor
+    },
+    menuIcon: {
+      width: icons.md,
+      height: icons.md,
+      fill: theme.StatsValueColor,
+      stroke: theme.StatsValueColor
+    },
+    actionIcon: {
+      width: icons.sm,
+      height: icons.sm,
+      fill: "#FFFFFF",
+      stroke: "#FFFFFF"
     }
   };
 };
@@ -68,13 +80,16 @@ export const createUserStyles = (
   return StyleSheet.create({
     userContainer: {
       flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-around",
-      paddingVertical: space.sm, // Design system spacing
+      alignItems: "flex-start",
+      justifyContent: "space-between", // Push avatar to right
+      paddingVertical: space.sm,
       paddingHorizontal: space.md,
       backgroundColor: theme.UserBackgroundColor
     },
-    userHeader: {},
+    userHeader: {
+      flex: 1, // Take remaining space
+      marginRight: space.md // Space before avatar
+    },
     userGreating: {
       flexDirection: "row",
       alignItems: "center",
@@ -114,7 +129,10 @@ export const createUserStyles = (
       ...typo.caption,
       color: theme.UserInsightTextColor
     },
-    userIconContainer: {},
+    userIconContainer: {
+      alignItems: "center",
+      justifyContent: "center"
+    },
 
     userIcon: {
       width: icons.md,
@@ -137,8 +155,94 @@ export const createUserStyles = (
     userLabel: {
       ...typo.h3, // Typography system (was fontSize: width * 0.045)
       color: theme.UserNameColor // Theme color (remove hardcoded if needed)
-    }
+    },
 
-    // Welcome text with typography system
+    // Avatar button - circular with first letter
+    avatarButton: {
+      width: width * 0.11,
+      height: width * 0.11,
+      borderRadius: radius.round, // Perfect circle
+      backgroundColor: theme.StatsHighlightColor,
+      alignItems: "center",
+      justifyContent: "center",
+      ...shadows.card
+    },
+
+    // Avatar text - first letter
+    avatarText: {
+      ...typo.h3,
+      color: theme.BackgroundColor,
+      fontWeight: "700"
+    },
+
+    // Dropdown overlay - semi-transparent background
+    dropdownOverlay: {
+      flex: 1,
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      justifyContent: "flex-start",
+      alignItems: "flex-end",
+      paddingTop: space.xxl * 2.5, // Position below header
+      paddingRight: space.lg
+    },
+
+    // Dropdown menu card
+    dropdownMenu: {
+      backgroundColor: theme.StatsCardBgColor,
+      borderRadius: radius.xl,
+      borderWidth: 1,
+      borderColor: theme.StatsCardBorderColor,
+      ...shadows.card,
+      minWidth: width * 0.5,
+      overflow: "hidden"
+    },
+
+    // Menu item
+    menuItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: space.md,
+      paddingHorizontal: space.lg,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.StatsCardBorderColor,
+      gap: space.md
+    },
+
+    // Last menu item (no border)
+    menuItemLast: {
+      borderBottomWidth: 0
+    },
+
+    // Menu icon container
+    menuIconContainer: {
+      width: icons.md,
+      height: icons.md,
+      alignItems: "center",
+      justifyContent: "center"
+    },
+
+    // Menu label text
+    menuLabel: {
+      ...typo.body,
+      color: theme.StatsValueColor,
+      fontWeight: "600"
+    },
+
+    // Quick actions row
+    quickActionsRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: space.sm,
+      marginTop: space.md
+    },
+
+    // Round action button
+    roundActionButton: {
+      width: width * 0.10,
+      height: width * 0.10,
+      borderRadius: radius.round,
+      alignItems: "center",
+      justifyContent: "center",
+      ...shadows.card
+    }
   });
 };

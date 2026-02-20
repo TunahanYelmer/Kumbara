@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import {
   View,
   Text,
-  FlatList,
   TouchableOpacity,
   Dimensions
 } from "react-native";
@@ -17,7 +16,6 @@ import PhoneIcon from "@assets/icons/phone.svg";
 import PlaneIcon from "@assets/icons/plane.svg";
 import BankIcon from "@assets/icons/bank.svg";
 import CalendarIcon from "@assets/icons/calendar.svg";
-import ArrowRightIcon from "@assets/icons/arrow-right.svg";
 
 const { width, height } = Dimensions.get("window");
 
@@ -148,23 +146,10 @@ const GoalsList: FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* Section Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Hedeflerim</Text>
-        <TouchableOpacity style={styles.seeAllButton}>
-          <Text style={styles.seeAllText}>Tümünü gör</Text>
-          <ArrowRightIcon width={16} height={16} stroke="#00d4aa" />
-        </TouchableOpacity>
-      </View>
-
-      {/* Goals List */}
-      <FlatList
-        data={MOCK_GOALS}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <GoalCard goal={item} />}
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
-      />
+      {/* Goals List - Using map() instead of FlatList to avoid nesting error */}
+      {MOCK_GOALS.map((goal) => (
+        <GoalCard key={goal.id} goal={goal} />
+      ))}
     </View>
   );
 };

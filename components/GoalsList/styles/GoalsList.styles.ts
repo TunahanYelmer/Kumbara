@@ -71,25 +71,24 @@ export const createGoalsListStyles = (
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingHorizontal: 4,
+      paddingHorizontal: space.xs,
       marginBottom: space.lg,
     },
 
     headerTitle: {
-      fontSize: 18,
+      ...typo.h2,
       color: theme.GoalsListHeaderTitleColor,
-      fontWeight: "700",
     },
 
     seeAllButton: {
       flexDirection: "row",
       alignItems: "center",
-      gap: 4,
+      gap: space.xs,
     },
 
     seeAllText: {
-      color: "#00d4aa",
-      fontSize: 13,
+      ...typo.caption,
+      color: theme.StatsHighlightColor,
       fontWeight: "600",
     },
 
@@ -102,8 +101,8 @@ export const createGoalsListStyles = (
     goalCard: {
       backgroundColor: theme.GoalCardBgColor,
       borderRadius: radius.xl,
-      padding: space.lg,
-      marginBottom: space.md,
+      padding: space.md,
+      marginBottom: space.sm,
       borderWidth: 1,
       borderColor: theme.GoalCardBorderColor,
       ...shadows.card, // Card elevation shadow
@@ -127,8 +126,8 @@ export const createGoalsListStyles = (
 
     // Icon container with themed background (applied dynamically)
     iconContainer: {
-      width: width * 0.115, // ~44px
-      height: width * 0.115,
+      width: width * 0.10, // ~38px
+      height: width * 0.10,
       borderRadius: radius.md, // Rounded square (14px), not circle
       justifyContent: "center",
       alignItems: "center",
@@ -144,23 +143,21 @@ export const createGoalsListStyles = (
     // Goal title
     goalTitle: {
       ...typo.body,
-      fontSize: 15,
       color: theme.GoalCardNameColor,
       fontWeight: "600",
-      marginBottom: 3,
+      marginBottom: space.xs * 0.75,
     },
 
     // Deadline container with icon
     deadlineContainer: {
       flexDirection: "row",
       alignItems: "center",
-      gap: 4,
+      gap: space.xs,
     },
 
     // Deadline text
     deadlineText: {
-      ...typo.caption,
-      fontSize: 12,
+      ...typo.small,
       color: theme.GoalCardDeadlineTextColor,
     },
 
@@ -169,7 +166,7 @@ export const createGoalsListStyles = (
       flexDirection: "column",
       alignItems: "flex-end",
       justifyContent: "center",
-      gap: 2,
+      gap: space.xs / 2,
     },
 
     // Progress bar section (no percentage text in reference design)
@@ -191,14 +188,13 @@ export const createGoalsListStyles = (
 
     // Current amount (big, bold, white)
     currentAmount: {
-      fontSize: 16,
-      fontWeight: "700",
+      ...typo.h3,
       color: theme.GoalCardCurrentAmountColor,
     },
 
     // Target amount (small, gray, below current)
     targetAmount: {
-      fontSize: 12,
+      ...typo.small,
       color: theme.GoalCardTargetAmountColor,
     },
   });

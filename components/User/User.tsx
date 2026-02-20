@@ -1,11 +1,18 @@
-import React, { FC } from "react";
-import { View, Text, Image, useWindowDimensions } from "react-native";
+import React, { FC, useState } from "react";
+import { View, Text, Image, useWindowDimensions, TouchableOpacity, Modal } from "react-native";
 import { createUserStyles, createUserIconProps } from "./styles/User.styles";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import { useDataLayerValue } from "@/context/state/StateProvider";
+import { useNavigationContext } from "@context/navigation/NavigationProvider";
 import ChartIcon from "@assets/icons/chart.svg";
 import FlameIcon from "@assets/icons/flame.svg";
 import TrendArrowIcon from "@assets/icons/trendArrow.svg";
+import UserIcon from "@assets/icons/user.svg";
+import BellIcon from "@assets/icons/bell.svg";
+import SettingsIcon from "@assets/icons/settings.svg";
+import LogOutIcon from "@assets/icons/log-out.svg";
+import WalletIcon from "@assets/icons/wallet.svg";
+import WithdrawIcon from "@assets/icons/withdraw.svg";
 import Notifications from "@/components/notifications/Notifications";
 
 /**
@@ -63,11 +70,75 @@ const User: FC = () => {
   const photo = User?.[0]?.photo; // User profile photo URL (currently unused)
   const givenName = User?.[0]?.givenName; // User's first name (currently unused - see TODO below)
 
+  // Navigation context for dropdown menu actions
+  const { navigate } = useNavigationContext();
+
   // Generate responsive styles based on current theme and screen size
   const styles = createUserStyles(theme, width, height);
 
   // Generate SVG icon props (width, height, fill, stroke) from theme and screen size
   const iconProps = createUserIconProps(theme, width, height);
+
+  // State for dropdown menu visibility
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  // Get first letter of user's name for avatar
+  const userInitial = givenName?.[0]?.toUpperCase() || "U";
+
+  // Dropdown menu items
+  const menuItems = [
+    {
+      icon: <UserIcon {...iconProps.menuIcon} />,
+      label: "Profil",
+      onPress: () => {
+        setShowDropdown(false);
+        // TODO: Navigate to Profile screen
+      }
+    },
+    {
+      icon: <BellIcon {...iconProps.menuIcon} />,
+      label: "Bildirimler",
+      onPress: () => {
+        setShowDropdown(false);
+        navigate("Notifications");
+      }
+    },
+    {
+      icon: <SettingsIcon {...iconProps.menuIcon} />,
+      label: "Ayarlar",
+      onPress: () => {
+        setShowDropdown(false);
+        navigate("Settings");
+      }
+    },
+    {
+      icon: <LogOutIcon {...iconProps.menuIcon} />,
+      label: "Çıkış Yap",
+      onPress: () => {
+        setShowDropdown(false);
+        // TODO: Implement logout logic
+      }
+    }
+  ];
+
+  // Quick action buttons
+  const quickActions = [
+    {
+      icon: <WalletIcon {...iconProps.actionIcon} />,
+      backgroundColor: theme.AddMoneyIconBgColor,
+      onPress: () => navigate("Add")
+    },
+    {
+      icon: <WithdrawIcon {...iconProps.actionIcon} />,
+      backgroundColor: theme.WithdrawIconBgColor,
+      onPress: () => navigate("Add")
+    },
+    {
+      icon: <SettingsIcon {...iconProps.actionIcon} />,
+      backgroundColor: theme.StatsCardBgColor,
+      onPress: () => navigate("Settings")
+    }
+  ];
 
   return (
     <View style={styles.userContainer}>
@@ -78,7 +149,7 @@ const User: FC = () => {
           {/* Welcome text */}
           <View style={styles.userWelcome}>
             {/* TODO: Replace hardcoded "Alex" with {givenName} from state */}
-            <Text style={styles.userWelcomeText}>Hi, Alex! </Text>
+            <Text style={styles.userWelcomeText}>Hi, {givenName || "Alex"}! </Text>
           </View>
 
           {/* Streak badge: flame icon + consecutive days count */}
@@ -103,13 +174,67 @@ const User: FC = () => {
             You're saving %23 more this month
           </Text>
         </View>
+
+        {/* Quick action buttons row */}
+        <View style={styles.quickActionsRow}>
+          {quickActions.map((action, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.roundActionButton,
+                { backgroundColor: action.backgroundColor }
+              ]}
+              onPress={action.onPress}
+              activeOpacity={0.7}
+            >
+              {action.icon}
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
 
-      {/* Right side: Notification bell icon */}
+      {/* Right side: Avatar button with dropdown */}
       <View style={styles.userIconContainer}>
-        <View style={styles.userIcon}>
-          <Notifications />
-        </View>
+        <TouchableOpacity
+          style={styles.avatarButton}
+          onPress={() => setShowDropdown(true)}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.avatarText}>{userInitial}</Text>
+        </TouchableOpacity>
+
+        {/* Dropdown Menu Modal */}
+        <Modal
+          visible={showDropdown}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setShowDropdown(false)}
+        >
+          <TouchableOpacity
+            style={styles.dropdownOverlay}
+            activeOpacity={1}
+            onPress={() => setShowDropdown(false)}
+          >
+            <View style={styles.dropdownMenu}>
+              {menuItems.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.menuItem,
+                    index === menuItems.length - 1 && styles.menuItemLast
+                  ]}
+                  onPress={item.onPress}
+                  activeOpacity={0.7}
+                >
+                  <View style={styles.menuIconContainer}>
+                    {item.icon}
+                  </View>
+                  <Text style={styles.menuLabel}>{item.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </TouchableOpacity>
+        </Modal>
       </View>
     </View>
   );

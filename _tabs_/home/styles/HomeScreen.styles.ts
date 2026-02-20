@@ -1,73 +1,71 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "@context/theme/themeReducer";
-import { spacing } from "@/constants/designSystem";
+import { spacing, typography } from "@/constants/designSystem";
 
-/**
- * HomeScreen Styles - Professional Fintech Layout
- *
- * Inspired by Revolut, N26, Monzo - Clean, hierarchical, scannable
- *
- * Visual Hierarchy:
- * 1. Header - Minimal, unobtrusive
- * 2. Hero Balance - Prominent focal point
- * 3. Quick Actions - Easy thumb reach
- * 4. Transaction History - Scrollable list
- */
 export const createHomeScreenStyles = (
   theme: Theme,
   width: number,
   height: number
 ) => {
   const space = spacing(width, height);
+  const typo = typography(width);
 
   return StyleSheet.create({
-    /**
-     * Main container
-     * TransactionHistory FlatList handles all scrolling
-     */
     container: {
       flex: 1,
-      backgroundColor: theme.HomeScreenBgColor,
+      backgroundColor: theme.BackgroundColor,
+      paddingBottom: space.xxl,
     },
 
-    /**
-     * Header Section
-     * Compact user profile area
-     */
+    // Header Section
     header: {
-      paddingTop: space.sm,
-      paddingHorizontal: space.md,
-      paddingBottom: space.xs,
+      paddingHorizontal: space.lg,
+      paddingTop: space.lg,
+      marginBottom: space.md,
     },
 
-    /**
-     * Hero Balance Card Section
-     * Primary focal point with premium spacing
-     */
-    heroSection: {
-      paddingVertical: space.sm,
-      paddingHorizontal: space.xs,
+    titleRow: {
+      flexDirection: "row",
       alignItems: "center",
-      marginBottom: -space.md,        // Subtle overlap for depth
+      gap: space.sm,
+      marginBottom: space.sm,
     },
 
-    /**
-     * Quick Actions Section
-     * Primary interaction zone - overlaps hero slightly
-     */
-    quickActions: {
-      paddingTop: space.lg,           // Compensates for negative margin
-      paddingBottom: space.sm,
-      paddingHorizontal: space.xs,
+    greeting: {
+      ...typo.h2,
+      color: theme.StatsValueColor,
+      fontWeight: "700",
     },
 
-    /**
-     * Transaction History Wrapper
-     * Scrollable list container
-     */
-    historyWrapper: {
-      flex: 1,
-      paddingTop: space.xs,
+    subtitleRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: space.xs,
+    },
+
+    subtitle: {
+      ...typo.caption,
+      color: theme.StatsLabelColor,
+    },
+
+    // Balance Section
+    balanceSection: {
+      paddingHorizontal: space.lg,
+      marginBottom: space.lg,
+    },
+
+    // Quick Actions Section
+    quickActionsSection: {
+      flexDirection: "row",
+      gap: space.sm,
+      paddingHorizontal: space.lg,
+      marginBottom: space.lg,
+    },
+
+    // Section
+    section: {
+      paddingHorizontal: space.lg,
+      marginBottom: space.lg,
     },
   });
 };
