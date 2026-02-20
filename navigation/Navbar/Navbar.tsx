@@ -30,8 +30,7 @@ function Navbar() {
   };
 
   const handleAddAction = () => {
-    // TODO: Open add transaction modal or navigate to add screen
-    console.log("Add action pressed");
+    navigate("Add");
   };
 
   const isActive = (tab: string) => ActiveTab === tab;
@@ -44,6 +43,10 @@ function Navbar() {
         onPress={() => handleNavigation("Home")}
         style={styles.tabButton}
         activeOpacity={0.7}
+        accessibilityLabel="Ana Sayfa"
+        accessibilityRole="tab"
+        accessibilityState={{ selected: isActive("Home") }}
+        accessibilityHint="Ana sayfa ekranına git"
       >
         <View style={[styles.iconContainer, isActive("Home") && styles.activeIconContainer]}>
           <HomeIcon
@@ -65,6 +68,10 @@ function Navbar() {
         onPress={() => handleNavigation("Stats")}
         style={styles.tabButton}
         activeOpacity={0.7}
+        accessibilityLabel="İstatistik"
+        accessibilityRole="tab"
+        accessibilityState={{ selected: isActive("Stats") }}
+        accessibilityHint="İstatistikler ekranına git"
       >
         <View style={[styles.iconContainer, isActive("Stats") && styles.activeIconContainer]}>
           <StatsIcon
@@ -86,6 +93,9 @@ function Navbar() {
         onPress={handleAddAction}
         style={styles.fabButton}
         activeOpacity={0.8}
+        accessibilityLabel="Para Ekle"
+        accessibilityRole="button"
+        accessibilityHint="Yeni işlem eklemek için dokunun"
       >
         <View style={styles.fabIconContainer}>
           <PlusIcon
@@ -103,6 +113,10 @@ function Navbar() {
         onPress={() => handleNavigation("Goals")}
         style={styles.tabButton}
         activeOpacity={0.7}
+        accessibilityLabel="Hedefler"
+        accessibilityRole="tab"
+        accessibilityState={{ selected: isActive("Goals") }}
+        accessibilityHint="Hedefler ekranına git"
       >
         <View style={[styles.iconContainer, isActive("Goals") && styles.activeIconContainer]}>
           <GoalsIcon
@@ -124,6 +138,10 @@ function Navbar() {
         onPress={() => handleNavigation("Settings")}
         style={styles.tabButton}
         activeOpacity={0.7}
+        accessibilityLabel="Ayarlar"
+        accessibilityRole="tab"
+        accessibilityState={{ selected: isActive("Settings") }}
+        accessibilityHint="Ayarlar ekranına git"
       >
         <View style={[styles.iconContainer, isActive("Settings") && styles.activeIconContainer]}>
           <SettingsIcon
