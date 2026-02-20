@@ -7,6 +7,9 @@ import NotificationScreen from "@/screens/notifications/NotificationScreen";
 import { RootStackParamList } from "./NavigationTypes";
 import HomeScreen from "@/_tabs_/home/HomeScreen";
 import SettingsScreen from "@/_tabs_/settings/SettingsScreen";
+import StatsScreen from "@/_tabs_/stats/StatsScreen";
+import GoalsScreen from "@/_tabs_/goals/GoalsScreen";
+import AddScreen from "@/_tabs_/add/AddScreen";
 import AuthScreen from "@/screens/auth/AuthScreen";
 import { isAuthenticated } from "@/utils/auth";
 import { ActivityIndicator } from "react-native";
@@ -35,6 +38,9 @@ export const RootStack = () => {
     >
       <Stack.Screen name="AuthScreen" component={AuthScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Stats" component={StatsScreen} />
+      <Stack.Screen name="Goals" component={GoalsScreen} />
+      <Stack.Screen name="Add" component={AddScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="Notifications" component={NotificationScreen} />
     </Stack.Navigator>

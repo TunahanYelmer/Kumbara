@@ -5,6 +5,9 @@ export type RootStackParamList = {
   Home: undefined;
   Notifications: undefined;
   Settings: undefined;
+  Stats: undefined;
+  Goals: undefined;
+  Add: undefined;
   Tabs: undefined;
   Profile: undefined;
   // add more here...
