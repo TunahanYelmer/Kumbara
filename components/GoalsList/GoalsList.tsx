@@ -1,10 +1,5 @@
 import React, { FC } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Dimensions
-} from "react-native";
+import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import { useTheme } from "@/context/theme/ThemeProvider";
 import {
   createGoalsListStyles,
@@ -111,10 +106,16 @@ const GoalCard: FC<GoalCardProps> = ({ goal }) => {
         {/* Right side: Amounts (stacked vertically) */}
         <View style={styles.amountContainer}>
           <Text style={styles.currentAmount}>
-            ₺{goal.currentAmount.toLocaleString("tr-TR", { maximumFractionDigits: 0 })}
+            ₺
+            {goal.currentAmount.toLocaleString("tr-TR", {
+              maximumFractionDigits: 0
+            })}
           </Text>
           <Text style={styles.targetAmount}>
-            of ₺{goal.targetAmount.toLocaleString("tr-TR", { maximumFractionDigits: 0 })}
+            of ₺
+            {goal.targetAmount.toLocaleString("tr-TR", {
+              maximumFractionDigits: 0
+            })}
           </Text>
         </View>
       </View>
