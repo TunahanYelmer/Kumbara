@@ -33,7 +33,7 @@ const BadgeTag: FC<BadgeTagProps> = ({
     if (customColor && customBackgroundColor) {
       return {
         color: customColor,
-        backgroundColor: customBackgroundColor,
+        backgroundColor: customBackgroundColor
       };
     }
 
@@ -41,22 +41,22 @@ const BadgeTag: FC<BadgeTagProps> = ({
       case "success":
         return {
           color: "#22c55e",
-          backgroundColor: "#22c55e20",
+          backgroundColor: "#22c55e20"
         };
       case "warning":
         return {
           color: "#f59e0b",
-          backgroundColor: "#f59e0b20",
+          backgroundColor: "#f59e0b20"
         };
       case "info":
         return {
           color: theme.StatsHighlightColor,
-          backgroundColor: `${theme.StatsHighlightColor}20`,
+          backgroundColor: `${theme.StatsHighlightColor}20`
         };
       default:
         return {
           color: theme.StatsLabelColor,
-          backgroundColor: theme.StatsPeriodButtonBgColor,
+          backgroundColor: theme.StatsPeriodButtonBgColor
         };
     }
   };
@@ -69,8 +69,8 @@ const BadgeTag: FC<BadgeTagProps> = ({
         styles.container,
         {
           backgroundColor: colors.backgroundColor,
-          borderColor: `${colors.color}40`,
-        },
+          borderColor: `${colors.color}40`
+        }
       ]}
     >
       {icon && <View style={styles.iconContainer}>{icon}</View>}
