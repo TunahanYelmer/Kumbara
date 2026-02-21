@@ -130,6 +130,7 @@ export const createUserStyles = (
       color: theme.UserInsightTextColor
     },
     userIconContainer: {
+      margin: space.md,
       alignItems: "center",
       justifyContent: "center"
     },
@@ -237,8 +238,8 @@ export const createUserStyles = (
 
     // Round action button
     roundActionButton: {
-      width: width * 0.10,
-      height: width * 0.10,
+      width: width * 0.1,
+      height: width * 0.1,
       borderRadius: radius.round,
       alignItems: "center",
       justifyContent: "center",

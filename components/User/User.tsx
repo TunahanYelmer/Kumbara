@@ -1,9 +1,18 @@
 import React, { FC, useState } from "react";
-import { View, Text, Image, useWindowDimensions, TouchableOpacity, Modal } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  useWindowDimensions,
+  TouchableOpacity,
+  Modal
+} from "react-native";
 import { createUserStyles, createUserIconProps } from "./styles/User.styles";
 import { useTheme } from "@/context/theme/ThemeProvider";
+import { useAuthContext } from "@/context/auth/AuthProvider";
 import { useDataLayerValue } from "@/context/state/StateProvider";
 import { useNavigationContext } from "@context/navigation/NavigationProvider";
+import { useCalculateSavings } from "@/hooks/useCalculateSavings";
 import ChartIcon from "@assets/icons/chart.svg";
 import FlameIcon from "@assets/icons/flame.svg";
 import TrendArrowIcon from "@assets/icons/trendArrow.svg";
@@ -61,6 +70,8 @@ import Notifications from "@/components/notifications/Notifications";
 const User: FC = () => {
   // Get current theme (light/dark mode) from context
   const [theme] = useTheme();
+  const [{ userToken }] = useAuthContext();
+  const savings = useCalculateSavings(userToken);
 
   // Get responsive screen dimensions for design system calculations
   const { width, height } = useWindowDimensions();
@@ -85,16 +96,25 @@ const User: FC = () => {
   // Get first letter of user's name for avatar
   const userInitial = givenName?.[0]?.toUpperCase() || "U";
 
+  // Get savings message based on change direction
+  const getSavingsMessage = () => {
+    if (savings.isLoading) {
+      return "Hesaplanıyor...";
+    }
+
+    const formattedPercentage = Math.round(savings.percentage);
+
+    if (savings.change === "increased") {
+      return `Bu ay %${formattedPercentage} daha fazla tasarruf ediyorsunuz`;
+    } else if (savings.change === "decreased") {
+      return `Bu ay %${formattedPercentage} daha az tasarruf ediyorsunuz`;
+    } else {
+      return "";
+    }
+  };
+
   // Dropdown menu items
   const menuItems = [
-    {
-      icon: <UserIcon {...iconProps.menuIcon} />,
-      label: "Profil",
-      onPress: () => {
-        setShowDropdown(false);
-        // TODO: Navigate to Profile screen
-      }
-    },
     {
       icon: <BellIcon {...iconProps.menuIcon} />,
       label: "Bildirimler",
@@ -121,25 +141,6 @@ const User: FC = () => {
     }
   ];
 
-  // Quick action buttons
-  const quickActions = [
-    {
-      icon: <WalletIcon {...iconProps.actionIcon} />,
-      backgroundColor: theme.AddMoneyIconBgColor,
-      onPress: () => navigate("Add")
-    },
-    {
-      icon: <WithdrawIcon {...iconProps.actionIcon} />,
-      backgroundColor: theme.WithdrawIconBgColor,
-      onPress: () => navigate("Add")
-    },
-    {
-      icon: <SettingsIcon {...iconProps.actionIcon} />,
-      backgroundColor: theme.StatsCardBgColor,
-      onPress: () => navigate("Settings")
-    }
-  ];
-
   return (
     <View style={styles.userContainer}>
       {/* Main content area containing greeting, streak, and insights */}
@@ -149,7 +150,9 @@ const User: FC = () => {
           {/* Welcome text */}
           <View style={styles.userWelcome}>
             {/* TODO: Replace hardcoded "Alex" with {givenName} from state */}
-            <Text style={styles.userWelcomeText}>Hi, {givenName || "Alex"}! </Text>
+            <Text style={styles.userWelcomeText}>
+              Hi, {givenName || "Alex"}!{" "}
+            </Text>
           </View>
 
           {/* Streak badge: flame icon + consecutive days count */}
@@ -164,32 +167,31 @@ const User: FC = () => {
 
         {/* Bottom row: Savings insight with trend arrow */}
         <View style={styles.userInsight}>
-          {/* Trend arrow icon indicating savings direction */}
-          <Text style={styles.userInsightIcon}>
-            <TrendArrowIcon {...iconProps.trendArrow} />
-          </Text>
-
-          {/* TODO: Replace hardcoded "23%" with calculated savings percentage */}
-          <Text style={styles.userInsightText}>
-            You're saving %23 more this month
-          </Text>
-        </View>
-
-        {/* Quick action buttons row */}
-        <View style={styles.quickActionsRow}>
-          {quickActions.map((action, index) => (
-            <TouchableOpacity
-              key={index}
+          {/* Only show arrow when there's a change (not equal) */}
+          {savings.change !== "equal" && (
+            <Text
               style={[
-                styles.roundActionButton,
-                { backgroundColor: action.backgroundColor }
+                styles.userInsightIcon,
+                // Rotate arrow down when decreased
+                savings.change === "decreased" && {
+                  transform: [{ rotate: "180deg" }]
+                }
               ]}
-              onPress={action.onPress}
-              activeOpacity={0.7}
             >
-              {action.icon}
-            </TouchableOpacity>
-          ))}
+              <TrendArrowIcon
+                {...iconProps.trendArrow}
+                // Override stroke to red when decreased
+                stroke={
+                  savings.change === "decreased"
+                    ? theme.WithdrawIconFillColor
+                    : iconProps.trendArrow.stroke
+                }
+              />
+            </Text>
+          )}
+
+          {/* Dynamic message based on change direction */}
+          <Text style={styles.userInsightText}>{getSavingsMessage()}</Text>
         </View>
       </View>
 
@@ -226,9 +228,7 @@ const User: FC = () => {
                   onPress={item.onPress}
                   activeOpacity={0.7}
                 >
-                  <View style={styles.menuIconContainer}>
-                    {item.icon}
-                  </View>
+                  <View style={styles.menuIconContainer}>{item.icon}</View>
                   <Text style={styles.menuLabel}>{item.label}</Text>
                 </TouchableOpacity>
               ))}
